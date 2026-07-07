@@ -200,6 +200,24 @@
                 transform: rotate(360deg);
             }
         }
+        /* ========================= BOTTOM NAV ========================= */
+        .nav-tab {
+            color: #94a3b8;
+            min-width: 56px;
+        }
+        .nav-tab:active { transform: scale(0.90); }
+        .nav-tab.active-tab {
+            color: #2f5fd6;
+            background: rgba(47, 95, 214, 0.10);
+        }
+        .dark .nav-tab { color: #64748b; }
+        .dark .nav-tab.active-tab {
+            color: #6d9eff;
+            background: rgba(109, 158, 255, 0.12);
+        }
+        /* Panel sections */
+        .tab-panel { display: none; }
+        .tab-panel.active-panel { display: block; }
     </style>
 </head>
 
@@ -362,7 +380,7 @@
         </section>
 
         <!-- ===================== TARGET LIST ===================== -->
-        <section class="px-5 mt-6 pb-28 flex-1">
+        <section id="panel-home" class="tab-panel active-panel px-5 mt-6 pb-32 flex-1">
             <div class="flex items-center justify-between mb-3">
                 <h3 class="font-bold text-navy-900 dark:text-slate-200 text-[15px]">Target Tabungan Saya</h3>
                 <span id="targetCountLabel" class="text-xs text-navy-800/50 dark:text-slate-400 font-medium"></span>
@@ -397,10 +415,51 @@
             <div id="targetList" class="space-y-3"></div>
         </section>
 
-        <!-- Floating add button -->
-        <button onclick="openModal('modalTambahTarget')" class="quick-btn absolute right-5 bottom-6 w-14 h-14 rounded-full bg-brand-500 text-white shadow-soft flex items-center justify-center transition z-30">
-            <i data-lucide="plus" class="w-6 h-6"></i>
-        </button>
+        <!-- ===================== BOTTOM NAVIGATION BAR ===================== -->
+        <nav id="bottomNav" class="fixed bottom-0 left-0 right-0 z-30 max-w-md mx-auto">
+            <!-- Safe area padding for iOS notch -->
+            <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-gray-100 dark:border-slate-800 px-2 pt-2 pb-3"
+                 style="padding-bottom: max(12px, env(safe-area-inset-bottom))">
+                <div class="flex items-center justify-around">
+
+                    <!-- Beranda -->
+                    <button onclick="switchTab('home')" id="tab-home"
+                        class="nav-tab active-tab flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all duration-200">
+                        <i data-lucide="home" class="w-5 h-5"></i>
+                        <span class="text-[10px] font-semibold">Beranda</span>
+                    </button>
+
+                    <!-- Target -->
+                    <button onclick="switchTab('targets')" id="tab-targets"
+                        class="nav-tab flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all duration-200">
+                        <i data-lucide="target" class="w-5 h-5"></i>
+                        <span class="text-[10px] font-semibold">Target</span>
+                    </button>
+
+                    <!-- Tombol Tambah (tengah) -->
+                    <button onclick="openModal('modalTambahTarget')"
+                        class="quick-btn -mt-6 w-14 h-14 rounded-full bg-brand-500 text-white shadow-lg shadow-brand-500/40 flex items-center justify-center transition-all duration-200 active:scale-90 hover:bg-brand-600">
+                        <i data-lucide="plus" class="w-6 h-6"></i>
+                    </button>
+
+                    <!-- Transaksi -->
+                    <button onclick="switchTab('transaksi')" id="tab-transaksi"
+                        class="nav-tab flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all duration-200">
+                        <i data-lucide="history" class="w-5 h-5"></i>
+                        <span class="text-[10px] font-semibold">Transaksi</span>
+                    </button>
+
+                    <!-- Analisis -->
+                    <button onclick="switchTab('analisis')" id="tab-analisis"
+                        class="nav-tab flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all duration-200">
+                        <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                        <span class="text-[10px] font-semibold">Analisis</span>
+                    </button>
+
+                </div>
+            </div>
+        </nav>
+
 
 
         <!-- ===================== MODAL: TAMBAH TARGET ===================== -->
@@ -1573,7 +1632,49 @@
             });
         });
 
-        /* ========================= INITIALIZATION ========================= */
+        /* ========================= BOTTOM NAV TABS ========================= */
+        function switchTab(tab) {
+            // Update tab button active state
+            ['home','targets','transaksi','analisis'].forEach(t => {
+                const btn = document.getElementById('tab-' + t);
+                if (btn) btn.classList.remove('active-tab');
+            });
+            const activeBtn = document.getElementById('tab-' + tab);
+            if (activeBtn) activeBtn.classList.add('active-tab');
+
+            // Handle each tab action
+            if (tab === 'home') {
+                // Scroll to top
+                document.querySelector('#panel-home').scrollIntoView({ behavior: 'smooth' });
+            } else if (tab === 'targets') {
+                // Focus on target list
+                document.querySelector('#targetList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else if (tab === 'transaksi') {
+                // Open riwayat modal
+                openRiwayatModal();
+                // Reset active tab after modal opens
+                setTimeout(() => {
+                    ['home','targets','transaksi','analisis'].forEach(t => {
+                        const btn = document.getElementById('tab-' + t);
+                        if (btn) btn.classList.remove('active-tab');
+                    });
+                    const homeBtn = document.getElementById('tab-home');
+                    if (homeBtn) homeBtn.classList.add('active-tab');
+                }, 300);
+            } else if (tab === 'analisis') {
+                // Open analytics modal
+                openProgresDashboard();
+                // Reset active tab after modal opens
+                setTimeout(() => {
+                    ['home','targets','transaksi','analisis'].forEach(t => {
+                        const btn = document.getElementById('tab-' + t);
+                        if (btn) btn.classList.remove('active-tab');
+                    });
+                    const homeBtn = document.getElementById('tab-home');
+                    if (homeBtn) homeBtn.classList.add('active-tab');
+                }, 300);
+            }
+        }
         document.addEventListener('DOMContentLoaded', () => {
             // Apply Darkmode if saved
             if (localStorage.getItem('tabungin_darkmode') === 'enabled') {
