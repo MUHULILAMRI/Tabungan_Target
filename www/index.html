@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Tabungin • Catatan Target Tabungan</title>
 
     <!-- PWA Manifest -->
@@ -19,7 +20,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <!-- Chart.js CDN -->
@@ -200,29 +202,52 @@
                 transform: rotate(360deg);
             }
         }
+
         /* ========================= BOTTOM NAV ========================= */
         .nav-tab {
             color: #94a3b8;
             min-width: 56px;
         }
-        .nav-tab:active { transform: scale(0.90); }
+
+        .nav-tab:active {
+            transform: scale(0.90);
+        }
+
         .nav-tab.active-tab {
             color: #2f5fd6;
             background: rgba(47, 95, 214, 0.10);
         }
-        .dark .nav-tab { color: #64748b; }
+
+        .dark .nav-tab {
+            color: #64748b;
+        }
+
         .dark .nav-tab.active-tab {
             color: #6d9eff;
             background: rgba(109, 158, 255, 0.12);
         }
+
         /* Panel sections */
-        .tab-panel { display: none; }
-        .tab-panel.active-panel { display: block; }
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active-panel {
+            display: block;
+        }
 
         @keyframes bounceSlow {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
         }
+
         .animate-bounce-slow {
             animation: bounceSlow 3s ease-in-out infinite;
         }
@@ -231,29 +256,37 @@
 
 <body class="min-h-screen text-navy-900 transition-colors duration-200 dark:text-gray-100">
 
-    <div class="max-w-md mx-auto min-h-screen bg-[#f3f5f9] dark:bg-[#0f172a] relative shadow-2xl overflow-x-hidden flex flex-col">
+    <div
+        class="max-w-md mx-auto min-h-screen bg-[#f3f5f9] dark:bg-[#0f172a] relative shadow-2xl overflow-x-hidden flex flex-col">
 
         <!-- ===================== SCREEN: LOGIN / REGISTER ===================== -->
-        <div id="authScreen" class="absolute inset-0 bg-gradient-to-br from-navy-950 via-navy-900 to-brand-900 z-50 flex flex-col justify-between p-6 overflow-y-auto">
+        <div id="authScreen"
+            class="absolute inset-0 bg-gradient-to-br from-navy-950 via-navy-900 to-brand-900 z-50 flex flex-col justify-between p-6 overflow-y-auto">
             <!-- Glow background decor -->
-            <div class="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl"></div>
+            <div
+                class="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl">
+            </div>
             <div class="absolute bottom-1/4 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
 
             <div class="flex flex-col items-center pt-10 pb-6 relative z-10">
-                <div class="relative w-20 h-20 rounded-3xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30 mb-4 animate-bounce-slow">
+                <div
+                    class="relative w-20 h-20 rounded-3xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30 mb-4 animate-bounce-slow">
                     <div class="absolute inset-0 rounded-3xl bg-brand-400/30 blur-md -z-10 scale-110"></div>
                     <i data-lucide="piggy-bank" class="w-12 h-12 text-white"></i>
                 </div>
                 <h1 class="text-white text-3xl font-black tracking-tight drop-shadow-md">Tabungin</h1>
-                <p class="text-white/60 text-xs mt-1.5 font-medium tracking-wide">Kelola target impianmu dengan cerdas</p>
+                <p class="text-white/60 text-xs mt-1.5 font-medium tracking-wide">Kelola target impianmu dengan cerdas
+                </p>
             </div>
 
             <!-- Login / Register Card -->
             <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl relative z-10 space-y-4 mb-4">
                 <!-- Tab Headers (Segmented Pills Control) -->
                 <div class="bg-gray-100 dark:bg-slate-800/80 p-1 rounded-2xl flex gap-1 mb-2">
-                    <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-white dark:bg-slate-900 text-brand-500 shadow-sm transition-all duration-200">Masuk</button>
-                    <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-500 transition-all duration-200">Daftar</button>
+                    <button id="tabLogin" onclick="switchAuthTab('login')"
+                        class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-white dark:bg-slate-900 text-brand-500 shadow-sm transition-all duration-200">Masuk</button>
+                    <button id="tabRegister" onclick="switchAuthTab('register')"
+                        class="flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-500 transition-all duration-200">Daftar</button>
                 </div>
 
                 <!-- FORM LOGIN -->
@@ -261,7 +294,8 @@
                     <div>
                         <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Username</label>
                         <div class="relative mt-1.5">
-                            <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                            <i data-lucide="user"
+                                class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
                             <input required type="text" id="loginUsername" placeholder="Username Anda"
                                 class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
                         </div>
@@ -269,15 +303,18 @@
                     <div>
                         <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Password</label>
                         <div class="relative mt-1.5">
-                            <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                            <i data-lucide="lock"
+                                class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
                             <input required type="password" id="loginPassword" placeholder="••••••••"
                                 class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-12 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
-                            <button type="button" onclick="togglePasswordVisibility('loginPassword', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-650 dark:hover:text-slate-200 transition">
+                            <button type="button" onclick="togglePasswordVisibility('loginPassword', this)"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-650 dark:hover:text-slate-200 transition">
                                 <i data-lucide="eye" class="w-4 h-4"></i>
                             </button>
                         </div>
                     </div>
-                    <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
+                    <button type="submit"
+                        class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
                         Masuk Sekarang
                     </button>
                 </form>
@@ -287,7 +324,8 @@
                     <div>
                         <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nama Lengkap</label>
                         <div class="relative mt-1.5">
-                            <i data-lucide="smile" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                            <i data-lucide="smile"
+                                class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
                             <input required type="text" id="regName" placeholder="Nama Lengkap Anda"
                                 class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
                         </div>
@@ -295,7 +333,8 @@
                     <div>
                         <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Username</label>
                         <div class="relative mt-1.5">
-                            <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                            <i data-lucide="user"
+                                class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
                             <input required type="text" id="regUsername" placeholder="Buat username unik"
                                 class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
                         </div>
@@ -303,15 +342,18 @@
                     <div>
                         <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Password</label>
                         <div class="relative mt-1.5">
-                            <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                            <i data-lucide="lock"
+                                class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
                             <input required type="password" id="regPassword" placeholder="Minimal 6 karakter"
                                 class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-12 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
-                            <button type="button" onclick="togglePasswordVisibility('regPassword', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-650 dark:hover:text-slate-200 transition">
+                            <button type="button" onclick="togglePasswordVisibility('regPassword', this)"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-650 dark:hover:text-slate-200 transition">
                                 <i data-lucide="eye" class="w-4 h-4"></i>
                             </button>
                         </div>
                     </div>
-                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
+                    <button type="submit"
+                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
                         Daftar Akun Baru
                     </button>
                 </form>
@@ -324,13 +366,16 @@
             <!-- ===================== PANEL 1: BERANDA ===================== -->
             <div id="panel-home" class="tab-panel flex-1 flex flex-col pb-32">
                 <!-- HEADER -->
-                <header class="relative bg-gradient-to-br from-navy-950 via-navy-900 to-navy-700 rounded-b-[2.25rem] px-5 pt-6 pb-16 overflow-hidden">
+                <header
+                    class="relative bg-gradient-to-br from-navy-950 via-navy-900 to-navy-700 rounded-b-[2.25rem] px-5 pt-6 pb-16 overflow-hidden">
                     <div class="absolute -top-16 -right-16 w-56 h-56 bg-brand-500/30 rounded-full blur-3xl"></div>
                     <div class="absolute -bottom-24 -left-10 w-48 h-48 bg-brand-400/20 rounded-full blur-3xl"></div>
                     <div class="relative flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <button onclick="openModal('modalSettings')" class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white overflow-hidden active:scale-95 transition">
-                                <img id="headerAvatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" class="w-full h-full object-cover" alt="Avatar">
+                            <button onclick="openModal('modalSettings')"
+                                class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white overflow-hidden active:scale-95 transition">
+                                <img id="headerAvatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix"
+                                    class="w-full h-full object-cover" alt="Avatar">
                             </button>
                             <div>
                                 <p class="text-white/60 text-xs">Halo, <span id="userDisplayName">User</span> 👋</p>
@@ -338,13 +383,16 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <button onclick="toggleDarkMode()" class="quick-btn w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white transition">
+                            <button onclick="toggleDarkMode()"
+                                class="quick-btn w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white transition">
                                 <i id="themeIcon" data-lucide="moon" class="w-4 h-4"></i>
                             </button>
-                            <button id="btnRefresh" class="quick-btn w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white transition">
+                            <button id="btnRefresh"
+                                class="quick-btn w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white transition">
                                 <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                             </button>
-                            <button onclick="logout()" class="quick-btn w-9 h-9 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 hover:bg-red-500/20 transition">
+                            <button onclick="logout()"
+                                class="quick-btn w-9 h-9 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 hover:bg-red-500/20 transition">
                                 <i data-lucide="log-out" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -377,30 +425,43 @@
 
                 <!-- QUICK ACTIONS -->
                 <section class="relative -mt-9 px-5 z-10">
-                    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-card px-4 py-5 grid grid-cols-4 gap-2 border border-gray-100 dark:border-slate-800">
-                        <button class="quick-btn flex flex-col items-center gap-2 transition" onclick="openModal('modalTambahTarget')">
-                            <span class="w-12 h-12 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                    <div
+                        class="bg-white dark:bg-slate-900 rounded-2xl shadow-card px-4 py-5 grid grid-cols-4 gap-2 border border-gray-100 dark:border-slate-800">
+                        <button class="quick-btn flex flex-col items-center gap-2 transition"
+                            onclick="openModal('modalTambahTarget')">
+                            <span
+                                class="w-12 h-12 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
                                 <i data-lucide="plus-circle" class="w-5 h-5"></i>
                             </span>
-                            <span class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Target<br />Baru</span>
+                            <span
+                                class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Target<br />Baru</span>
                         </button>
-                        <button class="quick-btn flex flex-col items-center gap-2 transition" onclick="openIsiTabunganModal()">
-                            <span class="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:emerald-400 flex items-center justify-center">
+                        <button class="quick-btn flex flex-col items-center gap-2 transition"
+                            onclick="openIsiTabunganModal()">
+                            <span
+                                class="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:emerald-400 flex items-center justify-center">
                                 <i data-lucide="piggy-bank" class="w-5 h-5"></i>
                             </span>
-                            <span class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Isi<br />Tabungan</span>
+                            <span
+                                class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Isi<br />Tabungan</span>
                         </button>
-                        <button class="quick-btn flex flex-col items-center gap-2 transition" onclick="switchTab('transaksi')">
-                            <span class="w-12 h-12 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                        <button class="quick-btn flex flex-col items-center gap-2 transition"
+                            onclick="switchTab('transaksi')">
+                            <span
+                                class="w-12 h-12 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                                 <i data-lucide="history" class="w-5 h-5"></i>
                             </span>
-                            <span class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Riwayat<br />Transaksi</span>
+                            <span
+                                class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Riwayat<br />Transaksi</span>
                         </button>
-                        <button class="quick-btn flex flex-col items-center gap-2 transition" onclick="switchTab('analisis')">
-                            <span class="w-12 h-12 rounded-full bg-violet-50 dark:bg-violet-950 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+                        <button class="quick-btn flex flex-col items-center gap-2 transition"
+                            onclick="switchTab('analisis')">
+                            <span
+                                class="w-12 h-12 rounded-full bg-violet-50 dark:bg-violet-950 text-violet-600 dark:text-violet-400 flex items-center justify-center">
                                 <i data-lucide="pie-chart" class="w-5 h-5"></i>
                             </span>
-                            <span class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Ringkasan<br />Progres</span>
+                            <span
+                                class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Ringkasan<br />Progres</span>
                         </button>
                     </div>
                 </section>
@@ -409,7 +470,8 @@
                 <section class="px-5 mt-6">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="font-bold text-navy-900 dark:text-slate-200 text-[15px]">Aktivitas Terbaru</h3>
-                        <button onclick="switchTab('transaksi')" class="text-xs text-brand-500 font-bold hover:underline">Lihat Semua</button>
+                        <button onclick="switchTab('transaksi')"
+                            class="text-xs text-brand-500 font-bold hover:underline">Lihat Semua</button>
                     </div>
                     <div id="recentActivityList" class="space-y-2.5">
                         <!-- populated via JS -->
@@ -418,12 +480,14 @@
 
                 <!-- STATS SHORTCUT -->
                 <section class="px-5 mt-6">
-                    <div class="bg-gradient-to-r from-violet-600 to-indigo-600 rounded-2xl p-4 text-white shadow-soft flex items-center justify-between">
+                    <div
+                        class="bg-gradient-to-r from-violet-600 to-indigo-600 rounded-2xl p-4 text-white shadow-soft flex items-center justify-between">
                         <div>
                             <p class="text-xs text-white/70">Ingin tahu progres menabungmu?</p>
                             <h4 class="font-bold text-sm mt-0.5">Analisis Keuangan & Tips Hemat</h4>
                         </div>
-                        <button onclick="switchTab('analisis')" class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-3 py-2 rounded-xl transition">
+                        <button onclick="switchTab('analisis')"
+                            class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-3 py-2 rounded-xl transition">
                             Buka Grafik
                         </button>
                     </div>
@@ -434,7 +498,8 @@
             <div id="panel-targets" class="tab-panel hidden flex-1 flex flex-col pb-32 px-5 pt-6">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-extrabold text-navy-900 dark:text-white">Target Tabungan</h2>
-                    <button onclick="openModal('modalTambahTarget')" class="bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 transition">
+                    <button onclick="openModal('modalTambahTarget')"
+                        class="bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 transition">
                         <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
                     </button>
                 </div>
@@ -442,7 +507,8 @@
                 <!-- Search and Filters -->
                 <div class="mb-4 flex gap-2">
                     <div class="relative flex-1">
-                        <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                        <i data-lucide="search"
+                            class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
                         <input type="text" id="targetSearchInput" placeholder="Cari target..." oninput="filterTargets()"
                             class="w-full bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
                     </div>
@@ -466,12 +532,16 @@
 
                 <!-- Empty state -->
                 <div id="emptyState" class="hidden flex-col items-center justify-center text-center py-14">
-                    <div class="w-16 h-16 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-500 flex items-center justify-center mb-3">
+                    <div
+                        class="w-16 h-16 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-500 flex items-center justify-center mb-3">
                         <i data-lucide="wallet" class="w-7 h-7"></i>
                     </div>
                     <p class="font-semibold text-navy-900 dark:text-slate-200 text-sm">Belum ada target tabungan</p>
-                    <p class="text-xs text-navy-800/50 dark:text-slate-400 mt-1 max-w-[220px]">Buat target pertamamu dan mulai menabung sedikit demi sedikit.</p>
-                    <button onclick="openModal('modalTambahTarget')" class="mt-4 bg-brand-500 text-white text-xs font-semibold px-5 py-2.5 rounded-full">+ Buat Target</button>
+                    <p class="text-xs text-navy-800/50 dark:text-slate-400 mt-1 max-w-[220px]">Buat target pertamamu dan
+                        mulai menabung sedikit demi sedikit.</p>
+                    <button onclick="openModal('modalTambahTarget')"
+                        class="mt-4 bg-brand-500 text-white text-xs font-semibold px-5 py-2.5 rounded-full">+ Buat
+                        Target</button>
                 </div>
 
                 <!-- Error state -->
@@ -480,8 +550,11 @@
                         <i data-lucide="wifi-off" class="w-7 h-7"></i>
                     </div>
                     <p class="font-semibold text-navy-900 dark:text-slate-200 text-sm">Gagal memuat data</p>
-                    <p class="text-xs text-navy-800/50 dark:text-slate-400 mt-1 max-w-[240px]">Menggunakan data offline lokal sementara waktu.</p>
-                    <button onclick="fetchData()" class="mt-4 bg-brand-500 text-white text-xs font-semibold px-5 py-2.5 rounded-full">Coba Lagi</button>
+                    <p class="text-xs text-navy-800/50 dark:text-slate-400 mt-1 max-w-[240px]">Menggunakan data offline
+                        lokal sementara waktu.</p>
+                    <button onclick="fetchData()"
+                        class="mt-4 bg-brand-500 text-white text-xs font-semibold px-5 py-2.5 rounded-full">Coba
+                        Lagi</button>
                 </div>
 
                 <!-- Target List Container -->
@@ -492,16 +565,21 @@
             <div id="panel-transaksi" class="tab-panel hidden flex-1 flex flex-col pb-32 px-5 pt-6">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-extrabold text-navy-900 dark:text-white">Riwayat Transaksi</h2>
-                    <button onclick="openIsiTabunganModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 transition">
+                    <button onclick="openIsiTabunganModal()"
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 transition">
                         <i data-lucide="piggy-bank" class="w-3.5 h-3.5"></i> Setor/Tarik
                     </button>
                 </div>
 
                 <!-- Transaction type filter tabs -->
-                <div class="grid grid-cols-3 gap-2 bg-gray-100 dark:bg-slate-800 p-1 rounded-xl mb-4 text-xs font-semibold">
-                    <button id="filterTx-all" onclick="filterTransactions('all')" class="bg-white dark:bg-slate-900 text-navy-900 dark:text-white py-2 rounded-lg text-center shadow-sm">Semua</button>
-                    <button id="filterTx-masuk" onclick="filterTransactions('masuk')" class="text-gray-500 dark:text-slate-400 py-2 rounded-lg text-center">Setoran</button>
-                    <button id="filterTx-keluar" onclick="filterTransactions('keluar')" class="text-gray-500 dark:text-slate-400 py-2 rounded-lg text-center">Penarikan</button>
+                <div
+                    class="grid grid-cols-3 gap-2 bg-gray-100 dark:bg-slate-800 p-1 rounded-xl mb-4 text-xs font-semibold">
+                    <button id="filterTx-all" onclick="filterTransactions('all')"
+                        class="bg-white dark:bg-slate-900 text-navy-900 dark:text-white py-2 rounded-lg text-center shadow-sm">Semua</button>
+                    <button id="filterTx-masuk" onclick="filterTransactions('masuk')"
+                        class="text-gray-500 dark:text-slate-400 py-2 rounded-lg text-center">Setoran</button>
+                    <button id="filterTx-keluar" onclick="filterTransactions('keluar')"
+                        class="text-gray-500 dark:text-slate-400 py-2 rounded-lg text-center">Penarikan</button>
                 </div>
 
                 <!-- Transaction List -->
@@ -516,18 +594,27 @@
 
                 <!-- Quick Stats Grid -->
                 <div class="grid grid-cols-2 gap-3 mb-4">
-                    <div class="bg-brand-50 dark:bg-slate-800/80 rounded-2xl p-4 flex flex-col border border-brand-100/30">
-                        <span class="text-[10px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wide">Rata-rata Transaksi</span>
-                        <span id="statAverage" class="text-base font-extrabold text-navy-900 dark:text-white mt-1">Rp 0</span>
+                    <div
+                        class="bg-brand-50 dark:bg-slate-800/80 rounded-2xl p-4 flex flex-col border border-brand-100/30">
+                        <span
+                            class="text-[10px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wide">Rata-rata
+                            Transaksi</span>
+                        <span id="statAverage" class="text-base font-extrabold text-navy-900 dark:text-white mt-1">Rp
+                            0</span>
                     </div>
-                    <div class="bg-emerald-50 dark:bg-slate-800/80 rounded-2xl p-4 flex flex-col border border-emerald-100/30">
-                        <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">Target Selesai</span>
-                        <span id="statCompleted" class="text-base font-extrabold text-navy-900 dark:text-white mt-1">0 target</span>
+                    <div
+                        class="bg-emerald-50 dark:bg-slate-800/80 rounded-2xl p-4 flex flex-col border border-emerald-100/30">
+                        <span
+                            class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">Target
+                            Selesai</span>
+                        <span id="statCompleted" class="text-base font-extrabold text-navy-900 dark:text-white mt-1">0
+                            target</span>
                     </div>
                 </div>
 
                 <!-- Chart Container -->
-                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-gray-100 dark:border-slate-800 shadow-card mb-4">
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-gray-100 dark:border-slate-800 shadow-card mb-4">
                     <h4 class="text-xs font-bold text-gray-500 mb-3">Tren Saldo & Setoran Tabungan</h4>
                     <div class="relative w-full h-48">
                         <canvas id="savingTrendsChart"></canvas>
@@ -535,11 +622,13 @@
                 </div>
 
                 <!-- Tips Menabung -->
-                <div class="bg-violet-50 dark:bg-violet-950/20 rounded-2xl p-4 border border-violet-100 dark:border-violet-900/30 flex items-start gap-3 mb-4">
+                <div
+                    class="bg-violet-50 dark:bg-violet-950/20 rounded-2xl p-4 border border-violet-100 dark:border-violet-900/30 flex items-start gap-3 mb-4">
                     <span class="text-xl">💡</span>
                     <div>
                         <h5 class="text-xs font-bold text-violet-800 dark:text-violet-300">Tips Hemat & Cerdas</h5>
-                        <p id="tipsMenabungText" class="text-[11px] text-violet-700/80 dark:text-violet-400/80 mt-0.5">Selalu catat setoran sekecil apa pun untuk menjaga kebiasaan menabung tetap konsisten!</p>
+                        <p id="tipsMenabungText" class="text-[11px] text-violet-700/80 dark:text-violet-400/80 mt-0.5">
+                            Selalu catat setoran sekecil apa pun untuk menjaga kebiasaan menabung tetap konsisten!</p>
                     </div>
                 </div>
             </div>
@@ -549,7 +638,7 @@
         <nav id="bottomNav" class="fixed bottom-0 left-0 right-0 z-30 max-w-md mx-auto">
             <!-- Safe area padding for iOS notch -->
             <div class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-gray-100 dark:border-slate-800 px-2 pt-2 pb-3"
-                 style="padding-bottom: max(12px, env(safe-area-inset-bottom))">
+                style="padding-bottom: max(12px, env(safe-area-inset-bottom))">
                 <div class="flex items-center justify-around">
 
                     <!-- Beranda -->
@@ -594,11 +683,14 @@
 
         <!-- ===================== MODAL: TAMBAH TARGET ===================== -->
         <div id="modalTambahTarget" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
-            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[90vh] overflow-y-auto">
+            <div
+                class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[90vh] overflow-y-auto">
                 <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-bold text-navy-900 dark:text-white">Buat Target Baru</h3>
-                    <button onclick="closeModal('modalTambahTarget')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    <button onclick="closeModal('modalTambahTarget')"
+                        class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i
+                            data-lucide="x" class="w-4 h-4"></i></button>
                 </div>
 
                 <form id="formTambahTarget" class="space-y-4">
@@ -610,7 +702,8 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Kategori</label>
-                            <select id="inputKategoriTarget" class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
+                            <select id="inputKategoriTarget"
+                                class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
                                 <option value="liburan">✈️ Liburan</option>
                                 <option value="gadget">📱 Gadget</option>
                                 <option value="kendaraan">🚗 Kendaraan</option>
@@ -621,7 +714,8 @@
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Prioritas</label>
-                            <select id="inputPrioritasTarget" class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
+                            <select id="inputPrioritasTarget"
+                                class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
                                 <option value="tinggi">🔴 Tinggi</option>
                                 <option value="sedang" selected>🟡 Sedang</option>
                                 <option value="rendah">🟢 Rendah</option>
@@ -629,7 +723,8 @@
                         </div>
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nominal Target (Rp)</label>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nominal Target
+                            (Rp)</label>
                         <input required type="number" min="1" id="inputNominalTarget" placeholder="Contoh: 5000000"
                             class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
                     </div>
@@ -639,7 +734,8 @@
                             class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
                     </div>
 
-                    <button type="submit" id="btnSubmitTarget" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200">
+                    <button type="submit" id="btnSubmitTarget"
+                        class="w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200">
                         <span id="btnSubmitTargetText">Simpan Target</span>
                         <div id="spinnerTarget" class="spinner hidden w-4 h-4 border-2"></div>
                     </button>
@@ -650,14 +746,21 @@
 
         <!-- ===================== MODAL: DETAIL TARGET ===================== -->
         <div id="modalDetailTarget" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
-            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[85vh] flex flex-col">
+            <div
+                class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[85vh] flex flex-col">
                 <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4 shrink-0"></div>
                 <div class="flex items-center justify-between mb-3 shrink-0">
                     <h3 class="font-bold text-navy-900 dark:text-white">Detail Target</h3>
                     <div class="flex gap-2">
-                        <button onclick="editTargetForm()" class="w-8 h-8 rounded-full bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 flex items-center justify-center"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-                        <button onclick="hapusTargetAction()" class="w-8 h-8 rounded-full bg-red-50 dark:bg-slate-800 text-red-600 dark:text-red-400 flex items-center justify-center"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                        <button onclick="closeModal('modalDetailTarget')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        <button onclick="editTargetForm()"
+                            class="w-8 h-8 rounded-full bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 flex items-center justify-center"><i
+                                data-lucide="edit-3" class="w-4 h-4"></i></button>
+                        <button onclick="hapusTargetAction()"
+                            class="w-8 h-8 rounded-full bg-red-50 dark:bg-slate-800 text-red-600 dark:text-red-400 flex items-center justify-center"><i
+                                data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        <button onclick="closeModal('modalDetailTarget')"
+                            class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i
+                                data-lucide="x" class="w-4 h-4"></i></button>
                     </div>
                 </div>
 
@@ -665,11 +768,15 @@
                     <!-- Target Header Status -->
                     <div class="bg-gray-50 dark:bg-slate-800/60 rounded-2xl p-4">
                         <div class="flex items-center gap-3">
-                            <span id="detailIcon" class="text-2xl w-12 h-12 rounded-2xl bg-brand-50 dark:bg-slate-800 flex items-center justify-center">📦</span>
+                            <span id="detailIcon"
+                                class="text-2xl w-12 h-12 rounded-2xl bg-brand-50 dark:bg-slate-800 flex items-center justify-center">📦</span>
                             <div>
-                                <h4 id="detailNama" class="font-extrabold text-navy-900 dark:text-white text-base leading-tight">Nama Target</h4>
+                                <h4 id="detailNama"
+                                    class="font-extrabold text-navy-900 dark:text-white text-base leading-tight">Nama
+                                    Target</h4>
                                 <div class="flex gap-2 mt-1">
-                                    <span id="detailPrioritas" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-600">Sedang</span>
+                                    <span id="detailPrioritas"
+                                        class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-600">Sedang</span>
                                     <span id="detailSisaHari" class="text-[10px] text-gray-400">10 hari lagi</span>
                                 </div>
                             </div>
@@ -677,28 +784,34 @@
 
                         <div class="mt-4">
                             <div class="flex justify-between text-xs text-gray-500 mb-1.5">
-                                <span>Terkumpul <strong id="detailTerkumpul" class="text-navy-900 dark:text-white">Rp 0</strong></span>
-                                <span>Target: <strong id="detailNominal" class="text-navy-900 dark:text-white">Rp 0</strong></span>
+                                <span>Terkumpul <strong id="detailTerkumpul" class="text-navy-900 dark:text-white">Rp
+                                        0</strong></span>
+                                <span>Target: <strong id="detailNominal" class="text-navy-900 dark:text-white">Rp
+                                        0</strong></span>
                             </div>
                             <div class="w-full h-2 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                                <div id="detailProgressBar" class="progress-fill h-full bg-brand-500" style="width: 0%"></div>
+                                <div id="detailProgressBar" class="progress-fill h-full bg-brand-500" style="width: 0%">
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Detail Actions -->
                     <div class="grid grid-cols-2 gap-3 shrink-0">
-                        <button onclick="setoranBaruAction()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition">
+                        <button onclick="setoranBaruAction()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i> Setor Tabungan
                         </button>
-                        <button onclick="penarikanBaruAction()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition">
+                        <button onclick="penarikanBaruAction()"
+                            class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition">
                             <i data-lucide="minus-circle" class="w-4 h-4"></i> Tarik Tabungan
                         </button>
                     </div>
 
                     <!-- Target Transaction History -->
                     <div>
-                        <h5 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Riwayat Transaksi Khusus</h5>
+                        <h5 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Riwayat Transaksi
+                            Khusus</h5>
                         <div id="detailRiwayatList" class="space-y-2"></div>
                     </div>
                 </div>
@@ -712,7 +825,9 @@
                 <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
                 <div class="flex items-center justify-between mb-4">
                     <h3 id="transaksiFormTitle" class="font-bold text-navy-900 dark:text-white">Isi Tabungan</h3>
-                    <button onclick="closeModal('modalTransaksiForm')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    <button onclick="closeModal('modalTransaksiForm')"
+                        class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i
+                            data-lucide="x" class="w-4 h-4"></i></button>
                 </div>
 
                 <form id="formTransaksi" class="space-y-4">
@@ -730,12 +845,14 @@
                             class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Catatan (opsional)</label>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Catatan
+                            (opsional)</label>
                         <input type="text" id="inputTransaksiCatatan" placeholder="Contoh: Sisa uang jajan"
                             class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
                     </div>
 
-                    <button type="submit" id="btnSubmitTransaksi" class="w-full bg-emerald-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200">
+                    <button type="submit" id="btnSubmitTransaksi"
+                        class="w-full bg-emerald-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200">
                         <span id="btnSubmitTransaksiText">Simpan Setoran</span>
                         <div id="spinnerTransaksi" class="spinner hidden w-4 h-4 border-2"></div>
                     </button>
@@ -746,11 +863,14 @@
 
         <!-- ===================== MODAL: EDIT TARGET ===================== -->
         <div id="modalEditTarget" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
-            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[90vh] overflow-y-auto">
+            <div
+                class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[90vh] overflow-y-auto">
                 <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-bold text-navy-900 dark:text-white">Ubah Detail Target</h3>
-                    <button onclick="closeModal('modalEditTarget')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    <button onclick="closeModal('modalEditTarget')"
+                        class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i
+                            data-lucide="x" class="w-4 h-4"></i></button>
                 </div>
 
                 <form id="formEditTarget" class="space-y-4">
@@ -763,7 +883,8 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Kategori</label>
-                            <select id="editKategoriTarget" class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
+                            <select id="editKategoriTarget"
+                                class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
                                 <option value="liburan">✈️ Liburan</option>
                                 <option value="gadget">📱 Gadget</option>
                                 <option value="kendaraan">🚗 Kendaraan</option>
@@ -774,7 +895,8 @@
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Prioritas</label>
-                            <select id="editPrioritasTarget" class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
+                            <select id="editPrioritasTarget"
+                                class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
                                 <option value="tinggi">🔴 Tinggi</option>
                                 <option value="sedang">🟡 Sedang</option>
                                 <option value="rendah">🟢 Rendah</option>
@@ -782,7 +904,8 @@
                         </div>
                     </div>
                     <div>
-                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nominal Target (Rp)</label>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nominal Target
+                            (Rp)</label>
                         <input required type="number" min="1" id="editNominalTarget"
                             class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
                     </div>
@@ -792,7 +915,8 @@
                             class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
                     </div>
 
-                    <button type="submit" id="btnSubmitEditTarget" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200">
+                    <button type="submit" id="btnSubmitEditTarget"
+                        class="w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200">
                         <span>Simpan Perubahan</span>
                     </button>
                 </form>
@@ -803,11 +927,14 @@
 
         <!-- ===================== MODAL: PENGATURAN (SETTINGS) ===================== -->
         <div id="modalSettings" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
-            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[85vh] overflow-y-auto">
+            <div
+                class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[85vh] overflow-y-auto">
                 <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-bold text-navy-900 dark:text-white">Pengaturan Pengguna</h3>
-                    <button onclick="closeModal('modalSettings')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    <button onclick="closeModal('modalSettings')"
+                        class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i
+                            data-lucide="x" class="w-4 h-4"></i></button>
                 </div>
 
                 <div class="space-y-5">
@@ -815,21 +942,39 @@
                     <div>
                         <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Pilih Avatar</label>
                         <div class="flex gap-3 mt-2 overflow-x-auto py-1">
-                            <button onclick="selectAvatar('Felix')" class="w-12 h-12 rounded-full border-2 border-transparent activeSeed ring-2 ring-brand-500 overflow-hidden"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" class="w-full h-full object-cover"></button>
-                            <button onclick="selectAvatar('Aria')" class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aria" class="w-full h-full object-cover"></button>
-                            <button onclick="selectAvatar('Jack')" class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack" class="w-full h-full object-cover"></button>
-                            <button onclick="selectAvatar('Milo')" class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo" class="w-full h-full object-cover"></button>
-                            <button onclick="selectAvatar('Lulu')" class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lulu" class="w-full h-full object-cover"></button>
+                            <button onclick="selectAvatar('Felix')"
+                                class="w-12 h-12 rounded-full border-2 border-transparent activeSeed ring-2 ring-brand-500 overflow-hidden"><img
+                                    src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix"
+                                    class="w-full h-full object-cover"></button>
+                            <button onclick="selectAvatar('Aria')"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img
+                                    src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aria"
+                                    class="w-full h-full object-cover"></button>
+                            <button onclick="selectAvatar('Jack')"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img
+                                    src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack"
+                                    class="w-full h-full object-cover"></button>
+                            <button onclick="selectAvatar('Milo')"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img
+                                    src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo"
+                                    class="w-full h-full object-cover"></button>
+                            <button onclick="selectAvatar('Lulu')"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img
+                                    src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lulu"
+                                    class="w-full h-full object-cover"></button>
                         </div>
                     </div>
 
                     <!-- Cloud Sync Settings -->
                     <div class="border-t border-gray-100 dark:border-slate-800 pt-4">
-                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Integrasi Google Apps Script (Cloud)</label>
-                        <p class="text-[11px] text-gray-400 mt-0.5">Biarkan kosong jika ingin menyimpan data di perangkat lokal secara mandiri.</p>
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Integrasi Google Apps
+                            Script (Cloud)</label>
+                        <p class="text-[11px] text-gray-400 mt-0.5">Biarkan kosong jika ingin menyimpan data di
+                            perangkat lokal secara mandiri.</p>
                         <input type="text" id="settingApiUrl" placeholder="https://script.google.com/macros/s/..."
                             class="w-full mt-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
-                        <button onclick="saveSettings()" class="w-full mt-3 bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs py-3 rounded-xl transition duration-200">
+                        <button onclick="saveSettings()"
+                            class="w-full mt-3 bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs py-3 rounded-xl transition duration-200">
                             Simpan Perubahan Setelan
                         </button>
                     </div>
@@ -838,7 +983,9 @@
         </div>
 
         <!-- Toast Notification -->
-        <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-3 rounded-xl text-white text-sm font-medium shadow-lg max-w-[85%] text-center"></div>
+        <div id="toast"
+            class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-3 rounded-xl text-white text-sm font-medium shadow-lg max-w-[85%] text-center">
+        </div>
 
     </div>
 
@@ -889,10 +1036,10 @@
         /* ========================= AUTHENTICATION FLOW ========================= */
         function switchAuthTab(type) {
             const isLogin = type === 'login';
-            
+
             const btnLogin = document.getElementById('tabLogin');
             const btnRegister = document.getElementById('tabRegister');
-            
+
             if (isLogin) {
                 btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-white dark:bg-slate-900 text-brand-500 shadow-sm transition-all duration-200';
                 btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-500 transition-all duration-200';
@@ -900,7 +1047,7 @@
                 btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-500 transition-all duration-200';
                 btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-white dark:bg-slate-900 text-brand-500 shadow-sm transition-all duration-200';
             }
-            
+
             document.getElementById('formLogin').classList.toggle('hidden', !isLogin);
             document.getElementById('formRegister').classList.toggle('hidden', isLogin);
         }
@@ -910,7 +1057,7 @@
             if (!input) return;
             const isPassword = input.type === 'password';
             input.type = isPassword ? 'text' : 'password';
-            
+
             const icon = buttonEl.querySelector('i');
             if (icon) {
                 icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
@@ -941,10 +1088,10 @@
         // ========================= REGISTER =========================
         document.getElementById('formRegister').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name     = document.getElementById('regName').value.trim();
+            const name = document.getElementById('regName').value.trim();
             const username = document.getElementById('regUsername').value.trim().toLowerCase();
             const password = document.getElementById('regPassword').value;
-            const btnReg   = e.target.querySelector('button[type=submit]');
+            const btnReg = e.target.querySelector('button[type=submit]');
 
             if (password.length < 6) {
                 showToast('Password minimal 6 karakter', 'error');
@@ -991,7 +1138,7 @@
             e.preventDefault();
             const username = document.getElementById('loginUsername').value.trim().toLowerCase();
             const password = document.getElementById('loginPassword').value;
-            const btnLog   = e.target.querySelector('button[type=submit]');
+            const btnLog = e.target.querySelector('button[type=submit]');
 
             btnLog.disabled = true;
             btnLog.textContent = 'Masuk...';
@@ -1032,12 +1179,12 @@
             document.getElementById('authScreen').classList.add('hidden');
             const nav = document.getElementById('bottomNav');
             if (nav) nav.classList.remove('hidden');
-            
+
             // Sync values to UI
             document.getElementById('userDisplayName').textContent = user.name;
             state.avatarSeed = user.avatar || 'Felix';
             document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
-            
+
             // Load DB
             fetchData();
             showToast(`Selamat datang kembali, ${user.name}!`, 'success');
@@ -1051,7 +1198,7 @@
                 document.getElementById('authScreen').classList.add('hidden');
                 const nav = document.getElementById('bottomNav');
                 if (nav) nav.classList.remove('hidden');
-                
+
                 document.getElementById('userDisplayName').textContent = user.name;
                 state.avatarSeed = user.avatar || 'Felix';
                 document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
@@ -1157,7 +1304,8 @@
             } else if (payload.action === 'editTarget') {
                 const idx = state.targets.findIndex(t => t.id_target === payload.id_target);
                 if (idx !== -1) {
-                    state.targets[idx] = { ...state.targets[idx],
+                    state.targets[idx] = {
+                        ...state.targets[idx],
                         nama_target: payload.nama_target,
                         nominal_target: payload.nominal_target,
                         tenggat_waktu: payload.tenggat_waktu,
@@ -1200,9 +1348,9 @@
         function sisaHari(tenggat) {
             if (!tenggat) return null;
             const now = new Date();
-            now.setHours(0,0,0,0);
+            now.setHours(0, 0, 0, 0);
             const target = new Date(tenggat);
-            target.setHours(0,0,0,0);
+            target.setHours(0, 0, 0, 0);
             const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
             return diff;
         }
@@ -1379,7 +1527,7 @@
             document.getElementById('detailNama').textContent = t.nama_target;
             document.getElementById('detailPrioritas').textContent = priorityMeta.label;
             document.getElementById('detailPrioritas').className = `text-[10px] font-semibold px-2 py-0.5 rounded-full ${priorityMeta.color}`;
-            
+
             document.getElementById('detailSisaHari').textContent = sisa >= 0 ? `${sisa} hari lagi` : `Terlewat ${Math.abs(sisa)} hari`;
             document.getElementById('detailTerkumpul').textContent = formatRupiah(terkumpul);
             document.getElementById('detailNominal').textContent = formatRupiah(t.nominal_target);
@@ -1643,7 +1791,7 @@
             const totalSetoran = state.riwayat.filter(r => r.nominal_masuk > 0).reduce((sum, r) => sum + r.nominal_masuk, 0);
             const countTrans = state.riwayat.length;
             const avgTrans = countTrans > 0 ? (totalSetoran / countTrans) : 0;
-            
+
             const avgEl = document.getElementById('statAverage');
             if (avgEl) avgEl.textContent = formatRupiah(avgTrans);
 
@@ -1669,14 +1817,14 @@
             const canvas = document.getElementById('savingTrendsChart');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            
+
             if (myChart) {
                 myChart.destroy();
             }
 
             // Generate aggregate data points
             const sortedTx = [...state.riwayat].sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
-            
+
             let cumulativeData = [];
             let labels = [];
             let total = 0;
@@ -1720,7 +1868,7 @@
                             ticks: {
                                 color: '#9ca3af',
                                 font: { size: 9 },
-                                callback: function(value) {
+                                callback: function (value) {
                                     if (value >= 1e6) return 'Rp ' + (value / 1e6).toFixed(1) + 'jt';
                                     if (value >= 1e3) return 'Rp ' + (value / 1e3).toFixed(0) + 'rb';
                                     return 'Rp ' + value;
@@ -1824,7 +1972,7 @@
             state.darkMode = !state.darkMode;
             document.documentElement.classList.toggle('dark', state.darkMode);
             localStorage.setItem('tabungin_darkmode', state.darkMode ? 'enabled' : 'disabled');
-            
+
             const themeIcon = document.getElementById('themeIcon');
             themeIcon.setAttribute('data-lucide', state.darkMode ? 'sun' : 'moon');
             lucide.createIcons();
@@ -1833,20 +1981,27 @@
         // Close backdrop click
         document.querySelectorAll('.modal-backdrop').forEach(modal => {
             modal.addEventListener('click', (e) => {
-                        /* ========================= BOTTOM NAV TABS ========================= */
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        /* ========================= BOTTOM NAV TABS ========================= */
         function switchTab(tab) {
             // Update tab button active state
-            ['home','targets','transaksi','analisis'].forEach(t => {
+            ['home', 'targets', 'transaksi', 'analisis'].forEach(t => {
                 const btn = document.getElementById('tab-' + t);
                 if (btn) btn.classList.remove('active-tab');
-                
+
                 const panel = document.getElementById('panel-' + t);
                 if (panel) panel.classList.add('hidden');
             });
-            
+
             const activeBtn = document.getElementById('tab-' + tab);
             if (activeBtn) activeBtn.classList.add('active-tab');
-            
+
             const activePanel = document.getElementById('panel-' + tab);
             if (activePanel) activePanel.classList.remove('hidden');
 
@@ -1863,6 +2018,7 @@
             }
             lucide.createIcons();
         }
+        
         document.addEventListener('DOMContentLoaded', () => {
             // Apply Darkmode if saved
             if (localStorage.getItem('tabungin_darkmode') === 'enabled') {
