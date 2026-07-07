@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Tabungin • Catatan Target Tabungan</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json" />
+    <!-- Theme color untuk browser bar Android -->
+    <meta name="theme-color" content="#050b1f" />
+    <!-- iOS PWA support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Tabungin" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Service Worker (PWA Offline) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('✅ Service Worker terdaftar:', reg.scope))
+                    .catch(err => console.warn('Service Worker gagal:', err));
+            });
+        }
+    </script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        navy: {
+                            950: '#050b1f',
+                            900: '#0a1638',
+                            800: '#0f1f4d',
+                            700: '#15316f',
+                            600: '#1c4694',
+                        },
+                        brand: {
+                            50: '#eef4ff',
+                            100: '#dce8ff',
+                            400: '#4f7fe0',
+                            500: '#2f5fd6',
+                            600: '#1f47b3',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 30px -12px rgba(15, 31, 77, 0.25)',
+                        'card': '0 8px 24px -8px rgba(15, 31, 77, 0.12)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: #f3f5f9;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        .dark body {
+            background: #0b1120;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .skeleton {
+            position: relative;
+            overflow: hidden;
+            background-color: #e7eaf2;
+        }
+
+        .dark .skeleton {
+            background-color: #1e293b;
+        }
+
+        .skeleton::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            animation: shimmer 1.4s infinite;
+        }
+
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .modal-backdrop {
+            background: rgba(5, 11, 31, 0.55);
+            backdrop-filter: blur(4px);
+        }
+
+        .sheet-enter {
+            animation: sheetUp .32s cubic-bezier(.32, .72, 0, 1) both;
+        }
+
+        @keyframes sheetUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn .25s ease both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-fill {
+            transition: width 0.7s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .toast-enter {
+            animation: toastIn .3s ease both;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .quick-btn:active {
+            transform: scale(0.94);
+        }
+
+        .card-tap:active {
+            transform: scale(0.98);
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.25);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen text-navy-900 transition-colors duration-200 dark:text-gray-100">
+
+    <div class="max-w-md mx-auto min-h-screen bg-[#f3f5f9] dark:bg-[#0f172a] relative shadow-2xl overflow-x-hidden flex flex-col">
+
+        <!-- ===================== SCREEN: LOGIN / REGISTER ===================== -->
+        <div id="authScreen" class="absolute inset-0 bg-gradient-to-br from-navy-950 via-navy-900 to-brand-900 z-50 flex flex-col justify-between p-6">
+            <!-- Glow background decor -->
+            <div class="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
+
+            <div class="flex flex-col items-center pt-12 relative z-10">
+                <div class="w-16 h-16 rounded-2xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/30 mb-4">
+                    <i data-lucide="piggy-bank" class="w-10 h-10 text-white"></i>
+                </div>
+                <h1 class="text-white text-3xl font-extrabold tracking-tight">Tabungin</h1>
+                <p class="text-white/60 text-sm mt-1">Kelola target impianmu dengan cerdas</p>
+            </div>
+
+            <!-- Login / Register Card -->
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl relative z-10 space-y-4 mb-4">
+                <!-- Tab Headers -->
+                <div class="flex border-b border-gray-100 dark:border-slate-800 pb-2">
+                    <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2 text-center text-sm font-bold border-b-2 border-brand-500 text-brand-500">Masuk</button>
+                    <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-2 text-center text-sm font-semibold text-gray-400 dark:text-slate-500 border-b-2 border-transparent">Daftar</button>
+                </div>
+
+                <!-- FORM LOGIN -->
+                <form id="formLogin" class="space-y-4">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Username</label>
+                        <input required type="text" id="loginUsername" placeholder="Masukkan username"
+                            class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Password</label>
+                        <input required type="password" id="loginPassword" placeholder="••••••••"
+                            class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                    </div>
+                    <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
+                        Masuk Sekarang
+                    </button>
+                </form>
+
+                <!-- FORM REGISTER -->
+                <form id="formRegister" class="space-y-4 hidden">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nama Lengkap</label>
+                        <input required type="text" id="regName" placeholder="Contoh: Budi Santoso"
+                            class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Username</label>
+                        <input required type="text" id="regUsername" placeholder="Contoh: budi_s"
+                            class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Password</label>
+                        <input required type="password" id="regPassword" placeholder="Minimal 6 karakter"
+                            class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                    </div>
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
+                        Daftar Akun Baru
+                    </button>
+                </form>
+            </div>
+            <p class="text-center text-xs text-white/45 pb-4">Tabungin v1.1.0 • offline fallback ready</p>
+        </div>
+
+
+        <!-- ===================== HEADER ===================== -->
+        <header class="relative bg-gradient-to-br from-navy-950 via-navy-900 to-navy-700 rounded-b-[2.25rem] px-5 pt-6 pb-16 overflow-hidden">
+            <!-- decorative glow -->
+            <div class="absolute -top-16 -right-16 w-56 h-56 bg-brand-500/30 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-24 -left-10 w-48 h-48 bg-brand-400/20 rounded-full blur-3xl"></div>
+
+            <div class="relative flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <button onclick="openModal('modalSettings')" class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white overflow-hidden active:scale-95 transition">
+                        <img id="headerAvatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" class="w-full h-full object-cover" alt="Avatar">
+                    </button>
+                    <div>
+                        <p class="text-white/60 text-xs">Halo, <span id="userDisplayName">User</span> 👋</p>
+                        <h1 class="text-white font-bold text-base leading-tight">Impianmu, Targetmu</h1>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <button onclick="toggleDarkMode()" class="quick-btn w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white transition">
+                        <i id="themeIcon" data-lucide="moon" class="w-4 h-4"></i>
+                    </button>
+                    <button id="btnRefresh" class="quick-btn w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white transition">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="logout()" class="quick-btn w-9 h-9 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 hover:bg-red-500/20 transition">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Balance Glass Card -->
+            <div class="relative glass-card rounded-2xl p-5 mt-5 shadow-soft">
+                <div class="flex items-center justify-between">
+                    <span class="text-white/70 text-xs tracking-wide">Total Seluruh Tabungan</span>
+                    <button id="btnToggleBalance" class="text-white/80 hover:text-white transition">
+                        <i data-lucide="eye" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="mt-2 min-h-[36px] flex items-center">
+                    <div id="balanceLoading" class="skeleton h-7 w-40 rounded-lg hidden"></div>
+                    <h2 id="totalBalance" class="text-white font-extrabold text-[28px] tracking-tight">Rp 0</h2>
+                </div>
+
+                <div class="flex items-center gap-4 mt-3 pt-3 border-t border-white/10 text-white/70 text-xs">
+                    <div class="flex items-center gap-1.5">
+                        <i data-lucide="target" class="w-3.5 h-3.5"></i>
+                        <span id="jumlahTargetInfo">0 target aktif</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+                        <span id="jumlahTransaksiInfo">0 transaksi</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===================== QUICK ACTIONS ===================== -->
+        <section class="relative -mt-9 px-5">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-card px-4 py-5 grid grid-cols-4 gap-2 border border-gray-100 dark:border-slate-800">
+                <button class="quick-btn flex flex-col items-center gap-2 transition" onclick="openModal('modalTambahTarget')">
+                    <span class="w-12 h-12 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                    </span>
+                    <span class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Target<br />Baru</span>
+                </button>
+
+                <button class="quick-btn flex flex-col items-center gap-2 transition" onclick="openIsiTabunganModal()">
+                    <span class="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                        <i data-lucide="piggy-bank" class="w-5 h-5"></i>
+                    </span>
+                    <span class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Isi<br />Tabungan</span>
+                </button>
+
+                <button class="quick-btn flex flex-col items-center gap-2 transition" onclick="openRiwayatModal()">
+                    <span class="w-12 h-12 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                        <i data-lucide="history" class="w-5 h-5"></i>
+                    </span>
+                    <span class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Riwayat<br />Transaksi</span>
+                </button>
+
+                <button class="quick-btn flex flex-col items-center gap-2 transition" onclick="openProgresDashboard()">
+                    <span class="w-12 h-12 rounded-full bg-violet-50 dark:bg-violet-950 text-violet-600 dark:text-violet-400 flex items-center justify-center">
+                        <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                    </span>
+                    <span class="text-[11px] text-navy-800 dark:text-slate-300 font-medium leading-tight text-center">Ringkasan<br />Progres</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ===================== TARGET LIST ===================== -->
+        <section class="px-5 mt-6 pb-28 flex-1">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-bold text-navy-900 dark:text-slate-200 text-[15px]">Target Tabungan Saya</h3>
+                <span id="targetCountLabel" class="text-xs text-navy-800/50 dark:text-slate-400 font-medium"></span>
+            </div>
+
+            <!-- Skeleton loaders -->
+            <div id="skeletonList" class="space-y-3">
+                <div class="skeleton rounded-2xl h-[132px] w-full"></div>
+                <div class="skeleton rounded-2xl h-[132px] w-full"></div>
+            </div>
+
+            <!-- Empty state -->
+            <div id="emptyState" class="hidden flex-col items-center justify-center text-center py-14">
+                <div class="w-16 h-16 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-500 flex items-center justify-center mb-3">
+                    <i data-lucide="wallet" class="w-7 h-7"></i>
+                </div>
+                <p class="font-semibold text-navy-900 dark:text-slate-200 text-sm">Belum ada target tabungan</p>
+                <p class="text-xs text-navy-800/50 dark:text-slate-400 mt-1 max-w-[220px]">Buat target pertamamu dan mulai menabung sedikit demi sedikit.</p>
+                <button onclick="openModal('modalTambahTarget')" class="mt-4 bg-navy-900 dark:bg-brand-600 text-white text-xs font-semibold px-5 py-2.5 rounded-full">+ Buat Target</button>
+            </div>
+
+            <!-- Error state -->
+            <div id="errorState" class="hidden flex-col items-center justify-center text-center py-14">
+                <div class="w-16 h-16 rounded-full bg-red-50 text-red-500 flex items-center justify-center mb-3">
+                    <i data-lucide="wifi-off" class="w-7 h-7"></i>
+                </div>
+                <p class="font-semibold text-navy-900 dark:text-slate-200 text-sm">Gagal memuat data</p>
+                <p class="text-xs text-navy-800/50 dark:text-slate-400 mt-1 max-w-[240px]">Menggunakan data offline lokal sementara waktu.</p>
+                <button onclick="fetchData()" class="mt-4 bg-navy-900 dark:bg-brand-600 text-white text-xs font-semibold px-5 py-2.5 rounded-full">Coba Lagi</button>
+            </div>
+
+            <div id="targetList" class="space-y-3"></div>
+        </section>
+
+        <!-- Floating add button -->
+        <button onclick="openModal('modalTambahTarget')" class="quick-btn absolute right-5 bottom-6 w-14 h-14 rounded-full bg-brand-500 text-white shadow-soft flex items-center justify-center transition z-30">
+            <i data-lucide="plus" class="w-6 h-6"></i>
+        </button>
+
+
+        <!-- ===================== MODAL: TAMBAH TARGET ===================== -->
+        <div id="modalTambahTarget" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[90vh] overflow-y-auto">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-navy-900 dark:text-white">Buat Target Baru</h3>
+                    <button onclick="closeModal('modalTambahTarget')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+
+                <form id="formTambahTarget" class="space-y-4">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nama Target</label>
+                        <input required type="text" id="inputNamaTarget" placeholder="Contoh: Liburan ke Bali"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Kategori</label>
+                            <select id="inputKategoriTarget" class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
+                                <option value="liburan">✈️ Liburan</option>
+                                <option value="gadget">📱 Gadget</option>
+                                <option value="kendaraan">🚗 Kendaraan</option>
+                                <option value="pendidikan">🎓 Pendidikan</option>
+                                <option value="darurat">🚨 Dana Darurat</option>
+                                <option value="lainnya" selected>📦 Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Prioritas</label>
+                            <select id="inputPrioritasTarget" class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
+                                <option value="tinggi">🔴 Tinggi</option>
+                                <option value="sedang" selected>🟡 Sedang</option>
+                                <option value="rendah">🟢 Rendah</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nominal Target (Rp)</label>
+                        <input required type="number" min="1" id="inputNominalTarget" placeholder="Contoh: 5000000"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Tenggat Waktu</label>
+                        <input required type="date" id="inputTenggatTarget"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
+                    </div>
+
+                    <button type="submit" id="btnSubmitTarget" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200">
+                        <span id="btnSubmitTargetText">Simpan Target</span>
+                        <div id="spinnerTarget" class="spinner hidden w-4 h-4 border-2"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- ===================== MODAL: DETAIL TARGET ===================== -->
+        <div id="modalDetailTarget" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[85vh] flex flex-col">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4 shrink-0"></div>
+                <div class="flex items-center justify-between mb-3 shrink-0">
+                    <h3 class="font-bold text-navy-900 dark:text-white">Detail Target</h3>
+                    <div class="flex gap-2">
+                        <button onclick="editTargetForm()" class="w-8 h-8 rounded-full bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 flex items-center justify-center"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                        <button onclick="hapusTargetAction()" class="w-8 h-8 rounded-full bg-red-50 dark:bg-slate-800 text-red-600 dark:text-red-400 flex items-center justify-center"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        <button onclick="closeModal('modalDetailTarget')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+
+                <div class="overflow-y-auto pr-1 space-y-4 flex-1">
+                    <!-- Target Header Status -->
+                    <div class="bg-gray-50 dark:bg-slate-800/60 rounded-2xl p-4">
+                        <div class="flex items-center gap-3">
+                            <span id="detailIcon" class="text-2xl w-12 h-12 rounded-2xl bg-brand-50 dark:bg-slate-800 flex items-center justify-center">📦</span>
+                            <div>
+                                <h4 id="detailNama" class="font-extrabold text-navy-900 dark:text-white text-base leading-tight">Nama Target</h4>
+                                <div class="flex gap-2 mt-1">
+                                    <span id="detailPrioritas" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-600">Sedang</span>
+                                    <span id="detailSisaHari" class="text-[10px] text-gray-400">10 hari lagi</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="flex justify-between text-xs text-gray-500 mb-1.5">
+                                <span>Terkumpul <strong id="detailTerkumpul" class="text-navy-900 dark:text-white">Rp 0</strong></span>
+                                <span>Target: <strong id="detailNominal" class="text-navy-900 dark:text-white">Rp 0</strong></span>
+                            </div>
+                            <div class="w-full h-2 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div id="detailProgressBar" class="progress-fill h-full bg-brand-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detail Actions -->
+                    <div class="grid grid-cols-2 gap-3 shrink-0">
+                        <button onclick="setoranBaruAction()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i> Setor Tabungan
+                        </button>
+                        <button onclick="penarikanBaruAction()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition">
+                            <i data-lucide="minus-circle" class="w-4 h-4"></i> Tarik Tabungan
+                        </button>
+                    </div>
+
+                    <!-- Target Transaction History -->
+                    <div>
+                        <h5 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Riwayat Transaksi Khusus</h5>
+                        <div id="detailRiwayatList" class="space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ===================== MODAL: ISI / TARIK TABUNGAN FORM ===================== -->
+        <div id="modalTransaksiForm" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 id="transaksiFormTitle" class="font-bold text-navy-900 dark:text-white">Isi Tabungan</h3>
+                    <button onclick="closeModal('modalTransaksiForm')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+
+                <form id="formTransaksi" class="space-y-4">
+                    <input type="hidden" id="transaksiTipe" value="setoran"> <!-- setoran / penarikan -->
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Pilih Target</label>
+                        <select required id="selectTransaksiTarget"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40">
+                            <option value="" disabled selected>-- Pilih target --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nominal (Rp)</label>
+                        <input required type="number" min="1" id="inputTransaksiNominal" placeholder="Contoh: 100000"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Catatan (opsional)</label>
+                        <input type="text" id="inputTransaksiCatatan" placeholder="Contoh: Sisa uang jajan"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
+                    </div>
+
+                    <button type="submit" id="btnSubmitTransaksi" class="w-full bg-emerald-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200">
+                        <span id="btnSubmitTransaksiText">Simpan Setoran</span>
+                        <div id="spinnerTransaksi" class="spinner hidden w-4 h-4 border-2"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- ===================== MODAL: EDIT TARGET ===================== -->
+        <div id="modalEditTarget" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[90vh] overflow-y-auto">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-navy-900 dark:text-white">Ubah Detail Target</h3>
+                    <button onclick="closeModal('modalEditTarget')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+
+                <form id="formEditTarget" class="space-y-4">
+                    <input type="hidden" id="editTargetId">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nama Target</label>
+                        <input required type="text" id="editNamaTarget"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Kategori</label>
+                            <select id="editKategoriTarget" class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
+                                <option value="liburan">✈️ Liburan</option>
+                                <option value="gadget">📱 Gadget</option>
+                                <option value="kendaraan">🚗 Kendaraan</option>
+                                <option value="pendidikan">🎓 Pendidikan</option>
+                                <option value="darurat">🚨 Dana Darurat</option>
+                                <option value="lainnya">📦 Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Prioritas</label>
+                            <select id="editPrioritasTarget" class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-3 text-sm text-gray-900 dark:text-white">
+                                <option value="tinggi">🔴 Tinggi</option>
+                                <option value="sedang">🟡 Sedang</option>
+                                <option value="rendah">🟢 Rendah</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nominal Target (Rp)</label>
+                        <input required type="number" min="1" id="editNominalTarget"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Tenggat Waktu</label>
+                        <input required type="date" id="editTenggatTarget"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
+                    </div>
+
+                    <button type="submit" id="btnSubmitEditTarget" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200">
+                        <span>Simpan Perubahan</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- ===================== MODAL: RIWAYAT TRANSAKSI ===================== -->
+        <div id="modalRiwayat" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[80vh] flex flex-col">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4 shrink-0"></div>
+                <div class="flex items-center justify-between mb-4 shrink-0">
+                    <h3 class="font-bold text-navy-900 dark:text-white">Riwayat Transaksi</h3>
+                    <button onclick="closeModal('modalRiwayat')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <div id="riwayatListContainer" class="space-y-2.5 overflow-y-auto pr-1 flex-1"></div>
+            </div>
+        </div>
+
+
+        <!-- ===================== MODAL: RINGKASAN PROGRES / ANALYTICS ===================== -->
+        <div id="modalProgres" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[90vh] flex flex-col">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4 shrink-0"></div>
+                <div class="flex items-center justify-between mb-4 shrink-0">
+                    <h3 class="font-bold text-navy-900 dark:text-white">Ringkasan Analisis Tabungan</h3>
+                    <button onclick="closeModal('modalProgres')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <div class="overflow-y-auto pr-1 space-y-5 flex-1 pb-4">
+                    <!-- Quick Stats Grid -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-brand-50 dark:bg-slate-800/80 rounded-2xl p-4 flex flex-col">
+                            <span class="text-[10px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wide">Rata-rata Transaksi</span>
+                            <span id="statAverage" class="text-base font-extrabold text-navy-900 dark:text-white mt-1">Rp 0</span>
+                        </div>
+                        <div class="bg-emerald-50 dark:bg-slate-800/80 rounded-2xl p-4 flex flex-col">
+                            <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">Target Selesai</span>
+                            <span id="statCompleted" class="text-base font-extrabold text-navy-900 dark:text-white mt-1">0 target</span>
+                        </div>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="bg-gray-50 dark:bg-slate-800/40 rounded-2xl p-4 border border-gray-100 dark:border-slate-850">
+                        <h4 class="text-xs font-bold text-gray-500 mb-3">Tren Saldo & Setoran Tabungan</h4>
+                        <div class="relative w-full h-48">
+                            <canvas id="savingTrendsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Tips Menabung -->
+                    <div class="bg-violet-50 dark:bg-violet-950/20 rounded-2xl p-4 border border-violet-100 dark:border-violet-900/30 flex items-start gap-3">
+                        <span class="text-xl">💡</span>
+                        <div>
+                            <h5 class="text-xs font-bold text-violet-800 dark:text-violet-300">Tips Hemat & Cerdas</h5>
+                            <p id="tipsMenabungText" class="text-[11px] text-violet-700/80 dark:text-violet-400/80 mt-0.5">Selalu catat setoran sekecil apa pun untuk menjaga kebiasaan menabung tetap konsisten!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ===================== MODAL: PENGATURAN (SETTINGS) ===================== -->
+        <div id="modalSettings" class="hidden fixed inset-0 z-40 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[85vh] overflow-y-auto">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-navy-900 dark:text-white">Pengaturan Pengguna</h3>
+                    <button onclick="closeModal('modalSettings')" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+
+                <div class="space-y-5">
+                    <!-- Avatar Selection -->
+                    <div>
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Pilih Avatar</label>
+                        <div class="flex gap-3 mt-2 overflow-x-auto py-1">
+                            <button onclick="selectAvatar('Felix')" class="w-12 h-12 rounded-full border-2 border-transparent activeSeed ring-2 ring-brand-500 overflow-hidden"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" class="w-full h-full object-cover"></button>
+                            <button onclick="selectAvatar('Aria')" class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aria" class="w-full h-full object-cover"></button>
+                            <button onclick="selectAvatar('Jack')" class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack" class="w-full h-full object-cover"></button>
+                            <button onclick="selectAvatar('Milo')" class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo" class="w-full h-full object-cover"></button>
+                            <button onclick="selectAvatar('Lulu')" class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lulu" class="w-full h-full object-cover"></button>
+                        </div>
+                    </div>
+
+                    <!-- Cloud Sync Settings -->
+                    <div class="border-t border-gray-100 dark:border-slate-800 pt-4">
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Integrasi Google Apps Script (Cloud)</label>
+                        <p class="text-[11px] text-gray-400 mt-0.5">Biarkan kosong jika ingin menyimpan data di perangkat lokal secara mandiri.</p>
+                        <input type="text" id="settingApiUrl" placeholder="https://script.google.com/macros/s/..."
+                            class="w-full mt-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
+                        <button onclick="saveSettings()" class="w-full mt-3 bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs py-3 rounded-xl transition duration-200">
+                            Simpan Perubahan Setelan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-3 rounded-xl text-white text-sm font-medium shadow-lg max-w-[85%] text-center"></div>
+
+    </div>
+
+    <!-- =================================== JAVASCRIPT LOGIC =================================== -->
+    <script>
+        /* ========================= STATE APLIKASI ========================= */
+        // ✅ URL Google Apps Script Backend (sudah terhubung ke Google Sheets)
+        const SHEETS_API_URL = localStorage.getItem('tabungin_api_url') ||
+            "https://script.google.com/macros/s/AKfycbwcpHnOeUcka12iLWQZTxOvWcN4ssMrFafV_WXFFv5WYwLF9p-hTojQ8LWx_PkrghKUTw/exec";
+
+        let state = {
+            currentUser: null,
+            targets: [],
+            riwayat: [],
+            isBalanceHidden: false,
+            isLoading: false,
+            darkMode: false,
+            apiUrl: SHEETS_API_URL,
+            avatarSeed: 'Felix'
+        };
+
+        let myChart = null;
+
+        // Categories & Priority settings map
+        const CATEGORY_MAP = {
+            'liburan': { icon: '✈️', color: 'bg-blue-50 dark:bg-blue-950/30 text-blue-600' },
+            'gadget': { icon: '📱', color: 'bg-purple-50 dark:bg-purple-950/30 text-purple-600' },
+            'kendaraan': { icon: '🚗', color: 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600' },
+            'pendidikan': { icon: '🎓', color: 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600' },
+            'darurat': { icon: '🚨', color: 'bg-red-50 dark:bg-red-950/30 text-red-600' },
+            'lainnya': { icon: '📦', color: 'bg-gray-100 dark:bg-slate-800 text-gray-600' }
+        };
+
+        const PRIORITY_MAP = {
+            'tinggi': { label: 'Tinggi', color: 'bg-red-100 dark:bg-red-950/40 text-red-700 dark:text-red-300' },
+            'sedang': { label: 'Sedang', color: 'bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300' },
+            'rendah': { label: 'Rendah', color: 'bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300' }
+        };
+
+        const TIPS_LIST = [
+            "Kurangi jajan kopi harian dan alokasikan Rp 20.000 ke tabungan darurat.",
+            "Gunakan metode menabung auto-debet atau setor langsung sehabis gajian agar tidak terpakai.",
+            "Tentukan prioritas targetmu. Selesaikan target dengan prioritas 'Tinggi' terlebih dahulu.",
+            "Jual barang yang sudah tidak terpakai dan masukkan uangnya ke celengan tabungan impian.",
+            "Konsistensi lebih baik dibanding nominal besar. Setor rutin Rp 10.000 setiap hari!"
+        ];
+
+        /* ========================= AUTHENTICATION FLOW ========================= */
+        function switchAuthTab(type) {
+            const isLogin = type === 'login';
+            document.getElementById('tabLogin').className = isLogin ? 'flex-1 pb-2 text-center text-sm font-bold border-b-2 border-brand-500 text-brand-500' : 'flex-1 pb-2 text-center text-sm font-semibold text-gray-400 dark:text-slate-500 border-b-2 border-transparent';
+            document.getElementById('tabRegister').className = !isLogin ? 'flex-1 pb-2 text-center text-sm font-bold border-b-2 border-brand-500 text-brand-500' : 'flex-1 pb-2 text-center text-sm font-semibold text-gray-400 dark:text-slate-500 border-b-2 border-transparent';
+            document.getElementById('formLogin').classList.toggle('hidden', !isLogin);
+            document.getElementById('formRegister').classList.toggle('hidden', isLogin);
+        }
+
+        // ========================= CLOUD API HELPER =========================
+        async function apiPost(payload) {
+            if (!state.apiUrl) return null;
+            const res = await fetch(state.apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) throw new Error('Server error: ' + res.status);
+            return await res.json();
+        }
+
+        async function apiGet(params) {
+            if (!state.apiUrl) return null;
+            const qs = new URLSearchParams(params).toString();
+            const res = await fetch(state.apiUrl + '?' + qs, { method: 'GET' });
+            if (!res.ok) throw new Error('Server error: ' + res.status);
+            return await res.json();
+        }
+
+        // ========================= REGISTER =========================
+        document.getElementById('formRegister').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name     = document.getElementById('regName').value.trim();
+            const username = document.getElementById('regUsername').value.trim().toLowerCase();
+            const password = document.getElementById('regPassword').value;
+            const btnReg   = e.target.querySelector('button[type=submit]');
+
+            if (password.length < 6) {
+                showToast('Password minimal 6 karakter', 'error');
+                return;
+            }
+
+            btnReg.disabled = true;
+            btnReg.textContent = 'Mendaftarkan...';
+
+            if (state.apiUrl) {
+                // MODE CLOUD — Register ke Google Sheets
+                try {
+                    const res = await apiPost({ action: 'register', name, username, password });
+                    if (res && res.status === 'success') {
+                        showToast('Pendaftaran berhasil! Silakan masuk.', 'success');
+                        e.target.reset();
+                        switchAuthTab('login');
+                    } else {
+                        showToast((res && res.message) || 'Gagal mendaftar', 'error');
+                    }
+                } catch (err) {
+                    showToast('Gagal terhubung ke server: ' + err.message, 'error');
+                }
+            } else {
+                // MODE OFFLINE — Simpan ke localStorage
+                let users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
+                if (users.find(u => u.username === username)) {
+                    showToast('Username sudah terdaftar', 'error');
+                } else {
+                    users.push({ name, username, password, avatar: 'Felix' });
+                    localStorage.setItem('tabungin_users', JSON.stringify(users));
+                    showToast('Pendaftaran berhasil! Silakan masuk.', 'success');
+                    e.target.reset();
+                    switchAuthTab('login');
+                }
+            }
+
+            btnReg.disabled = false;
+            btnReg.textContent = 'Daftar Akun Baru';
+        });
+
+        // ========================= LOGIN =========================
+        document.getElementById('formLogin').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+            const btnLog   = e.target.querySelector('button[type=submit]');
+
+            btnLog.disabled = true;
+            btnLog.textContent = 'Masuk...';
+
+            if (state.apiUrl) {
+                // MODE CLOUD — Login via Google Sheets
+                try {
+                    const res = await apiGet({ action: 'login', username, password });
+                    if (res && res.status === 'success') {
+                        setCurrentSession(res.user);
+                    } else {
+                        showToast((res && res.message) || 'Username atau password salah', 'error');
+                    }
+                } catch (err) {
+                    showToast('Gagal terhubung ke server: ' + err.message, 'error');
+                }
+            } else {
+                // MODE OFFLINE — Cek localStorage
+                const users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
+                const foundUser = users.find(u => u.username === username && u.password === password);
+
+                if (!foundUser && username === 'admin' && password === 'admin123') {
+                    setCurrentSession({ name: 'Administrator', username: 'admin', avatar: 'Felix' });
+                } else if (foundUser) {
+                    setCurrentSession(foundUser);
+                } else {
+                    showToast('Username atau password salah', 'error');
+                }
+            }
+
+            btnLog.disabled = false;
+            btnLog.textContent = 'Masuk Sekarang';
+        });
+
+        function setCurrentSession(user) {
+            state.currentUser = user;
+            localStorage.setItem('tabungin_session', JSON.stringify(user));
+            document.getElementById('authScreen').classList.add('hidden');
+            
+            // Sync values to UI
+            document.getElementById('userDisplayName').textContent = user.name;
+            state.avatarSeed = user.avatar || 'Felix';
+            document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
+            
+            // Load DB
+            fetchData();
+            showToast(`Selamat datang kembali, ${user.name}!`, 'success');
+        }
+
+        function checkSession() {
+            const savedSession = localStorage.getItem('tabungin_session');
+            if (savedSession) {
+                const user = JSON.parse(savedSession);
+                state.currentUser = user;
+                document.getElementById('authScreen').classList.add('hidden');
+                document.getElementById('userDisplayName').textContent = user.name;
+                state.avatarSeed = user.avatar || 'Felix';
+                document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
+                fetchData();
+            } else {
+                document.getElementById('authScreen').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            state.currentUser = null;
+            localStorage.removeItem('tabungin_session');
+            document.getElementById('authScreen').classList.remove('hidden');
+            showToast('Berhasil keluar akun', 'info');
+        }
+
+        /* ========================= DATABASE ENGINE (CLOUD-FIRST + OFFLINE FALLBACK) ========================= */
+        function getLocalDBKey(suffix) {
+            return `tabungin_${suffix}_${state.currentUser.username}`;
+        }
+
+        async function fetchData() {
+            state.isLoading = true;
+            toggleSkeleton(true);
+            hideStates();
+
+            const localTargetsKey = getLocalDBKey('targets');
+            const localRiwayatKey = getLocalDBKey('riwayat');
+
+            let targets = JSON.parse(localStorage.getItem(localTargetsKey) || '[]');
+            let riwayat = JSON.parse(localStorage.getItem(localRiwayatKey) || '[]');
+
+            if (state.apiUrl) {
+                // MODE CLOUD — Ambil data dari Google Sheets
+                try {
+                    const json = await apiGet({
+                        action: 'getData',
+                        username: state.currentUser.username
+                    });
+                    if (json && json.status === 'success') {
+                        targets = json.data.targets || [];
+                        riwayat = json.data.riwayat || [];
+                        // Cache offline
+                        localStorage.setItem(localTargetsKey, JSON.stringify(targets));
+                        localStorage.setItem(localRiwayatKey, JSON.stringify(riwayat));
+                    } else {
+                        showToast('Data dari cloud tidak valid, menggunakan data lokal', 'info');
+                    }
+                } catch (err) {
+                    console.warn('Cloud fetch gagal, pakai data offline:', err);
+                    showToast('Offline mode — data diambil dari perangkat', 'info');
+                }
+            }
+            // MODE OFFLINE — gunakan localStorage saja (data di-cache dari sesi cloud sebelumnya)
+
+            state.targets = targets;
+            state.riwayat = riwayat;
+
+            renderAll();
+            state.isLoading = false;
+        }
+
+        async function saveData(payload) {
+            const localTargetsKey = getLocalDBKey('targets');
+            const localRiwayatKey = getLocalDBKey('riwayat');
+
+            // Tambahkan username ke setiap payload
+            payload.username = state.currentUser.username;
+
+            if (state.apiUrl) {
+                // MODE CLOUD — POST ke Google Sheets (sumber kebenaran utama)
+                try {
+                    const res = await apiPost(payload);
+                    if (!res || res.status !== 'success') {
+                        throw new Error((res && res.message) || 'Respons server tidak valid');
+                    }
+                    // Setelah berhasil, refresh data dari cloud
+                    await fetchData();
+                    return;
+                } catch (err) {
+                    showToast('Gagal sinkronisasi cloud: ' + err.message + '. Data disimpan lokal.', 'error');
+                    // Jangan return — lanjut simpan ke localStorage sebagai fallback
+                }
+            }
+
+            // MODE OFFLINE — simpan ke localStorage
+            if (payload.action === 'addTarget') {
+                const newTarget = {
+                    id_target: String(Date.now()),
+                    nama_target: payload.nama_target,
+                    nominal_target: payload.nominal_target,
+                    tenggat_waktu: payload.tenggat_waktu,
+                    kategori: payload.kategori || 'lainnya',
+                    prioritas: payload.prioritas || 'sedang',
+                    status: 'Aktif'
+                };
+                state.targets.push(newTarget);
+                localStorage.setItem(localTargetsKey, JSON.stringify(state.targets));
+            } else if (payload.action === 'editTarget') {
+                const idx = state.targets.findIndex(t => t.id_target === payload.id_target);
+                if (idx !== -1) {
+                    state.targets[idx] = { ...state.targets[idx],
+                        nama_target: payload.nama_target,
+                        nominal_target: payload.nominal_target,
+                        tenggat_waktu: payload.tenggat_waktu,
+                        kategori: payload.kategori,
+                        prioritas: payload.prioritas
+                    };
+                    localStorage.setItem(localTargetsKey, JSON.stringify(state.targets));
+                }
+            } else if (payload.action === 'deleteTarget') {
+                state.targets = state.targets.filter(t => t.id_target !== payload.id_target);
+                state.riwayat = state.riwayat.filter(r => r.id_target !== payload.id_target);
+                localStorage.setItem(localTargetsKey, JSON.stringify(state.targets));
+                localStorage.setItem(localRiwayatKey, JSON.stringify(state.riwayat));
+            } else if (payload.action === 'addTransaksi') {
+                state.riwayat.push({
+                    id_transaksi: String(Date.now()),
+                    id_target: payload.id_target,
+                    nominal_masuk: payload.nominal_masuk,
+                    catatan: payload.catatan || '',
+                    tanggal: payload.tanggal,
+                    tipe: payload.tipe || 'setoran'
+                });
+                localStorage.setItem(localRiwayatKey, JSON.stringify(state.riwayat));
+            }
+
+            await fetchData();
+        }
+
+        /* ========================= PERHITUNGAN DATA ========================= */
+        function getTerkumpul(idTarget) {
+            return state.riwayat
+                .filter(r => r.id_target === idTarget)
+                .reduce((sum, r) => sum + r.nominal_masuk, 0);
+        }
+
+        function getTotalTabungan() {
+            return state.riwayat.reduce((sum, r) => sum + r.nominal_masuk, 0);
+        }
+
+        function sisaHari(tenggat) {
+            if (!tenggat) return null;
+            const now = new Date();
+            now.setHours(0,0,0,0);
+            const target = new Date(tenggat);
+            target.setHours(0,0,0,0);
+            const diff = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+            return diff;
+        }
+
+        /* ========================= RENDERING ENGINE ========================= */
+        function toggleSkeleton(show) {
+            document.getElementById('skeletonList').classList.toggle('hidden', !show);
+            document.getElementById('balanceLoading').classList.toggle('hidden', !show);
+            document.getElementById('totalBalance').classList.toggle('hidden', show);
+        }
+
+        function hideStates() {
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('emptyState').classList.remove('flex');
+            document.getElementById('errorState').classList.add('hidden');
+        }
+
+        function renderAll() {
+            toggleSkeleton(false);
+            hideStates();
+            renderHeader();
+            renderTargetList();
+            lucide.createIcons();
+        }
+
+        function renderHeader() {
+            const total = getTotalTabungan();
+            const el = document.getElementById('totalBalance');
+            el.textContent = state.isBalanceHidden ? 'Rp ••••••••' : formatRupiah(total);
+
+            const activeTargets = state.targets.length;
+            document.getElementById('jumlahTargetInfo').textContent = `${activeTargets} target aktif`;
+            document.getElementById('jumlahTransaksiInfo').textContent = `${state.riwayat.length} transaksi`;
+        }
+
+        function renderTargetList() {
+            const container = document.getElementById('targetList');
+            const countLabel = document.getElementById('targetCountLabel');
+            countLabel.textContent = state.targets.length ? `${state.targets.length} target` : '';
+
+            if (!state.targets.length) {
+                document.getElementById('emptyState').classList.remove('hidden');
+                document.getElementById('emptyState').classList.add('flex');
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = state.targets.map(t => {
+                const terkumpul = getTerkumpul(t.id_target);
+                const persen = t.nominal_target > 0 ? Math.min(100, (terkumpul / t.nominal_target) * 100) : 0;
+                const tercapai = persen >= 100;
+                const sisa = sisaHari(t.tenggat_waktu);
+                let sisaLabel = '';
+                if (sisa !== null && !isNaN(sisa)) {
+                    sisaLabel = sisa >= 0 ? `${sisa} hari lagi` : `Terlewat ${Math.abs(sisa)} hari`;
+                }
+
+                const catMeta = CATEGORY_MAP[t.kategori] || CATEGORY_MAP.lainnya;
+                const priorityMeta = PRIORITY_MAP[t.prioritas] || PRIORITY_MAP.sedang;
+
+                return `
+                    <div class="card-tap bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800/80 rounded-2xl shadow-card p-4 transition cursor-pointer" onclick="openTargetDetail('${t.id_target}')">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-11 h-11 rounded-xl ${catMeta.color} flex items-center justify-center shrink-0 text-xl">
+                                    ${catMeta.icon}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-navy-900 dark:text-white text-sm leading-tight">${escapeHtml(t.nama_target)}</p>
+                                    <div class="flex gap-1.5 items-center mt-1">
+                                        <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${priorityMeta.color}">${priorityMeta.label}</span>
+                                        <p class="text-[10px] text-gray-400 font-medium">${sisaLabel}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-bold px-2 py-1 rounded-full ${tercapai ? 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600' : 'bg-gray-100 dark:bg-slate-800 text-gray-500'}">
+                                ${tercapai ? '🎉 Tercapai' : Math.round(persen) + '%'}
+                            </span>
+                        </div>
+
+                        <div class="mt-3.5">
+                            <div class="flex items-center justify-between text-[11px] mb-1.5">
+                                <span class="text-gray-500">Terkumpul <span class="font-bold text-navy-900 dark:text-white">${formatRupiah(terkumpul)}</span></span>
+                                <span class="text-gray-450 dark:text-gray-500">dari ${formatRupiah(t.nominal_target)}</span>
+                            </div>
+                            <div class="w-full h-2 bg-gray-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="progress-fill h-full rounded-full ${tercapai ? 'bg-emerald-500' : 'bg-gradient-to-r from-brand-500 to-brand-400'}" style="width:${persen}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* ========================= TARGET DETAIL CONTROLLER ========================= */
+        let activeTargetIdDetail = null;
+
+        function openTargetDetail(id) {
+            const t = state.targets.find(target => target.id_target === id);
+            if (!t) return;
+
+            activeTargetIdDetail = id;
+            const terkumpul = getTerkumpul(id);
+            const persen = t.nominal_target > 0 ? Math.min(100, (terkumpul / t.nominal_target) * 100) : 0;
+            const sisa = sisaHari(t.tenggat_waktu);
+
+            const catMeta = CATEGORY_MAP[t.kategori] || CATEGORY_MAP.lainnya;
+            const priorityMeta = PRIORITY_MAP[t.prioritas] || PRIORITY_MAP.sedang;
+
+            document.getElementById('detailIcon').textContent = catMeta.icon;
+            document.getElementById('detailNama').textContent = t.nama_target;
+            document.getElementById('detailPrioritas').textContent = priorityMeta.label;
+            document.getElementById('detailPrioritas').className = `text-[10px] font-semibold px-2 py-0.5 rounded-full ${priorityMeta.color}`;
+            
+            document.getElementById('detailSisaHari').textContent = sisa >= 0 ? `${sisa} hari lagi` : `Terlewat ${Math.abs(sisa)} hari`;
+            document.getElementById('detailTerkumpul').textContent = formatRupiah(terkumpul);
+            document.getElementById('detailNominal').textContent = formatRupiah(t.nominal_target);
+            document.getElementById('detailProgressBar').style.width = `${persen}%`;
+            document.getElementById('detailProgressBar').className = `progress-fill h-full ${persen >= 100 ? 'bg-emerald-500' : 'bg-brand-500'}`;
+
+            // Render specific transaction history
+            const filterRiwayat = state.riwayat.filter(r => r.id_target === id);
+            const container = document.getElementById('detailRiwayatList');
+
+            if (!filterRiwayat.length) {
+                container.innerHTML = `<p class="text-center text-xs text-gray-400 py-6">Belum ada aktivitas setoran.</p>`;
+            } else {
+                container.innerHTML = filterRiwayat.map(r => {
+                    const isPenarikan = r.nominal_masuk < 0;
+                    return `
+                        <div class="flex items-center justify-between bg-gray-50 dark:bg-slate-800 rounded-xl p-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-full ${isPenarikan ? 'bg-amber-50 dark:bg-amber-950 text-amber-600' : 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600'} flex items-center justify-center shrink-0">
+                                    <i data-lucide="${isPenarikan ? 'arrow-up-right' : 'arrow-down-left'}" class="w-3.5 h-3.5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-navy-900 dark:text-white">${isPenarikan ? 'Tarik Dana' : 'Setor Dana'}</p>
+                                    <p class="text-[10px] text-gray-400">${formatTanggal(r.tanggal)}${r.catatan ? ' • ' + escapeHtml(r.catatan) : ''}</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-extrabold ${isPenarikan ? 'text-amber-600' : 'text-emerald-600'}">${isPenarikan ? '' : '+'}${formatRupiah(r.nominal_masuk)}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            openModal('modalDetailTarget');
+            lucide.createIcons();
+        }
+
+        function setoranBaruAction() {
+            closeModal('modalDetailTarget');
+            openIsiTabunganModal(activeTargetIdDetail, 'setoran');
+        }
+
+        function penarikanBaruAction() {
+            closeModal('modalDetailTarget');
+            openIsiTabunganModal(activeTargetIdDetail, 'penarikan');
+        }
+
+        function editTargetForm() {
+            closeModal('modalDetailTarget');
+            const t = state.targets.find(target => target.id_target === activeTargetIdDetail);
+            if (!t) return;
+
+            document.getElementById('editTargetId').value = t.id_target;
+            document.getElementById('editNamaTarget').value = t.nama_target;
+            document.getElementById('editKategoriTarget').value = t.kategori || 'lainnya';
+            document.getElementById('editPrioritasTarget').value = t.prioritas || 'sedang';
+            document.getElementById('editNominalTarget').value = t.nominal_target;
+            document.getElementById('editTenggatTarget').value = t.tenggat_waktu;
+
+            openModal('modalEditTarget');
+        }
+
+        async function hapusTargetAction() {
+            if (confirm("Apakah Anda yakin ingin menghapus target tabungan ini beserta riwayatnya secara permanen?")) {
+                closeModal('modalDetailTarget');
+                showToast("Menghapus target...", "info");
+                await saveData({
+                    action: 'deleteTarget',
+                    id_target: activeTargetIdDetail
+                });
+                showToast("Target telah dihapus", "success");
+            }
+        }
+
+        /* ========================= FORMS LOGIC ========================= */
+        function openIsiTabunganModal(idTarget, tipe = 'setoran') {
+            const select = document.getElementById('selectTransaksiTarget');
+            select.innerHTML = '<option value="" disabled selected>-- Pilih target --</option>' +
+                state.targets.map(t => `<option value="${t.id_target}">${escapeHtml(t.nama_target)}</option>`).join('');
+
+            if (idTarget) select.value = idTarget;
+
+            document.getElementById('transaksiTipe').value = tipe;
+            if (tipe === 'penarikan') {
+                document.getElementById('transaksiFormTitle').textContent = 'Tarik Uang';
+                document.getElementById('btnSubmitTransaksiText').textContent = 'Simpan Penarikan';
+                document.getElementById('btnSubmitTransaksi').className = 'w-full bg-amber-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200';
+            } else {
+                document.getElementById('transaksiFormTitle').textContent = 'Isi Tabungan';
+                document.getElementById('btnSubmitTransaksiText').textContent = 'Simpan Setoran';
+                document.getElementById('btnSubmitTransaksi').className = 'w-full bg-emerald-600 text-white font-semibold text-sm py-3.5 rounded-xl mt-2 flex items-center justify-center gap-2 transition duration-200';
+            }
+
+            openModal('modalTransaksiForm');
+        }
+
+        // Add Target
+        document.getElementById('formTambahTarget').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nama = document.getElementById('inputNamaTarget').value.trim();
+            const nominal = Number(document.getElementById('inputNominalTarget').value);
+            const tenggat = document.getElementById('inputTenggatTarget').value;
+            const kategori = document.getElementById('inputKategoriTarget').value;
+            const prioritas = document.getElementById('inputPrioritasTarget').value;
+
+            setBtnLoading('btnSubmitTarget', 'btnSubmitTargetText', 'spinnerTarget', true, 'Menyimpan...');
+
+            try {
+                await saveData({
+                    action: 'addTarget',
+                    nama_target: nama,
+                    nominal_target: nominal,
+                    tenggat_waktu: tenggat,
+                    kategori: kategori,
+                    prioritas: prioritas
+                });
+                showToast('Target baru berhasil dibuat 🎉', 'success');
+                e.target.reset();
+                closeModal('modalTambahTarget');
+            } catch (err) {
+                showToast('Gagal menyimpan target', 'error');
+            } finally {
+                setBtnLoading('btnSubmitTarget', 'btnSubmitTargetText', 'spinnerTarget', false, 'Simpan Target');
+            }
+        });
+
+        // Edit Target Action Submit
+        document.getElementById('formEditTarget').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('editTargetId').value;
+            const nama = document.getElementById('editNamaTarget').value.trim();
+            const nominal = Number(document.getElementById('editNominalTarget').value);
+            const tenggat = document.getElementById('editTenggatTarget').value;
+            const kategori = document.getElementById('editKategoriTarget').value;
+            const prioritas = document.getElementById('editPrioritasTarget').value;
+
+            try {
+                await saveData({
+                    action: 'editTarget',
+                    id_target: id,
+                    nama_target: nama,
+                    nominal_target: nominal,
+                    tenggat_waktu: tenggat,
+                    kategori: kategori,
+                    prioritas: prioritas
+                });
+                showToast('Detail target berhasil diubah', 'success');
+                closeModal('modalEditTarget');
+                openTargetDetail(id); // reopen updated detail
+            } catch (err) {
+                showToast('Gagal mengubah target', 'error');
+            }
+        });
+
+        // Save Transaction (Deposit / Withdrawal)
+        document.getElementById('formTransaksi').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const idTarget = document.getElementById('selectTransaksiTarget').value;
+            const tipe = document.getElementById('transaksiTipe').value;
+            let nominal = Number(document.getElementById('inputTransaksiNominal').value);
+            const catatan = document.getElementById('inputTransaksiCatatan').value.trim();
+
+            if (tipe === 'penarikan') {
+                const targetCurrent = getTerkumpul(idTarget);
+                if (nominal > targetCurrent) {
+                    showToast('Saldo tabungan target tidak cukup untuk ditarik', 'error');
+                    return;
+                }
+                nominal = -nominal; // negative value for subtraction
+            }
+
+            setBtnLoading('btnSubmitTransaksi', 'btnSubmitTransaksiText', 'spinnerTransaksi', true, 'Menyimpan...');
+
+            try {
+                await saveData({
+                    action: 'addTransaksi',
+                    id_target: idTarget,
+                    nominal_masuk: nominal,
+                    catatan: catatan,
+                    tanggal: new Date().toISOString().slice(0, 10),
+                    tipe: tipe
+                });
+                showToast(tipe === 'penarikan' ? 'Dana berhasil ditarik 💸' : 'Setoran berhasil disimpan 💰', 'success');
+                e.target.reset();
+                closeModal('modalTransaksiForm');
+            } catch (err) {
+                showToast('Gagal menyimpan transaksi', 'error');
+            } finally {
+                setBtnLoading('btnSubmitTransaksi', 'btnSubmitTransaksiText', 'spinnerTransaksi', false, 'Simpan');
+            }
+        });
+
+        /* ========================= RIWAYAT MODAL CONTROLLER ========================= */
+        function openRiwayatModal() {
+            const container = document.getElementById('riwayatListContainer');
+            const sorted = [...state.riwayat].sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+
+            if (!sorted.length) {
+                container.innerHTML = `<p class="text-center text-sm text-gray-400 py-10">Belum ada transaksi tercatat.</p>`;
+            } else {
+                container.innerHTML = sorted.map(r => {
+                    const target = state.targets.find(t => t.id_target === r.id_target);
+                    const isPenarikan = r.nominal_masuk < 0;
+                    return `
+                        <div class="flex items-center justify-between bg-gray-50 dark:bg-slate-800/80 rounded-xl p-3.5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-full ${isPenarikan ? 'bg-amber-50 dark:bg-amber-950 text-amber-600' : 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600'} flex items-center justify-center shrink-0">
+                                    <i data-lucide="${isPenarikan ? 'arrow-up-right' : 'arrow-down-left'}" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-navy-900 dark:text-white">${escapeHtml(target ? target.nama_target : 'Target tidak ditemukan')}</p>
+                                    <p class="text-[11px] text-gray-400">${formatTanggal(r.tanggal)}${r.catatan ? ' • ' + escapeHtml(r.catatan) : ''}</p>
+                                </div>
+                            </div>
+                            <span class="text-sm font-extrabold ${isPenarikan ? 'text-amber-600' : 'text-emerald-600'}">${isPenarikan ? '' : '+'}${formatRupiah(r.nominal_masuk)}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            openModal('modalRiwayat');
+            lucide.createIcons();
+        }
+
+        /* ========================= PROGRESS ANALYTICS DASHBOARD ========================= */
+        function openProgresDashboard() {
+            // Update tips
+            const randomTip = TIPS_LIST[Math.floor(Math.random() * TIPS_LIST.length)];
+            document.getElementById('tipsMenabungText').textContent = randomTip;
+
+            // Update stats
+            const totalSetoran = state.riwayat.filter(r => r.nominal_masuk > 0).reduce((sum, r) => sum + r.nominal_masuk, 0);
+            const countTrans = state.riwayat.length;
+            const avgTrans = countTrans > 0 ? (totalSetoran / countTrans) : 0;
+            document.getElementById('statAverage').textContent = formatRupiah(avgTrans);
+
+            let completedCount = 0;
+            state.targets.forEach(t => {
+                if (getTerkumpul(t.id_target) >= t.nominal_target) {
+                    completedCount++;
+                }
+            });
+            document.getElementById('statCompleted').textContent = `${completedCount} target`;
+
+            openModal('modalProgres');
+            
+            // Render Chart.js
+            setTimeout(initSavingChart, 350);
+        }
+
+        function initSavingChart() {
+            const ctx = document.getElementById('savingTrendsChart').getContext('2d');
+            
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            // Generate chronological aggregate data points for saving progress
+            const sortedTx = [...state.riwayat].sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+            
+            let cumulativeData = [];
+            let labels = [];
+            let total = 0;
+
+            sortedTx.forEach(tx => {
+                total += tx.nominal_masuk;
+                cumulativeData.push(total);
+                labels.push(formatTanggal(tx.tanggal));
+            });
+
+            // Handle empty state
+            if (cumulativeData.length === 0) {
+                cumulativeData = [0];
+                labels = ['Mulai'];
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Akumulasi Saldo',
+                        data: cumulativeData,
+                        borderColor: '#2f5fd6',
+                        backgroundColor: 'rgba(47, 95, 214, 0.12)',
+                        borderWidth: 2.5,
+                        fill: true,
+                        tension: 0.35,
+                        pointRadius: labels.length > 10 ? 1 : 4,
+                        pointBackgroundColor: '#2f5fd6'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(156, 163, 175, 0.1)' },
+                            ticks: {
+                                color: '#9ca3af',
+                                font: { size: 9 },
+                                callback: function(value) {
+                                    if (value >= 1e6) return 'Rp ' + (value / 1e6).toFixed(1) + 'jt';
+                                    if (value >= 1e3) return 'Rp ' + (value / 1e3).toFixed(0) + 'rb';
+                                    return 'Rp ' + value;
+                                }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af', font: { size: 8 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        /* ========================= SETTINGS & PERSONALIZATION CONTROLLER ========================= */
+        function selectAvatar(seed) {
+            state.avatarSeed = seed;
+            document.querySelectorAll('#modalSettings img').forEach(img => {
+                const isSelected = img.src.includes(`seed=${seed}`);
+                img.parentElement.classList.toggle('ring-2', isSelected);
+                img.parentElement.classList.toggle('ring-brand-500', isSelected);
+            });
+        }
+
+        function saveSettings() {
+            const inputUrl = document.getElementById('settingApiUrl').value.trim();
+            state.apiUrl = inputUrl;
+            localStorage.setItem('tabungin_api_url', inputUrl);
+
+            // Update user avatar in db session
+            state.currentUser.avatar = state.avatarSeed;
+            localStorage.setItem('tabungin_session', JSON.stringify(state.currentUser));
+            document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
+
+            // Update saved users list
+            let users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
+            const userIdx = users.findIndex(u => u.username === state.currentUser.username);
+            if (userIdx !== -1) {
+                users[userIdx].avatar = state.avatarSeed;
+                localStorage.setItem('tabungin_users', JSON.stringify(users));
+            }
+
+            closeModal('modalSettings');
+            showToast("Pengaturan berhasil disimpan", "success");
+            fetchData();
+        }
+
+        /* ========================= UTILITY & THEMING ========================= */
+        function formatRupiah(angka) {
+            const n = Number(angka) || 0;
+            const sign = n < 0 ? '-' : '';
+            return sign + 'Rp ' + Math.abs(n).toLocaleString('id-ID', { maximumFractionDigits: 0 });
+        }
+
+        function formatTanggal(tgl) {
+            if (!tgl) return '-';
+            const d = new Date(tgl);
+            if (isNaN(d.getTime())) return String(tgl);
+            return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+        }
+
+        // Custom escape HTML to prevent XSS
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s]));
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const colors = {
+                success: 'bg-emerald-600',
+                error: 'bg-red-500',
+                info: 'bg-navy-800 dark:bg-slate-800',
+            };
+            toast.className = `toast-enter fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-3 rounded-xl text-white text-sm font-medium shadow-lg max-w-[85%] text-center ${colors[type] || colors.info}`;
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => toast.classList.add('hidden'), 2600);
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function setBtnLoading(btnId, textId, spinnerId, loading, text) {
+            document.getElementById(btnId).disabled = loading;
+            document.getElementById(btnId).classList.toggle('opacity-70', loading);
+            document.getElementById(textId).textContent = text;
+            document.getElementById(spinnerId).classList.toggle('hidden', !loading);
+        }
+
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            document.documentElement.classList.toggle('dark', state.darkMode);
+            localStorage.setItem('tabungin_darkmode', state.darkMode ? 'enabled' : 'disabled');
+            
+            const themeIcon = document.getElementById('themeIcon');
+            themeIcon.setAttribute('data-lucide', state.darkMode ? 'sun' : 'moon');
+            lucide.createIcons();
+        }
+
+        // Close backdrop click
+        document.querySelectorAll('.modal-backdrop').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        /* ========================= INITIALIZATION ========================= */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply Darkmode if saved
+            if (localStorage.getItem('tabungin_darkmode') === 'enabled') {
+                toggleDarkMode();
+            }
+
+            // Sync API URL to settings input
+            document.getElementById('settingApiUrl').value = state.apiUrl;
+
+            // Tampilkan status koneksi cloud di Auth screen jika sudah dikonfigurasi
+            if (state.apiUrl) {
+                const versionEl = document.querySelector('#authScreen p:last-child');
+                if (versionEl) {
+                    versionEl.innerHTML = 'Tabungin v1.1.0 • <span class="text-emerald-400 font-semibold">☁️ Cloud Connected</span>';
+                }
+            }
+
+            document.getElementById('btnRefresh').addEventListener('click', () => {
+                fetchData();
+                showToast("Data disinkronkan dari cloud ☁️", "success");
+            });
+
+            checkSession();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+
+</html>

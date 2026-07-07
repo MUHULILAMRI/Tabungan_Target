@@ -1,0 +1,6 @@
+{
+  "appId": "com.tabungin.app",
+  "appName": "Tabungin",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
