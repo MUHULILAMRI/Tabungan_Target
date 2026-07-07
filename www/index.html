@@ -358,7 +358,12 @@
                     </button>
                 </form>
             </div>
-            <p class="text-center text-xs text-white/45 pb-4">Tabungin v1.1.0 • offline fallback ready</p>
+            <div class="text-center pb-4 space-y-1.5 relative z-10">
+                <button onclick="openCloudConfigModal()" class="text-white/60 hover:text-white text-xs underline font-medium transition">
+                    ⚙️ Pengaturan Cloud / Offline
+                </button>
+                <p class="text-white/45 text-[10px]">Tabungin v1.1.0 • offline fallback ready</p>
+            </div>
         </div>
 
         <!-- ===================== SCREEN: UTAMA / DASHBOARD ===================== -->
@@ -939,7 +944,7 @@
 
                 <div class="space-y-5">
                     <!-- Avatar Selection -->
-                    <div>
+                    <div id="settingsAvatarSection">
                         <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Pilih Avatar</label>
                         <div class="flex gap-3 mt-2 overflow-x-auto py-1">
                             <button onclick="selectAvatar('Felix')"
@@ -984,7 +989,7 @@
 
         <!-- Toast Notification -->
         <div id="toast"
-            class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-3 rounded-xl text-white text-sm font-medium shadow-lg max-w-[85%] text-center">
+            class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[999] px-4 py-3 rounded-xl text-white text-sm font-medium shadow-lg max-w-[85%] text-center">
         </div>
 
     </div>
@@ -1153,7 +1158,20 @@
                         showToast((res && res.message) || 'Username atau password salah', 'error');
                     }
                 } catch (err) {
-                    showToast('Gagal terhubung ke server: ' + err.message, 'error');
+                    console.warn('Cloud login failed, checking local database:', err);
+                    showToast('Gagal terhubung ke cloud. Mencoba login lokal...', 'info');
+                    
+                    // Fallback to local offline check
+                    const users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
+                    const foundUser = users.find(u => u.username === username && u.password === password);
+
+                    if (!foundUser && username === 'admin' && password === 'admin123') {
+                        setCurrentSession({ name: 'Administrator', username: 'admin', avatar: 'Felix' });
+                    } else if (foundUser) {
+                        setCurrentSession(foundUser);
+                    } else {
+                        showToast('Username atau password salah (Lokal)', 'error');
+                    }
                 }
             } else {
                 // MODE OFFLINE — Cek localStorage
@@ -1894,27 +1912,52 @@
             });
         }
 
+        function openCloudConfigModal() {
+            // Hide avatar section if not logged in
+            const isGuest = !state.currentUser;
+            const avatarSec = document.getElementById('settingsAvatarSection');
+            if (avatarSec) avatarSec.classList.toggle('hidden', isGuest);
+            
+            // Set input value
+            document.getElementById('settingApiUrl').value = state.apiUrl || '';
+            
+            openModal('modalSettings');
+        }
+
         function saveSettings() {
             const inputUrl = document.getElementById('settingApiUrl').value.trim();
             state.apiUrl = inputUrl;
             localStorage.setItem('tabungin_api_url', inputUrl);
 
-            // Update user avatar in db session
-            state.currentUser.avatar = state.avatarSeed;
-            localStorage.setItem('tabungin_session', JSON.stringify(state.currentUser));
-            document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
+            if (state.currentUser) {
+                // Update user avatar in db session
+                state.currentUser.avatar = state.avatarSeed;
+                localStorage.setItem('tabungin_session', JSON.stringify(state.currentUser));
+                document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
 
-            // Update saved users list
-            let users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
-            const userIdx = users.findIndex(u => u.username === state.currentUser.username);
-            if (userIdx !== -1) {
-                users[userIdx].avatar = state.avatarSeed;
-                localStorage.setItem('tabungin_users', JSON.stringify(users));
+                // Update saved users list
+                let users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
+                const userIdx = users.findIndex(u => u.username === state.currentUser.username);
+                if (userIdx !== -1) {
+                    users[userIdx].avatar = state.avatarSeed;
+                    localStorage.setItem('tabungin_users', JSON.stringify(users));
+                }
+                
+                fetchData();
+            } else {
+                // If not logged in, update connection badge on login screen
+                const versionEl = document.querySelector('#authScreen p:last-child');
+                if (versionEl) {
+                    if (state.apiUrl) {
+                        versionEl.innerHTML = 'Tabungin v1.1.0 • <span class="text-emerald-400 font-semibold">☁️ Cloud Connected</span>';
+                    } else {
+                        versionEl.innerHTML = 'Tabungin v1.1.0 • <span class="text-amber-400 font-semibold">📴 Local Offline Mode</span>';
+                    }
+                }
             }
 
             closeModal('modalSettings');
             showToast("Pengaturan berhasil disimpan", "success");
-            fetchData();
         }
 
         /* ========================= UTILITY & THEMING ========================= */
