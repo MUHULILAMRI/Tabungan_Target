@@ -218,6 +218,14 @@
         /* Panel sections */
         .tab-panel { display: none; }
         .tab-panel.active-panel { display: block; }
+
+        @keyframes bounceSlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-slow {
+            animation: bounceSlow 3s ease-in-out infinite;
+        }
     </style>
 </head>
 
@@ -226,38 +234,48 @@
     <div class="max-w-md mx-auto min-h-screen bg-[#f3f5f9] dark:bg-[#0f172a] relative shadow-2xl overflow-x-hidden flex flex-col">
 
         <!-- ===================== SCREEN: LOGIN / REGISTER ===================== -->
-        <div id="authScreen" class="absolute inset-0 bg-gradient-to-br from-navy-950 via-navy-900 to-brand-900 z-50 flex flex-col justify-between p-6">
+        <div id="authScreen" class="absolute inset-0 bg-gradient-to-br from-navy-950 via-navy-900 to-brand-900 z-50 flex flex-col justify-between p-6 overflow-y-auto">
             <!-- Glow background decor -->
             <div class="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl"></div>
             <div class="absolute bottom-1/4 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
 
-            <div class="flex flex-col items-center pt-12 relative z-10">
-                <div class="w-16 h-16 rounded-2xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/30 mb-4">
-                    <i data-lucide="piggy-bank" class="w-10 h-10 text-white"></i>
+            <div class="flex flex-col items-center pt-10 pb-6 relative z-10">
+                <div class="relative w-20 h-20 rounded-3xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30 mb-4 animate-bounce-slow">
+                    <div class="absolute inset-0 rounded-3xl bg-brand-400/30 blur-md -z-10 scale-110"></div>
+                    <i data-lucide="piggy-bank" class="w-12 h-12 text-white"></i>
                 </div>
-                <h1 class="text-white text-3xl font-extrabold tracking-tight">Tabungin</h1>
-                <p class="text-white/60 text-sm mt-1">Kelola target impianmu dengan cerdas</p>
+                <h1 class="text-white text-3xl font-black tracking-tight drop-shadow-md">Tabungin</h1>
+                <p class="text-white/60 text-xs mt-1.5 font-medium tracking-wide">Kelola target impianmu dengan cerdas</p>
             </div>
 
             <!-- Login / Register Card -->
             <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl relative z-10 space-y-4 mb-4">
-                <!-- Tab Headers -->
-                <div class="flex border-b border-gray-100 dark:border-slate-800 pb-2">
-                    <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2 text-center text-sm font-bold border-b-2 border-brand-500 text-brand-500">Masuk</button>
-                    <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-2 text-center text-sm font-semibold text-gray-400 dark:text-slate-500 border-b-2 border-transparent">Daftar</button>
+                <!-- Tab Headers (Segmented Pills Control) -->
+                <div class="bg-gray-100 dark:bg-slate-800/80 p-1 rounded-2xl flex gap-1 mb-2">
+                    <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-white dark:bg-slate-900 text-brand-500 shadow-sm transition-all duration-200">Masuk</button>
+                    <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-500 transition-all duration-200">Daftar</button>
                 </div>
 
                 <!-- FORM LOGIN -->
                 <form id="formLogin" class="space-y-4">
                     <div>
                         <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Username</label>
-                        <input required type="text" id="loginUsername" placeholder="Masukkan username"
-                            class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                        <div class="relative mt-1.5">
+                            <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                            <input required type="text" id="loginUsername" placeholder="Username Anda"
+                                class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                        </div>
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Password</label>
-                        <input required type="password" id="loginPassword" placeholder="••••••••"
-                            class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                        <div class="relative mt-1.5">
+                            <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                            <input required type="password" id="loginPassword" placeholder="••••••••"
+                                class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-12 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                            <button type="button" onclick="togglePasswordVisibility('loginPassword', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-650 dark:hover:text-slate-200 transition">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
                         Masuk Sekarang
@@ -268,18 +286,30 @@
                 <form id="formRegister" class="space-y-4 hidden">
                     <div>
                         <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nama Lengkap</label>
-                        <input required type="text" id="regName" placeholder="Contoh: Budi Santoso"
-                            class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                        <div class="relative mt-1.5">
+                            <i data-lucide="smile" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                            <input required type="text" id="regName" placeholder="Nama Lengkap Anda"
+                                class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                        </div>
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Username</label>
-                        <input required type="text" id="regUsername" placeholder="Contoh: budi_s"
-                            class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                        <div class="relative mt-1.5">
+                            <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                            <input required type="text" id="regUsername" placeholder="Buat username unik"
+                                class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                        </div>
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Password</label>
-                        <input required type="password" id="regPassword" placeholder="Minimal 6 karakter"
-                            class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                        <div class="relative mt-1.5">
+                            <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                            <input required type="password" id="regPassword" placeholder="Minimal 6 karakter"
+                                class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-12 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                            <button type="button" onclick="togglePasswordVisibility('regPassword', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-650 dark:hover:text-slate-200 transition">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
                         Daftar Akun Baru
@@ -859,10 +889,33 @@
         /* ========================= AUTHENTICATION FLOW ========================= */
         function switchAuthTab(type) {
             const isLogin = type === 'login';
-            document.getElementById('tabLogin').className = isLogin ? 'flex-1 pb-2 text-center text-sm font-bold border-b-2 border-brand-500 text-brand-500' : 'flex-1 pb-2 text-center text-sm font-semibold text-gray-400 dark:text-slate-500 border-b-2 border-transparent';
-            document.getElementById('tabRegister').className = !isLogin ? 'flex-1 pb-2 text-center text-sm font-bold border-b-2 border-brand-500 text-brand-500' : 'flex-1 pb-2 text-center text-sm font-semibold text-gray-400 dark:text-slate-500 border-b-2 border-transparent';
+            
+            const btnLogin = document.getElementById('tabLogin');
+            const btnRegister = document.getElementById('tabRegister');
+            
+            if (isLogin) {
+                btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-white dark:bg-slate-900 text-brand-500 shadow-sm transition-all duration-200';
+                btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-500 transition-all duration-200';
+            } else {
+                btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-500 transition-all duration-200';
+                btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-white dark:bg-slate-900 text-brand-500 shadow-sm transition-all duration-200';
+            }
+            
             document.getElementById('formLogin').classList.toggle('hidden', !isLogin);
             document.getElementById('formRegister').classList.toggle('hidden', isLogin);
+        }
+
+        function togglePasswordVisibility(inputId, buttonEl) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            
+            const icon = buttonEl.querySelector('i');
+            if (icon) {
+                icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+                lucide.createIcons();
+            }
         }
 
         // ========================= CLOUD API HELPER =========================
@@ -977,6 +1030,8 @@
             state.currentUser = user;
             localStorage.setItem('tabungin_session', JSON.stringify(user));
             document.getElementById('authScreen').classList.add('hidden');
+            const nav = document.getElementById('bottomNav');
+            if (nav) nav.classList.remove('hidden');
             
             // Sync values to UI
             document.getElementById('userDisplayName').textContent = user.name;
@@ -994,12 +1049,17 @@
                 const user = JSON.parse(savedSession);
                 state.currentUser = user;
                 document.getElementById('authScreen').classList.add('hidden');
+                const nav = document.getElementById('bottomNav');
+                if (nav) nav.classList.remove('hidden');
+                
                 document.getElementById('userDisplayName').textContent = user.name;
                 state.avatarSeed = user.avatar || 'Felix';
                 document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
                 fetchData();
             } else {
                 document.getElementById('authScreen').classList.remove('hidden');
+                const nav = document.getElementById('bottomNav');
+                if (nav) nav.classList.add('hidden');
             }
         }
 
@@ -1007,6 +1067,8 @@
             state.currentUser = null;
             localStorage.removeItem('tabungin_session');
             document.getElementById('authScreen').classList.remove('hidden');
+            const nav = document.getElementById('bottomNav');
+            if (nav) nav.classList.add('hidden');
             showToast('Berhasil keluar akun', 'info');
         }
 
