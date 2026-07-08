@@ -75,12 +75,12 @@
         }
 
         body {
-            background: #f3f5f9;
+            background: #f8fafc;
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
         .dark body {
-            background: #0b1120;
+            background: #030712;
         }
 
         ::-webkit-scrollbar {
@@ -98,6 +98,11 @@
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .dark .glass-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.25));
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .skeleton {
@@ -251,118 +256,717 @@
         .animate-bounce-slow {
             animation: bounceSlow 3s ease-in-out infinite;
         }
+
+        /* Success Checkmark CSS Animation */
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+        .success-checkmark .check-icon {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            border-radius: 50%;
+            box-sizing: content-box;
+            border: 4px solid #10b981;
+        }
+        .success-checkmark .check-icon .icon-line {
+            height: 5px;
+            background-color: #10b981;
+            display: block;
+            border-radius: 2px;
+            position: absolute;
+            z-index: 10;
+        }
+        .success-checkmark .check-icon .icon-line.icon-tip {
+            width: 25px;
+            left: 14px;
+            top: 46px;
+            transform: rotate(45deg);
+            animation: icon-line-tip 0.75s ease;
+        }
+        .success-checkmark .check-icon .icon-line.icon-long {
+            width: 47px;
+            right: 8px;
+            top: 38px;
+            transform: rotate(-45deg);
+            animation: icon-line-long 0.75s ease;
+        }
+        .success-checkmark .check-icon .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: absolute;
+            left: -4px;
+            top: -4px;
+            z-index: 10;
+            border: 4px solid rgba(16, 185, 129, 0.2);
+            box-sizing: content-box;
+        }
+
+        @keyframes icon-line-tip {
+            0% { width: 0; left: 1px; top: 19px; }
+            54% { width: 0; left: 1px; top: 19px; }
+            70% { width: 50px; left: -8px; top: 37px; }
+            84% { width: 17px; left: 21px; top: 48px; }
+            100% { width: 25px; left: 14px; top: 46px; }
+        }
+        @keyframes icon-line-long {
+            0% { width: 0; right: 46px; top: 54px; }
+            65% { width: 0; right: 46px; top: 54px; }
+            84% { width: 55px; right: 0px; top: 35px; }
+            100% { width: 47px; right: 8px; top: 38px; }
+        }
+
+        /* Page transitions */
+        .fade-out {
+            animation: fadeOut 0.4s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); visibility: hidden; }
+        }
+
+        /* Thin scrollbar style */
+        .scrollbar-thin::-webkit-scrollbar {
+            height: 4px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+
+        /* Floating background glow animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.05); }
+        }
+        .animate-float-slow {
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+
+        /* Override Chrome/Safari autofill input styles */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active,
+        input:-internal-autofill-selected,
+        input:-internal-autofill-previewed {
+            -webkit-box-shadow: 0 0 0 1000px #09122c inset !important;
+            box-shadow: 0 0 0 1000px #09122c inset !important;
+            -webkit-text-fill-color: #ffffff !important;
+            color: #ffffff !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* Premium staggered slide transition */
+        .auth-slide-up {
+            animation: authSlideUp 0.65s cubic-bezier(0.85, 0, 0.15, 1) forwards;
+        }
+        @keyframes authSlideUp {
+            from { transform: translateY(0); filter: blur(0); opacity: 1; }
+            to { transform: translateY(-100%); filter: blur(10px); opacity: 0; }
+        }
+
+        /* Pulse ring glow for checkmark icon */
+        .check-glow {
+            animation: pulseGlow 1.2s infinite alternate ease-in-out;
+            border-color: #10b981 !important;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+            100% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.7); }
+        }
+
+        /* Confetti particle class */
+        .confetti {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            animation: confettiFall 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            pointer-events: none;
+            z-index: 70;
+        }
+        @keyframes confettiFall {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0) rotate(360deg); opacity: 0; }
+        }
+
+        /* Drifting animated background blobs with color shifts */
+        @keyframes blobDrift1 {
+            0%, 100% { transform: translate(0, 0) scale(1); filter: hue-rotate(0deg); }
+            33% { transform: translate(35px, -50px) scale(1.12); filter: hue-rotate(40deg); }
+            66% { transform: translate(-30px, 30px) scale(0.92); filter: hue-rotate(-30deg); }
+        }
+        @keyframes blobDrift2 {
+            0%, 100% { transform: translate(0, 0) scale(1); filter: hue-rotate(0deg); }
+            50% { transform: translate(-50px, 40px) scale(1.18); filter: hue-rotate(90deg); }
+        }
+        .animate-blob-1 {
+            animation: blobDrift1 14s infinite ease-in-out;
+        }
+        .animate-blob-2 {
+            animation: blobDrift2 18s infinite ease-in-out;
+        }
+
+        /* Floating particles background */
+        .particle-bg {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatParticle 8s infinite linear;
+        }
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Breathing breathing card glow */
+        .glass-card-breathing {
+            animation: cardGlowBreathing 6s infinite alternate ease-in-out;
+        }
+        @keyframes cardGlowBreathing {
+            0% {
+                border-color: rgba(255, 255, 255, 0.08);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.05);
+            }
+            100% {
+                border-color: rgba(99, 102, 241, 0.25);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(99, 102, 241, 0.2);
+            }
+        }
+
+        /* Staggered load slide-up */
+        .animate-stagger-1 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.1s; }
+        .animate-stagger-2 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.2s; }
+        .animate-stagger-3 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.3s; }
+        .animate-stagger-4 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.4s; }
+        .animate-stagger-5 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.5s; }
+
+        @keyframes slideUpFade {
+            from { transform: translateY(30px); opacity: 0; filter: blur(6px); }
+            to { transform: translateY(0); opacity: 1; filter: blur(0); }
+        }
+
+        /* ─── Modern Auth Screen Entrance ─── */
+        @keyframes authReveal {
+            0%   { opacity: 0; transform: scale(0.96) translateY(24px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .auth-reveal {
+            animation: authReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        /* Staggered children slide-up */
+        .auth-child-1 { animation: slideUpFade 0.55s cubic-bezier(0.22,1,.36,1) both; animation-delay: 0.1s; }
+        .auth-child-2 { animation: slideUpFade 0.55s cubic-bezier(0.22,1,.36,1) both; animation-delay: 0.22s; }
+        .auth-child-3 { animation: slideUpFade 0.55s cubic-bezier(0.22,1,.36,1) both; animation-delay: 0.34s; }
+        .auth-child-4 { animation: slideUpFade 0.55s cubic-bezier(0.22,1,.36,1) both; animation-delay: 0.46s; }
+        .auth-child-5 { animation: slideUpFade 0.55s cubic-bezier(0.22,1,.36,1) both; animation-delay: 0.58s; }
+
+        /* Auth tab pill active state */
+        .auth-tab-pill {
+            position: relative;
+            padding: 10px 0;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: rgba(148,163,184,0.7);
+            transition: color 0.3s;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            background: none;
+            border: none;
+            outline: none;
+        }
+        .auth-tab-pill::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 32px;
+            height: 2.5px;
+            background: linear-gradient(90deg, #4f7fe0, #818cf8);
+            border-radius: 99px;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .auth-tab-pill.tab-active {
+            color: #fff;
+        }
+        .auth-tab-pill.tab-active::after {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        /* Modern input field */
+        .auth-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .auth-field label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(148,163,184,0.6);
+        }
+        .auth-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: rgba(15,23,42,0.5);
+            border: 1.5px solid rgba(255,255,255,0.07);
+            border-radius: 14px;
+            transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+            overflow: hidden;
+        }
+        .auth-input-wrap:focus-within {
+            border-color: rgba(99,102,241,0.6);
+            background: rgba(15,23,42,0.7);
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+        }
+        .auth-input-wrap svg, .auth-input-wrap i {
+            position: absolute;
+            left: 14px;
+            width: 16px;
+            height: 16px;
+            color: rgba(148,163,184,0.5);
+            transition: color 0.25s;
+            pointer-events: none;
+        }
+        .auth-input-wrap:focus-within svg,
+        .auth-input-wrap:focus-within i {
+            color: #818cf8;
+        }
+        .auth-input-wrap input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 14px 14px 14px 44px;
+            font-size: 0.875rem;
+            color: #fff;
+            font-weight: 500;
+        }
+        .auth-input-wrap input::placeholder {
+            color: rgba(148,163,184,0.35);
+            font-weight: 400;
+        }
+        .auth-input-wrap .eye-btn {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            outline: none;
+            color: rgba(148,163,184,0.5);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+            padding: 0;
+        }
+        .auth-input-wrap .eye-btn:hover { color: #fff; }
+
+        /* Shimmer submit button */
+        .auth-btn-primary {
+            position: relative;
+            width: 100%;
+            padding: 15px;
+            border-radius: 14px;
+            border: none;
+            outline: none;
+            font-size: 0.875rem;
+            font-weight: 800;
+            color: #fff;
+            cursor: pointer;
+            overflow: hidden;
+            background: linear-gradient(135deg, #2f5fd6 0%, #4f46e5 50%, #6366f1 100%);
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+            transition: transform 0.15s, box-shadow 0.15s;
+            letter-spacing: 0.02em;
+        }
+        .auth-btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.6s ease;
+        }
+        .auth-btn-primary:hover::before { left: 100%; }
+        .auth-btn-primary:hover { box-shadow: 0 12px 32px rgba(79, 70, 229, 0.55); }
+        .auth-btn-primary:active { transform: scale(0.98); }
+
+        .auth-btn-secondary {
+            position: relative;
+            width: 100%;
+            padding: 15px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(52,211,153,0.3);
+            outline: none;
+            font-size: 0.875rem;
+            font-weight: 800;
+            color: #fff;
+            cursor: pointer;
+            overflow: hidden;
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+            transition: transform 0.15s, box-shadow 0.15s;
+            letter-spacing: 0.02em;
+        }
+        .auth-btn-secondary:hover { box-shadow: 0 12px 32px rgba(16, 185, 129, 0.5); }
+        .auth-btn-secondary:active { transform: scale(0.98); }
+
+        /* Success overlay — full screen ripple */
+        #loginSuccessOverlay {
+            background: radial-gradient(circle at center, #052e16 0%, #020617 70%);
+        }
+        .success-ripple {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(52, 211, 153, 0.12);
+            animation: rippleOut 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes rippleOut {
+            0%   { transform: scale(0); opacity: 1; }
+            100% { transform: scale(8); opacity: 0; }
+        }
+        .success-icon-wrap {
+            width: 88px; height: 88px;
+            border-radius: 50%;
+            background: rgba(52, 211, 153, 0.15);
+            border: 2px solid rgba(52, 211, 153, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: successIconScale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both 0.1s;
+        }
+        @keyframes successIconScale {
+            from { transform: scale(0) rotate(-30deg); opacity: 0; }
+            to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+        }
+        .success-check-svg {
+            width: 44px; height: 44px;
+            stroke: #34d399;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+            animation: drawCheck 0.5s ease forwards 0.4s;
+        }
+        @keyframes drawCheck {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* Auth screen exit animation */
+        .auth-exit {
+            animation: authExit 0.6s cubic-bezier(0.4, 0, 1, 1) forwards;
+        }
+        @keyframes authExit {
+            0%   { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.06); pointer-events: none; }
+        }
+
+        /* Animated Input Glow & Focus Ring */
+        .glass-input-wrapper {
+            transition: all 0.3s ease;
+        }
+        .glass-input-wrapper:focus-within {
+            background-color: rgba(15, 23, 42, 0.6) !important;
+            border-color: rgba(99, 102, 241, 0.5) !important;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
+        }
+        .glass-input-wrapper:focus-within i {
+            color: #818cf8 !important;
+            transform: translateY(-50%) scale(1.15) !important;
+        }
+
+        /* ============================================================
+           SPLASH SCREEN
+        ============================================================ */
+        #splashScreen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(160deg, #020617 0%, #0b1329 55%, #0f0b26 100%);
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #splashScreen.splash-hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #splashScreen.splash-gone {
+            display: none;
+        }
+
+        /* Splash logo pop-in */
+        @keyframes splashLogoPop {
+            0%   { transform: scale(0.6) rotate(-6deg); opacity: 0; }
+            60%  { transform: scale(1.08) rotate(2deg); opacity: 1; }
+            80%  { transform: scale(0.96) rotate(-1deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        .splash-logo-anim {
+            animation: splashLogoPop 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* Splash title slide-up */
+        @keyframes splashTitleSlide {
+            from { transform: translateY(18px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+        .splash-title-anim {
+            animation: splashTitleSlide 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-delay: 0.35s;
+        }
+        .splash-sub-anim {
+            animation: splashTitleSlide 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-delay: 0.5s;
+        }
+
+        /* Loading dots */
+        @keyframes dotPulse {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.4; }
+            40%            { transform: scale(1.2); opacity: 1; }
+        }
+        .dot-1 { animation: dotPulse 1.4s infinite ease-in-out; animation-delay: 0s; }
+        .dot-2 { animation: dotPulse 1.4s infinite ease-in-out; animation-delay: 0.2s; }
+        .dot-3 { animation: dotPulse 1.4s infinite ease-in-out; animation-delay: 0.4s; }
+
+        /* Splash ring glow pulse */
+        @keyframes splashRingPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(79, 127, 224, 0.5), 0 0 30px rgba(99,102,241,0.2); }
+            50%       { box-shadow: 0 0 0 14px rgba(79, 127, 224, 0), 0 0 60px rgba(99,102,241,0.35); }
+        }
+        .splash-ring-pulse {
+            animation: splashRingPulse 2s infinite ease-in-out;
+        }
     </style>
 </head>
 
 <body class="min-h-screen text-navy-900 transition-colors duration-200 dark:text-gray-100">
 
-    <div
-        class="max-w-md mx-auto min-h-screen bg-[#f3f5f9] dark:bg-[#0f172a] relative shadow-2xl overflow-x-hidden flex flex-col">
+    <!-- ============================= SPLASH SCREEN ============================= -->
+    <div id="splashScreen">
+        <!-- Background accent blobs -->
+        <div class="absolute top-0 left-0 w-72 h-72 bg-indigo-600/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-80 h-80 bg-brand-500/15 rounded-full blur-[120px] translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
 
+        <!-- Logo container -->
+        <div class="flex flex-col items-center gap-5 relative z-10">
+            <!-- Icon with ring glow -->
+            <div class="relative">
+                <div class="splash-ring-pulse w-24 h-24 rounded-[28px] bg-gradient-to-br from-brand-400 to-indigo-600 flex items-center justify-center shadow-2xl splash-logo-anim">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-8-6h16M9 3.75C9 2.784 9.784 2 10.75 2h2.5C14.216 2 15 2.784 15 3.75v.5A.75.75 0 0 1 14.25 5h-4.5A.75.75 0 0 1 9 4.25v-.5Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Z" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- App name -->
+            <div class="text-center splash-title-anim">
+                <h1 class="text-white text-4xl font-black tracking-tight">Tabungin</h1>
+                <p class="text-white/50 text-sm font-medium mt-1 tracking-wide">Kelola target impianmu</p>
+            </div>
+
+            <!-- Loading dots -->
+            <div class="flex items-center gap-2 mt-2 splash-sub-anim">
+                <div class="dot-1 w-2 h-2 rounded-full bg-brand-400"></div>
+                <div class="dot-2 w-2 h-2 rounded-full bg-indigo-400"></div>
+                <div class="dot-3 w-2 h-2 rounded-full bg-purple-400"></div>
+            </div>
+        </div>
+
+        <!-- Version tag -->
+        <p class="absolute bottom-8 text-white/25 text-xs font-medium tracking-widest splash-sub-anim">v1.1.0</p>
+    </div>
+
+    <div class="max-w-md mx-auto min-h-screen bg-[#f8fafc] dark:bg-[#030712] relative shadow-2xl overflow-x-hidden flex flex-col">
         <!-- ===================== SCREEN: LOGIN / REGISTER ===================== -->
         <div id="authScreen"
-            class="absolute inset-0 bg-gradient-to-br from-navy-950 via-navy-900 to-brand-900 z-50 flex flex-col justify-between p-6 overflow-y-auto">
-            <!-- Glow background decor -->
-            <div
-                class="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl">
-            </div>
-            <div class="absolute bottom-1/4 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
+            class="absolute inset-0 z-50 overflow-y-auto flex flex-col" style="background: linear-gradient(160deg,#020617 0%,#07101f 45%,#0d0a20 100%)">
 
-            <div class="flex flex-col items-center pt-10 pb-6 relative z-10">
-                <div
-                    class="relative w-20 h-20 rounded-3xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30 mb-4 animate-bounce-slow">
-                    <div class="absolute inset-0 rounded-3xl bg-brand-400/30 blur-md -z-10 scale-110"></div>
-                    <i data-lucide="piggy-bank" class="w-12 h-12 text-white"></i>
+            <!-- Success Overlay (full-screen) -->
+            <div id="loginSuccessOverlay" class="hidden absolute inset-0 z-[60] flex flex-col items-center justify-center overflow-hidden">
+                <div class="success-ripple"></div>
+                <div class="success-icon-wrap">
+                    <svg class="success-check-svg" viewBox="0 0 52 52">
+                        <polyline points="14,27 22,35 38,17"/>
+                    </svg>
                 </div>
-                <h1 class="text-white text-3xl font-black tracking-tight drop-shadow-md">Tabungin</h1>
-                <p class="text-white/60 text-xs mt-1.5 font-medium tracking-wide">Kelola target impianmu dengan cerdas
-                </p>
+                <p class="text-emerald-300 font-bold text-lg mt-5 tracking-wide" style="animation: slideUpFade 0.4s ease both 0.6s">Berhasil Masuk!</p>
+                <p class="text-white/40 text-xs mt-1.5" style="animation: slideUpFade 0.4s ease both 0.75s">Memuat dasbor Anda…</p>
             </div>
 
-            <!-- Login / Register Card -->
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl relative z-10 space-y-4 mb-4">
-                <!-- Tab Headers (Segmented Pills Control) -->
-                <div class="bg-gray-100 dark:bg-slate-800/80 p-1 rounded-2xl flex gap-1 mb-2">
-                    <button id="tabLogin" onclick="switchAuthTab('login')"
-                        class="flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-white dark:bg-slate-900 text-brand-500 shadow-sm transition-all duration-200">Masuk</button>
-                    <button id="tabRegister" onclick="switchAuthTab('register')"
-                        class="flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-500 transition-all duration-200">Daftar</button>
+            <!-- Aurora background mesh -->
+            <div class="absolute inset-0 pointer-events-none overflow-hidden">
+                <div class="absolute w-[500px] h-[500px] rounded-full opacity-20 animate-blob-1"
+                    style="top:-10%;left:-20%;background:radial-gradient(circle,#4f46e5,transparent 70%);"></div>
+                <div class="absolute w-[450px] h-[450px] rounded-full opacity-15 animate-blob-2"
+                    style="bottom:-15%;right:-15%;background:radial-gradient(circle,#2f5fd6,transparent 70%);"></div>
+                <div class="absolute w-[300px] h-[300px] rounded-full opacity-10 animate-float-slow"
+                    style="top:40%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,#7c3aed,transparent 70%);animation-delay:-3s"></div>
+                <!-- Grid lines -->
+                <svg class="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
+                    <defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                    </pattern></defs>
+                    <rect width="100%" height="100%" fill="url(#grid)"/>
+                </svg>
+            </div>
+
+            <!-- Main layout -->
+            <div class="relative z-10 flex flex-col min-h-full px-6 py-8">
+
+                <!-- Top: Brand logo -->
+                <div class="flex-shrink-0 auth-reveal">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#4f7fe0,#6366f1)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <span class="text-white font-black text-xl tracking-tight">Tabungin</span>
+                    </div>
                 </div>
 
-                <!-- FORM LOGIN -->
-                <form id="formLogin" class="space-y-4">
-                    <div>
-                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Username</label>
-                        <div class="relative mt-1.5">
-                            <i data-lucide="user"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                            <input required type="text" id="loginUsername" placeholder="Username Anda"
-                                class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
-                        </div>
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Password</label>
-                        <div class="relative mt-1.5">
-                            <i data-lucide="lock"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                            <input required type="password" id="loginPassword" placeholder="••••••••"
-                                class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-12 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
-                            <button type="button" onclick="togglePasswordVisibility('loginPassword', this)"
-                                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-650 dark:hover:text-slate-200 transition">
-                                <i data-lucide="eye" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <button type="submit"
-                        class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
-                        Masuk Sekarang
-                    </button>
-                </form>
+                <!-- Middle: Headline + Form -->
+                <div class="flex-grow flex flex-col justify-center gap-8">
 
-                <!-- FORM REGISTER -->
-                <form id="formRegister" class="space-y-4 hidden">
-                    <div>
-                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nama Lengkap</label>
-                        <div class="relative mt-1.5">
-                            <i data-lucide="smile"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                            <input required type="text" id="regName" placeholder="Nama Lengkap Anda"
-                                class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                    <!-- Headline -->
+                    <div class="auth-child-1">
+                        <h2 class="text-white font-black text-[2rem] leading-tight tracking-tight">Selamat datang<br><span style="background:linear-gradient(90deg,#818cf8,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent">kembali 👋</span></h2>
+                        <p class="text-white/40 text-sm mt-2 font-medium">Kelola target impianmu dengan cerdas.</p>
+                    </div>
+
+                    <!-- Tab switcher -->
+                    <div class="auth-child-2">
+                        <div class="flex border-b" style="border-color:rgba(255,255,255,0.08)">
+                            <button id="tabLogin" onclick="switchAuthTab('login')" class="auth-tab-pill tab-active">Masuk</button>
+                            <button id="tabRegister" onclick="switchAuthTab('register')" class="auth-tab-pill">Daftar Akun</button>
                         </div>
                     </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Username</label>
-                        <div class="relative mt-1.5">
-                            <i data-lucide="user"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                            <input required type="text" id="regUsername" placeholder="Buat username unik"
-                                class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+
+                    <!-- FORM LOGIN -->
+                    <form id="formLogin" class="flex flex-col gap-4 auth-child-3">
+                        <div class="auth-field">
+                            <label>Username</label>
+                            <div class="auth-input-wrap">
+                                <i data-lucide="user" class="w-4 h-4"></i>
+                                <input required type="text" id="loginUsername" placeholder="Masukkan username Anda" autocomplete="username" />
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Password</label>
-                        <div class="relative mt-1.5">
-                            <i data-lucide="lock"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                            <input required type="password" id="regPassword" placeholder="Minimal 6 karakter"
-                                class="w-full bg-gray-50 dark:bg-slate-850 border border-gray-200/80 dark:border-slate-800 rounded-xl pl-11 pr-12 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
-                            <button type="button" onclick="togglePasswordVisibility('regPassword', this)"
-                                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-650 dark:hover:text-slate-200 transition">
-                                <i data-lucide="eye" class="w-4 h-4"></i>
-                            </button>
+                        <div class="auth-field">
+                            <label>Password</label>
+                            <div class="auth-input-wrap">
+                                <i data-lucide="lock" class="w-4 h-4"></i>
+                                <input required type="password" id="loginPassword" placeholder="Kata sandi Anda" autocomplete="current-password" />
+                                <button type="button" class="eye-btn" onclick="togglePasswordVisibility('loginPassword', this)">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit"
-                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
-                        Daftar Akun Baru
+                        <div class="auth-child-4 pt-1">
+                            <button type="submit" class="auth-btn-primary">Masuk Sekarang →</button>
+                        </div>
+                    </form>
+
+                    <!-- FORM REGISTER -->
+                    <form id="formRegister" class="flex-col gap-4 hidden auth-child-3">
+                        <div class="auth-field">
+                            <label>Nama Lengkap</label>
+                            <div class="auth-input-wrap">
+                                <i data-lucide="smile" class="w-4 h-4"></i>
+                                <input required type="text" id="regName" placeholder="Nama lengkap Anda" />
+                            </div>
+                        </div>
+                        <div class="auth-field">
+                            <label>Username</label>
+                            <div class="auth-input-wrap">
+                                <i data-lucide="at-sign" class="w-4 h-4"></i>
+                                <input required type="text" id="regUsername" placeholder="Buat username unik" autocomplete="username" />
+                            </div>
+                        </div>
+                        <div class="auth-field">
+                            <label>Password</label>
+                            <div class="auth-input-wrap">
+                                <i data-lucide="lock" class="w-4 h-4"></i>
+                                <input required type="password" id="regPassword" placeholder="Min. 6 karakter" autocomplete="new-password" />
+                                <button type="button" class="eye-btn" onclick="togglePasswordVisibility('regPassword', this)">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Avatar Picker -->
+                        <div class="auth-field">
+                            <label>Pilih Avatar</label>
+                            <div id="regAvatarPicker" class="flex gap-2 overflow-x-auto py-1 scrollbar-thin">
+                                <button type="button" onclick="selectRegAvatar('Felix')" data-seed="Felix"
+                                    class="w-11 h-11 rounded-full border-2 ring-2 ring-emerald-400 border-transparent scale-105 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" class="w-full h-full object-cover">
+                                </button>
+                                <button type="button" onclick="selectRegAvatar('Aria')" data-seed="Aria"
+                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aria" class="w-full h-full object-cover">
+                                </button>
+                                <button type="button" onclick="selectRegAvatar('Jack')" data-seed="Jack"
+                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack" class="w-full h-full object-cover">
+                                </button>
+                                <button type="button" onclick="selectRegAvatar('Milo')" data-seed="Milo"
+                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo" class="w-full h-full object-cover">
+                                </button>
+                                <button type="button" onclick="selectRegAvatar('Lulu')" data-seed="Lulu"
+                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lulu" class="w-full h-full object-cover">
+                                </button>
+                                <button type="button" onclick="selectRegAvatar('Zoe')" data-seed="Zoe"
+                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe" class="w-full h-full object-cover">
+                                </button>
+                                <button type="button" onclick="selectRegAvatar('Oliver')" data-seed="Oliver"
+                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver" class="w-full h-full object-cover">
+                                </button>
+                                <button type="button" onclick="selectRegAvatar('Mia')" data-seed="Mia"
+                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mia" class="w-full h-full object-cover">
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="auth-child-4 pt-1">
+                            <button type="submit" class="auth-btn-secondary">Buat Akun Baru →</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Bottom -->
+                <div class="flex-shrink-0 mt-6 text-center auth-child-5">
+                    <button onclick="openCloudConfigModal()"
+                        class="text-white/30 hover:text-white/60 text-xs font-medium transition-colors duration-200">
+                        ⚙️ Pengaturan Cloud / Offline
                     </button>
-                </form>
-            </div>
-            <div class="text-center pb-4 space-y-1.5 relative z-10">
-                <button onclick="openCloudConfigModal()" class="text-white/60 hover:text-white text-xs underline font-medium transition">
-                    ⚙️ Pengaturan Cloud / Offline
-                </button>
-                <p class="text-white/45 text-[10px]">Tabungin v1.1.0 • offline fallback ready</p>
+                    <p class="text-white/20 text-[10px] mt-1">Tabungin v1.1.0 • offline fallback ready</p>
+                </div>
             </div>
         </div>
 
@@ -483,6 +1087,49 @@
                     </div>
                 </section>
 
+                <!-- BADGES SECTION -->
+                <section class="px-5 mt-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-navy-900 dark:text-slate-200 text-[15px]">Pencapaian & Badge</h3>
+                    </div>
+                    <div id="badgesGrid" class="grid grid-cols-4 gap-3 bg-white dark:bg-slate-900 p-4 border border-gray-100 dark:border-slate-800 rounded-2xl shadow-card">
+                        <!-- populated via JS -->
+                    </div>
+                </section>
+
+                <!-- JURNAL KEUANGAN SECTION -->
+                <section class="px-5 mt-6 mb-8">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-navy-900 dark:text-slate-200 text-[15px]">Jurnal Keuangan Harian</h3>
+                        <button onclick="openModal('modalTambahJurnal')"
+                            class="text-xs text-brand-500 font-bold hover:underline flex items-center gap-0.5">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tulis Jurnal
+                        </button>
+                    </div>
+                    <div id="journalListContainer" class="space-y-3">
+                        <!-- populated via JS -->
+                    </div>
+                </section>
+
+                <!-- RECOMMENDATION SHORTCUT (Home) -->
+                <section class="px-5 mt-6">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-gray-100 dark:border-slate-800 shadow-card flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="calendar" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">Analisis Kebiasaan</span>
+                                <span id="homeBestDayBadge" class="bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-extrabold px-2 py-0.5 rounded-full">Jumat</span>
+                            </div>
+                            <h4 class="font-bold text-navy-900 dark:text-white text-xs mt-1">Hari Efektif Menabung Anda</h4>
+                            <p id="homeBestDayText" class="text-[11px] text-gray-500 dark:text-slate-400 mt-0.5 leading-relaxed">
+                                Menghitung analisis kebiasaan menabung Anda...
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- STATS SHORTCUT -->
                 <section class="px-5 mt-6">
                     <div
@@ -503,10 +1150,16 @@
             <div id="panel-targets" class="tab-panel hidden flex-1 flex flex-col pb-32 px-5 pt-6">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-extrabold text-navy-900 dark:text-white">Target Tabungan</h2>
-                    <button onclick="openModal('modalTambahTarget')"
-                        class="bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 transition">
-                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="openModal('modalKalkulator')"
+                            class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold px-3.5 py-2 rounded-full flex items-center gap-1 transition">
+                            <i data-lucide="calculator" class="w-3.5 h-3.5"></i> Kalkulator
+                        </button>
+                        <button onclick="openModal('modalTambahTarget')"
+                            class="bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 transition">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Search and Filters -->
@@ -595,40 +1248,124 @@
 
             <!-- ===================== PANEL 4: ANALISIS ===================== -->
             <div id="panel-analisis" class="tab-panel hidden flex-1 flex flex-col pb-32 px-5 pt-6">
-                <h2 class="text-xl font-extrabold text-navy-900 dark:text-white mb-4">Analisis & Statistik</h2>
 
-                <!-- Quick Stats Grid -->
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <div
-                        class="bg-brand-50 dark:bg-slate-800/80 rounded-2xl p-4 flex flex-col border border-brand-100/30">
-                        <span
-                            class="text-[10px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wide">Rata-rata
-                            Transaksi</span>
-                        <span id="statAverage" class="text-base font-extrabold text-navy-900 dark:text-white mt-1">Rp
-                            0</span>
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-navy-900 dark:text-white">Analisis & Statistik</h2>
+                        <p class="text-[11px] text-gray-400 dark:text-slate-500 mt-0.5">Ringkasan performa tabungan Anda</p>
                     </div>
-                    <div
-                        class="bg-emerald-50 dark:bg-slate-800/80 rounded-2xl p-4 flex flex-col border border-emerald-100/30">
-                        <span
-                            class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">Target
-                            Selesai</span>
-                        <span id="statCompleted" class="text-base font-extrabold text-navy-900 dark:text-white mt-1">0
-                            target</span>
+                    <div class="w-9 h-9 rounded-2xl bg-brand-50 dark:bg-brand-950/40 flex items-center justify-center text-brand-500">
+                        <i data-lucide="trending-up" class="w-5 h-5"></i>
                     </div>
                 </div>
 
-                <!-- Chart Container -->
-                <div
-                    class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-gray-100 dark:border-slate-800 shadow-card mb-4">
-                    <h4 class="text-xs font-bold text-gray-500 mb-3">Tren Saldo & Setoran Tabungan</h4>
-                    <div class="relative w-full h-48">
+                <!-- Quick Stats Grid (4 cards) -->
+                <div class="grid grid-cols-2 gap-3 mb-5">
+                    <div class="bg-gradient-to-br from-brand-500 to-indigo-600 rounded-2xl p-4 flex flex-col text-white shadow-lg shadow-brand-500/20">
+                        <span class="text-[10px] font-bold uppercase tracking-wide opacity-80">Total Setoran</span>
+                        <span id="statTotalSetoran" class="text-base font-extrabold mt-1">Rp 0</span>
+                        <span class="text-[10px] opacity-70 mt-0.5">dari semua tabungan</span>
+                    </div>
+                    <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 flex flex-col text-white shadow-lg shadow-emerald-500/20">
+                        <span class="text-[10px] font-bold uppercase tracking-wide opacity-80">Target Selesai</span>
+                        <span id="statCompleted" class="text-base font-extrabold mt-1">0 target</span>
+                        <span class="text-[10px] opacity-70 mt-0.5">dari total target</span>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 flex flex-col border border-gray-100 dark:border-slate-800 shadow-sm">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide">Rata-rata/Transaksi</span>
+                        <span id="statAverage" class="text-base font-extrabold text-navy-900 dark:text-white mt-1">Rp 0</span>
+                        <span class="text-[10px] text-gray-400 mt-0.5">per setoran</span>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 flex flex-col border border-gray-100 dark:border-slate-800 shadow-sm">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide">Total Transaksi</span>
+                        <span id="statTotalTx" class="text-base font-extrabold text-navy-900 dark:text-white mt-1">0 kali</span>
+                        <span class="text-[10px] text-gray-400 mt-0.5">entri tercatat</span>
+                    </div>
+                </div>
+
+                <!-- Main Trend Chart -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-gray-100 dark:border-slate-800 shadow-sm mb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h4 class="text-xs font-bold text-navy-900 dark:text-white">Tren Akumulasi Saldo</h4>
+                            <p class="text-[10px] text-gray-400 mt-0.5">Pertumbuhan total tabungan dari waktu ke waktu</p>
+                        </div>
+                        <span class="text-[10px] font-bold text-brand-500 bg-brand-50 dark:bg-brand-950/40 px-2 py-0.5 rounded-full">Line</span>
+                    </div>
+                    <div class="relative w-full h-44">
                         <canvas id="savingTrendsChart"></canvas>
                     </div>
                 </div>
 
+                <!-- Bar Chart: Aktivitas per Hari -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-gray-100 dark:border-slate-800 shadow-sm mb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h4 class="text-xs font-bold text-navy-900 dark:text-white">Aktivitas Setoran per Hari</h4>
+                            <p class="text-[10px] text-gray-400 mt-0.5">Total nominal yang disetor setiap hari dalam seminggu</p>
+                        </div>
+                        <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full">Bar</span>
+                    </div>
+                    <div class="relative w-full h-36">
+                        <canvas id="savingBarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Bar Chart: Perbandingan Bulanan -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-gray-100 dark:border-slate-800 shadow-sm mb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h4 class="text-xs font-bold text-navy-900 dark:text-white">Perbandingan Bulanan</h4>
+                            <p class="text-[10px] text-gray-400 mt-0.5">Setoran bulan ini dibandingkan bulan lalu per minggu</p>
+                        </div>
+                        <span id="monthlyComparisonDiff" class="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full">0%</span>
+                    </div>
+                    <div class="relative w-full h-36">
+                        <canvas id="monthlyComparisonChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Donut Chart: Distribusi Target -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-gray-100 dark:border-slate-800 shadow-sm mb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h4 class="text-xs font-bold text-navy-900 dark:text-white">Distribusi Tabungan per Target</h4>
+                            <p class="text-[10px] text-gray-400 mt-0.5">Proporsi dana terkumpul di tiap target</p>
+                        </div>
+                        <span class="text-[10px] font-bold text-violet-600 bg-violet-50 dark:bg-violet-950/40 px-2 py-0.5 rounded-full">Donut</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="relative w-28 h-28 flex-shrink-0">
+                            <canvas id="savingDonutChart"></canvas>
+                        </div>
+                        <div id="donutLegend" class="flex-1 space-y-1.5 overflow-y-auto max-h-28">
+                            <!-- populated via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rekomendasi Hari Efektif Menabung Card -->
+                <div class="bg-gradient-to-br from-indigo-50 to-brand-50 dark:from-slate-900 dark:to-slate-850 rounded-2xl p-4 border border-indigo-100/50 dark:border-slate-800 shadow-sm mb-4">
+                    <div class="flex items-center gap-2.5 mb-2.5">
+                        <span class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        </span>
+                        <h4 class="text-xs font-bold text-navy-900 dark:text-white">Rekomendasi Hari Efektif Menabung</h4>
+                    </div>
+                    <div class="bg-white/60 dark:bg-slate-950/40 rounded-xl p-3 border border-white dark:border-slate-800/80">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase">Hari Paling Efektif</span>
+                            <span id="analisisBestDayBadge" class="bg-brand-500 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow-sm shadow-brand-500/25">Menganalisis...</span>
+                        </div>
+                        <p id="analisisBestDayText" class="text-[11px] text-gray-600 dark:text-slate-300 mt-2 leading-relaxed">
+                            Menganalisis riwayat transaksi Anda untuk menemukan pola menabung paling optimal...
+                        </p>
+                    </div>
+                </div>
+
                 <!-- Tips Menabung -->
-                <div
-                    class="bg-violet-50 dark:bg-violet-950/20 rounded-2xl p-4 border border-violet-100 dark:border-violet-900/30 flex items-start gap-3 mb-4">
+                <div class="bg-violet-50 dark:bg-violet-950/20 rounded-2xl p-4 border border-violet-100 dark:border-violet-900/30 flex items-start gap-3 mb-4">
                     <span class="text-xl">💡</span>
                     <div>
                         <h5 class="text-xs font-bold text-violet-800 dark:text-violet-300">Tips Hemat & Cerdas</h5>
@@ -946,26 +1683,38 @@
                     <!-- Avatar Selection -->
                     <div id="settingsAvatarSection">
                         <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Pilih Avatar</label>
-                        <div class="flex gap-3 mt-2 overflow-x-auto py-1">
-                            <button onclick="selectAvatar('Felix')"
-                                class="w-12 h-12 rounded-full border-2 border-transparent activeSeed ring-2 ring-brand-500 overflow-hidden"><img
+                        <div id="settingsAvatarPicker" class="flex gap-3 mt-2 overflow-x-auto py-1 scrollbar-thin">
+                            <button type="button" onclick="selectAvatar('Felix')" data-seed="Felix"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"><img
                                     src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix"
                                     class="w-full h-full object-cover"></button>
-                            <button onclick="selectAvatar('Aria')"
-                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img
+                            <button type="button" onclick="selectAvatar('Aria')" data-seed="Aria"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"><img
                                     src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aria"
                                     class="w-full h-full object-cover"></button>
-                            <button onclick="selectAvatar('Jack')"
-                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img
+                            <button type="button" onclick="selectAvatar('Jack')" data-seed="Jack"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"><img
                                     src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack"
                                     class="w-full h-full object-cover"></button>
-                            <button onclick="selectAvatar('Milo')"
-                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img
+                            <button type="button" onclick="selectAvatar('Milo')" data-seed="Milo"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"><img
                                     src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo"
                                     class="w-full h-full object-cover"></button>
-                            <button onclick="selectAvatar('Lulu')"
-                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden"><img
+                            <button type="button" onclick="selectAvatar('Lulu')" data-seed="Lulu"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"><img
                                     src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lulu"
+                                    class="w-full h-full object-cover"></button>
+                            <button type="button" onclick="selectAvatar('Zoe')" data-seed="Zoe"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"><img
+                                    src="https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe"
+                                    class="w-full h-full object-cover"></button>
+                            <button type="button" onclick="selectAvatar('Oliver')" data-seed="Oliver"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"><img
+                                    src="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver"
+                                    class="w-full h-full object-cover"></button>
+                            <button type="button" onclick="selectAvatar('Mia')" data-seed="Mia"
+                                class="w-12 h-12 rounded-full border-2 border-transparent overflow-hidden transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"><img
+                                    src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mia"
                                     class="w-full h-full object-cover"></button>
                         </div>
                     </div>
@@ -983,7 +1732,211 @@
                             Simpan Perubahan Setelan
                         </button>
                     </div>
+
+                    <!-- Help & FAQ Section -->
+                    <div class="border-t border-gray-100 dark:border-slate-800 pt-4">
+                        <button onclick="openModal('modalFAQ')"
+                            class="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300 font-bold text-xs py-3 rounded-xl transition duration-200 flex items-center justify-center gap-2">
+                            <i data-lucide="help-circle" class="w-4 h-4"></i>
+                            Pusat Bantuan & FAQ Aplikasi
+                        </button>
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- ===================== MODAL: FAQ (TANYA JAWAB) ===================== -->
+        <div id="modalFAQ" class="hidden fixed inset-0 z-50 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[85vh] overflow-y-auto">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-navy-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="help-circle" class="text-brand-500 w-5 h-5"></i>
+                        Pusat Bantuan & FAQ
+                    </h3>
+                    <button onclick="closeModal('modalFAQ')"
+                        class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-3 mt-2">
+                    <!-- FAQ Item 1 -->
+                    <div class="border-b border-gray-100 dark:border-slate-800 pb-3">
+                        <button onclick="toggleFaq('faq1')" class="w-full flex items-center justify-between text-left focus:outline-none">
+                            <span class="text-xs font-bold text-navy-900 dark:text-slate-200">Bagaimana cara kerja sinkronisasi cloud?</span>
+                            <i id="faq1-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform duration-200"></i>
+                        </button>
+                        <div id="faq1" class="hidden mt-2 text-[11px] text-gray-500 dark:text-slate-400 leading-relaxed">
+                            Anda perlu mengonfigurasi URL Google Apps Script yang terhubung ke Google Sheets di menu Setelan. Setelah disimpan, data target dan riwayat tabungan akan otomatis tersinkronisasi ke Google Drive Anda setiap kali Anda menambah data baru.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="border-b border-gray-100 dark:border-slate-800 pb-3">
+                        <button onclick="toggleFaq('faq2')" class="w-full flex items-center justify-between text-left focus:outline-none">
+                            <span class="text-xs font-bold text-navy-900 dark:text-slate-200">Bagaimana cara menggunakan Mode Offline sepenuhnya?</span>
+                            <i id="faq2-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform duration-200"></i>
+                        </button>
+                        <div id="faq2" class="hidden mt-2 text-[11px] text-gray-500 dark:text-slate-400 leading-relaxed">
+                            Cukup kosongkan kolom URL Google Apps Script di menu Setelan lalu simpan. Aplikasi akan otomatis beralih ke Mode Offline Lokal dan menyimpan seluruh data Anda secara mandiri di penyimpanan lokal perangkat.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="border-b border-gray-100 dark:border-slate-800 pb-3">
+                        <button onclick="toggleFaq('faq3')" class="w-full flex items-center justify-between text-left focus:outline-none">
+                            <span class="text-xs font-bold text-navy-900 dark:text-slate-200">Mengapa saya mendapat pesan "Username atau password salah"?</span>
+                            <i id="faq3-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform duration-200"></i>
+                        </button>
+                        <div id="faq3" class="hidden mt-2 text-[11px] text-gray-500 dark:text-slate-400 leading-relaxed">
+                            Hal ini sering terjadi jika aplikasi berada dalam Mode Cloud tetapi akun Anda didaftarkan secara lokal (offline), atau sebaliknya. Solusinya, Anda dapat mengosongkan URL Apps Script di setelan layar login untuk beralih ke akun lokal Anda.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="border-b border-gray-100 dark:border-slate-800 pb-3">
+                        <button onclick="toggleFaq('faq4')" class="w-full flex items-center justify-between text-left focus:outline-none">
+                            <span class="text-xs font-bold text-navy-900 dark:text-slate-200">Apakah data tabungan saya aman?</span>
+                            <i id="faq4-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform duration-200"></i>
+                        </button>
+                        <div id="faq4" class="hidden mt-2 text-[11px] text-gray-500 dark:text-slate-400 leading-relaxed">
+                            Sangat aman. Seluruh data keuangan disimpan langsung di browser perangkat lokal Anda (Mode Offline) atau di Google Sheets akun Google Drive Anda pribadi (Mode Cloud). Kami tidak mengirimkan data Anda ke server pihak ketiga manapun.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 5 -->
+                    <div class="border-b border-gray-100 dark:border-slate-800 pb-3">
+                        <button onclick="toggleFaq('faq5')" class="w-full flex items-center justify-between text-left focus:outline-none">
+                            <span class="text-xs font-bold text-navy-900 dark:text-slate-200">Bagaimana cara mencadangkan data lokal?</span>
+                            <i id="faq5-icon" data-lucide="chevron-down" class="w-4 h-4 text-gray-400 transition-transform duration-200"></i>
+                        </button>
+                        <div id="faq5" class="hidden mt-2 text-[11px] text-gray-500 dark:text-slate-400 leading-relaxed">
+                            Kami sangat menyarankan untuk menggunakan sinkronisasi cloud Google Sheets sebagai metode pencadangan. Dengan begitu, data tabungan Anda tidak akan terhapus meskipun cache browser dibersihkan atau aplikasi dipasang ulang.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== MODAL: KALKULATOR TARGET ===================== -->
+        <div id="modalKalkulator" class="hidden fixed inset-0 z-50 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[85vh] overflow-y-auto">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-navy-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="calculator" class="text-brand-500 w-5 h-5"></i>
+                        Kalkulator Simulasi Target
+                    </h3>
+                    <button onclick="closeModal('modalKalkulator')"
+                        class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4 mt-2">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Target Uang yang Ingin Dicapai</label>
+                        <div class="relative mt-1.5">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-gray-400">Rp</span>
+                            <input type="number" id="calcTargetAmount" placeholder="Contoh: 5000000"
+                                class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Nominal Setoran Rutin</label>
+                        <div class="relative mt-1.5">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-gray-400">Rp</span>
+                            <input type="number" id="calcSavingAmount" placeholder="Contoh: 50000"
+                                class="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl pl-11 pr-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Frekuensi Menabung</label>
+                        <select id="calcFrequency"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40">
+                            <option value="1">Setiap Hari</option>
+                            <option value="7">Setiap Minggu</option>
+                            <option value="30">Setiap Bulan</option>
+                        </select>
+                    </div>
+
+                    <button onclick="calculateEstimation()"
+                        class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
+                        Hitung Estimasi Waktu
+                    </button>
+
+                    <!-- Result Card -->
+                    <div id="calcResultCard" class="hidden bg-brand-50 dark:bg-slate-800/60 rounded-2xl p-4 border border-brand-100/40">
+                        <h4 class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wide">Hasil Simulasi</h4>
+                        <div class="mt-3 space-y-2 text-xs text-navy-800 dark:text-slate-200">
+                            <p>Dibutuhkan sekitar <span id="calcDaysRequired" class="font-extrabold text-navy-900 dark:text-white text-sm">0</span> kali setoran.</p>
+                            <p>Durasi waktu: <span id="calcDurationText" class="font-extrabold text-navy-900 dark:text-white text-sm">0 hari</span></p>
+                            <p class="text-[11px] text-gray-500 dark:text-slate-400 leading-relaxed mt-1">
+                                Jika mulai menyisihkan uang hari ini, target Anda diperkirakan akan tercapai pada tanggal <b id="calcTargetDateText" class="text-navy-950 dark:text-white">...</b>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== MODAL: TAMBAH JURNAL ===================== -->
+        <div id="modalTambahJurnal" class="hidden fixed inset-0 z-50 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[85vh] overflow-y-auto">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-navy-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="edit-3" class="text-brand-500 w-5 h-5"></i>
+                        Tulis Catatan Jurnal
+                    </h3>
+                    <button onclick="closeModal('modalTambahJurnal')"
+                        class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <form id="formJournal" onsubmit="saveJournalEntry(event)" class="space-y-4 mt-2">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Judul Catatan</label>
+                        <input required type="text" id="journalTitle" placeholder="Contoh: Hemat Minggu Ini"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40" />
+                    </div>
+
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Isi Catatan / Jurnal</label>
+                        <textarea required id="journalContent" rows="3" placeholder="Apa saja kiat hemat atau catatan keuangan Anda hari ini?"
+                            class="w-full mt-1.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-400/40"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="text-xs font-semibold text-gray-500 dark:text-slate-400">Mood Keuangan Anda</label>
+                        <div class="flex gap-4 mt-2 justify-around">
+                            <label class="flex flex-col items-center gap-1 cursor-pointer">
+                                <input type="radio" name="journalMood" value="😊" checked class="hidden peer" />
+                                <span class="text-2xl p-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-transparent peer-checked:border-emerald-500 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-950/20 transition-all duration-200">😊</span>
+                                <span class="text-[10px] text-gray-400">Baik/Hemat</span>
+                            </label>
+                            <label class="flex flex-col items-center gap-1 cursor-pointer">
+                                <input type="radio" name="journalMood" value="😐" class="hidden peer" />
+                                <span class="text-2xl p-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-transparent peer-checked:border-amber-500 peer-checked:bg-amber-50 dark:peer-checked:bg-amber-950/20 transition-all duration-200">😐</span>
+                                <span class="text-[10px] text-gray-400">Biasa Saja</span>
+                            </label>
+                            <label class="flex flex-col items-center gap-1 cursor-pointer">
+                                <input type="radio" name="journalMood" value="😟" class="hidden peer" />
+                                <span class="text-2xl p-2 rounded-xl bg-gray-50 dark:bg-slate-800 border border-transparent peer-checked:border-red-500 peer-checked:bg-red-50 dark:peer-checked:bg-red-950/20 transition-all duration-200">😟</span>
+                                <span class="text-[10px] text-gray-400">Boros/Sedih</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-[0.98]">
+                        Simpan Jurnal
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -998,7 +1951,8 @@
     <script>
         /* ========================= STATE APLIKASI ========================= */
         // ✅ URL Google Apps Script Backend (sudah terhubung ke Google Sheets)
-        const SHEETS_API_URL = localStorage.getItem('tabungin_api_url') ||
+        const savedApiUrl = localStorage.getItem('tabungin_api_url');
+        const SHEETS_API_URL = savedApiUrl !== null ? savedApiUrl :
             "https://script.google.com/macros/s/AKfycbwcpHnOeUcka12iLWQZTxOvWcN4ssMrFafV_WXFFv5WYwLF9p-hTojQ8LWx_PkrghKUTw/exec";
 
         let state = {
@@ -1013,6 +1967,7 @@
         };
 
         let myChart = null;
+        let myMonthlyChart = null;
 
         // Categories & Priority settings map
         const CATEGORY_MAP = {
@@ -1046,11 +2001,11 @@
             const btnRegister = document.getElementById('tabRegister');
 
             if (isLogin) {
-                btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-white dark:bg-slate-900 text-brand-500 shadow-sm transition-all duration-200';
-                btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-500 transition-all duration-200';
+                btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-extrabold rounded-xl bg-gradient-to-r from-brand-500 to-indigo-600 text-white shadow-md shadow-brand-500/20 transition-all duration-300';
+                btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-300';
             } else {
-                btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-gray-400 dark:text-slate-500 hover:text-gray-500 transition-all duration-200';
-                btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-bold rounded-xl bg-white dark:bg-slate-900 text-brand-500 shadow-sm transition-all duration-200';
+                btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-300';
+                btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-extrabold rounded-xl bg-gradient-to-r from-brand-500 to-indigo-600 text-white shadow-md shadow-brand-500/20 transition-all duration-300';
             }
 
             document.getElementById('formLogin').classList.toggle('hidden', !isLogin);
@@ -1091,6 +2046,17 @@
         }
 
         // ========================= REGISTER =========================
+        let regAvatarSeed = 'Felix';
+        function selectRegAvatar(seed) {
+            regAvatarSeed = seed;
+            document.querySelectorAll('#regAvatarPicker button').forEach(btn => {
+                const isSelected = btn.getAttribute('data-seed') === seed;
+                btn.classList.toggle('ring-2', isSelected);
+                btn.classList.toggle('ring-emerald-500', isSelected);
+                btn.classList.toggle('scale-105', isSelected);
+            });
+        }
+
         document.getElementById('formRegister').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
@@ -1109,10 +2075,12 @@
             if (state.apiUrl) {
                 // MODE CLOUD — Register ke Google Sheets
                 try {
-                    const res = await apiPost({ action: 'register', name, username, password });
+                    const res = await apiPost({ action: 'register', name, username, password, avatar: regAvatarSeed });
                     if (res && res.status === 'success') {
                         showToast('Pendaftaran berhasil! Silakan masuk.', 'success');
                         e.target.reset();
+                        // Reset avatar picker to default
+                        selectRegAvatar('Felix');
                         switchAuthTab('login');
                     } else {
                         showToast((res && res.message) || 'Gagal mendaftar', 'error');
@@ -1126,10 +2094,12 @@
                 if (users.find(u => u.username === username)) {
                     showToast('Username sudah terdaftar', 'error');
                 } else {
-                    users.push({ name, username, password, avatar: 'Felix' });
+                    users.push({ name, username, password, avatar: regAvatarSeed });
                     localStorage.setItem('tabungin_users', JSON.stringify(users));
                     showToast('Pendaftaran berhasil! Silakan masuk.', 'success');
                     e.target.reset();
+                    // Reset avatar picker to default
+                    selectRegAvatar('Felix');
                     switchAuthTab('login');
                 }
             }
@@ -1148,33 +2118,26 @@
             btnLog.disabled = true;
             btnLog.textContent = 'Masuk...';
 
+            let loginSuccess = false;
+
             if (state.apiUrl) {
                 // MODE CLOUD — Login via Google Sheets
                 try {
                     const res = await apiGet({ action: 'login', username, password });
                     if (res && res.status === 'success') {
                         setCurrentSession(res.user);
+                        loginSuccess = true;
                     } else {
-                        showToast((res && res.message) || 'Username atau password salah', 'error');
+                        console.warn('Cloud login returned error, checking local fallback');
                     }
                 } catch (err) {
                     console.warn('Cloud login failed, checking local database:', err);
                     showToast('Gagal terhubung ke cloud. Mencoba login lokal...', 'info');
-                    
-                    // Fallback to local offline check
-                    const users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
-                    const foundUser = users.find(u => u.username === username && u.password === password);
-
-                    if (!foundUser && username === 'admin' && password === 'admin123') {
-                        setCurrentSession({ name: 'Administrator', username: 'admin', avatar: 'Felix' });
-                    } else if (foundUser) {
-                        setCurrentSession(foundUser);
-                    } else {
-                        showToast('Username atau password salah (Lokal)', 'error');
-                    }
                 }
-            } else {
-                // MODE OFFLINE — Cek localStorage
+            }
+
+            if (!loginSuccess) {
+                // Fallback to local offline check
                 const users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
                 const foundUser = users.find(u => u.username === username && u.password === password);
 
@@ -1191,28 +2154,73 @@
             btnLog.textContent = 'Masuk Sekarang';
         });
 
+        function triggerConfetti() {
+            const container = document.getElementById('loginSuccessOverlay');
+            if (!container) return;
+
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti';
+                
+                const colors = ['#10b981', '#4f73ef', '#f59e0b', '#8b5cf6', '#ec4899', '#14b8a6'];
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                const x = (Math.random() - 0.5) * 280;
+                const y = (Math.random() - 0.5) * 280 - 80;
+                particle.style.setProperty('--x', `${x}px`);
+                particle.style.setProperty('--y', `${y}px`);
+                
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                
+                container.appendChild(particle);
+                setTimeout(() => particle.remove(), 1200);
+            }
+        }
+
         function setCurrentSession(user) {
             state.currentUser = user;
             localStorage.setItem('tabungin_session', JSON.stringify(user));
-            document.getElementById('authScreen').classList.add('hidden');
-            const nav = document.getElementById('bottomNav');
-            if (nav) nav.classList.remove('hidden');
+            
+            // Tampilkan Overlay Sukses Login dengan Animasi Centang & Confetti
+            const overlay = document.getElementById('loginSuccessOverlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                
+                // Tambahkan ring pulsing glow
+                const checkIcon = overlay.querySelector('.check-icon');
+                if (checkIcon) checkIcon.classList.add('check-glow');
 
-            // Sync values to UI
-            document.getElementById('userDisplayName').textContent = user.name;
-            state.avatarSeed = user.avatar || 'Felix';
-            document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
+                // Ledakan confetti setelah 350ms (saat centang selesai menggambar)
+                setTimeout(triggerConfetti, 350);
 
-            // Load DB
-            fetchData();
-            showToast(`Selamat datang kembali, ${user.name}!`, 'success');
-        }
+                // Transisi ke dashboard (1.5 detik)
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                    if (checkIcon) checkIcon.classList.remove('check-glow');
 
-        function checkSession() {
-            const savedSession = localStorage.getItem('tabungin_session');
-            if (savedSession) {
-                const user = JSON.parse(savedSession);
-                state.currentUser = user;
+                    // Slide up & blur effect
+                    const auth = document.getElementById('authScreen');
+                    auth.classList.add('auth-slide-up');
+                    
+                    // Sesi setup awal
+                    document.getElementById('userDisplayName').textContent = user.name;
+                    state.avatarSeed = user.avatar || 'Felix';
+                    document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
+                    
+                    // Sembunyikan authScreen sepenuhnya setelah animasi slide up selesai (650ms)
+                    setTimeout(() => {
+                        auth.classList.add('hidden');
+                        auth.classList.remove('auth-slide-up');
+                        const nav = document.getElementById('bottomNav');
+                        if (nav) nav.classList.remove('hidden');
+
+                        // Muat database & render
+                        fetchData();
+                        showToast(`Selamat datang kembali, ${user.name}!`, 'success');
+                    }, 650);
+                }, 1500);
+            } else {
                 document.getElementById('authScreen').classList.add('hidden');
                 const nav = document.getElementById('bottomNav');
                 if (nav) nav.classList.remove('hidden');
@@ -1220,11 +2228,46 @@
                 document.getElementById('userDisplayName').textContent = user.name;
                 state.avatarSeed = user.avatar || 'Felix';
                 document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
+
                 fetchData();
+                showToast(`Selamat datang kembali, ${user.name}!`, 'success');
+            }
+        }
+
+        function dismissSplash(callback) {
+            const splash = document.getElementById('splashScreen');
+            if (!splash) { if (callback) callback(); return; }
+            splash.classList.add('splash-hide');
+            setTimeout(() => {
+                splash.classList.add('splash-gone');
+                if (callback) callback();
+            }, 520);
+        }
+
+        function checkSession() {
+            const savedSession = localStorage.getItem('tabungin_session');
+            if (savedSession) {
+                const user = JSON.parse(savedSession);
+                state.currentUser = user;
+
+                document.getElementById('userDisplayName').textContent = user.name;
+                state.avatarSeed = user.avatar || 'Felix';
+                document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
+
+                // Fade out splash, then show dashboard
+                dismissSplash(() => {
+                    document.getElementById('authScreen').classList.add('hidden');
+                    const nav = document.getElementById('bottomNav');
+                    if (nav) nav.classList.remove('hidden');
+                    fetchData();
+                });
             } else {
-                document.getElementById('authScreen').classList.remove('hidden');
-                const nav = document.getElementById('bottomNav');
-                if (nav) nav.classList.add('hidden');
+                // Fade out splash, then show login
+                dismissSplash(() => {
+                    document.getElementById('authScreen').classList.remove('hidden');
+                    const nav = document.getElementById('bottomNav');
+                    if (nav) nav.classList.add('hidden');
+                });
             }
         }
 
@@ -1401,6 +2444,9 @@
             filterTargets();
             renderRiwayatPanel();
             renderAnalisisPanel();
+            updateSavingRecommendations();
+            checkAndUpdateBadges();
+            renderJournal();
             lucide.createIcons();
         }
 
@@ -1809,20 +2855,21 @@
             const totalSetoran = state.riwayat.filter(r => r.nominal_masuk > 0).reduce((sum, r) => sum + r.nominal_masuk, 0);
             const countTrans = state.riwayat.length;
             const avgTrans = countTrans > 0 ? (totalSetoran / countTrans) : 0;
+            const completedCountAll = state.targets.filter(t => getTerkumpul(t.id_target) >= t.nominal_target).length;
 
             const avgEl = document.getElementById('statAverage');
             if (avgEl) avgEl.textContent = formatRupiah(avgTrans);
 
-            let completedCount = 0;
-            state.targets.forEach(t => {
-                if (getTerkumpul(t.id_target) >= t.nominal_target) {
-                    completedCount++;
-                }
-            });
-            const completedEl = document.getElementById('statCompleted');
-            if (completedEl) completedEl.textContent = `${completedCount} target`;
+            const totalSetoranEl = document.getElementById('statTotalSetoran');
+            if (totalSetoranEl) totalSetoranEl.textContent = formatRupiah(totalSetoran);
 
-            // Render Chart.js
+            const totalTxEl = document.getElementById('statTotalTx');
+            if (totalTxEl) totalTxEl.textContent = `${countTrans} kali`;
+
+            const completedEl = document.getElementById('statCompleted');
+            if (completedEl) completedEl.textContent = `${completedCountAll} target`;
+
+            // Render Charts
             setTimeout(initSavingChart, 100);
         }
 
@@ -1831,18 +2878,23 @@
             switchTab('analisis');
         }
 
+        let myBarChart = null;
+        let myDonutChart = null;
+
         function initSavingChart() {
             const canvas = document.getElementById('savingTrendsChart');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
 
-            if (myChart) {
-                myChart.destroy();
-            }
+            if (myChart) myChart.destroy();
 
-            // Generate aggregate data points
+            // Detect dark mode
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+            const tickColor = isDark ? '#64748b' : '#9ca3af';
+
+            // Build cumulative data
             const sortedTx = [...state.riwayat].sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
-
             let cumulativeData = [];
             let labels = [];
             let total = 0;
@@ -1854,61 +2906,604 @@
             });
 
             if (cumulativeData.length === 0) {
-                cumulativeData = [0];
-                labels = ['Mulai'];
+                cumulativeData = [0, 0];
+                labels = ['Mulai', 'Sekarang'];
             }
+
+            // Gradient fill
+            const grad = ctx.createLinearGradient(0, 0, 0, 180);
+            grad.addColorStop(0, 'rgba(79, 115, 239, 0.35)');
+            grad.addColorStop(1, 'rgba(79, 115, 239, 0.00)');
 
             myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels,
                     datasets: [{
                         label: 'Akumulasi Saldo',
                         data: cumulativeData,
-                        borderColor: '#2f5fd6',
-                        backgroundColor: 'rgba(47, 95, 214, 0.12)',
+                        borderColor: '#4f73ef',
+                        backgroundColor: grad,
                         borderWidth: 2.5,
                         fill: true,
-                        tension: 0.35,
-                        pointRadius: labels.length > 10 ? 1 : 4,
-                        pointBackgroundColor: '#2f5fd6'
+                        tension: 0.45,
+                        pointRadius: labels.length > 12 ? 0 : 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#4f73ef',
+                        pointBorderWidth: 2,
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: { duration: 800, easing: 'easeInOutQuart' },
+                    interaction: { mode: 'nearest', intersect: false },
                     plugins: {
-                        legend: { display: false }
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: isDark ? '#1e293b' : '#0f172a',
+                            titleColor: '#94a3b8',
+                            bodyColor: '#f1f5f9',
+                            titleFont: { size: 9, weight: '600' },
+                            bodyFont: { size: 11, weight: '700' },
+                            padding: { x: 12, y: 8 },
+                            cornerRadius: 10,
+                            callbacks: {
+                                label: ctx => {
+                                    const v = ctx.parsed.y;
+                                    if (v >= 1e9) return 'Rp ' + (v/1e9).toFixed(2) + ' M';
+                                    if (v >= 1e6) return 'Rp ' + (v/1e6).toFixed(2) + ' jt';
+                                    if (v >= 1e3) return 'Rp ' + (v/1e3).toFixed(0) + ' rb';
+                                    return 'Rp ' + v;
+                                }
+                            }
+                        }
                     },
                     scales: {
                         y: {
-                            grid: { color: 'rgba(156, 163, 175, 0.1)' },
+                            grid: { color: gridColor },
+                            border: { display: false },
                             ticks: {
-                                color: '#9ca3af',
+                                color: tickColor,
                                 font: { size: 9 },
-                                callback: function (value) {
-                                    if (value >= 1e6) return 'Rp ' + (value / 1e6).toFixed(1) + 'jt';
-                                    if (value >= 1e3) return 'Rp ' + (value / 1e3).toFixed(0) + 'rb';
-                                    return 'Rp ' + value;
+                                maxTicksLimit: 5,
+                                callback: v => {
+                                    if (v >= 1e6) return (v/1e6).toFixed(1)+'jt';
+                                    if (v >= 1e3) return (v/1e3).toFixed(0)+'rb';
+                                    return v;
                                 }
                             }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#9ca3af', font: { size: 8 } }
+                            border: { display: false },
+                            ticks: { color: tickColor, font: { size: 8 }, maxTicksLimit: 6 }
                         }
                     }
                 }
             });
+
+            // ---- Bar Chart: aktivitas per hari ----
+            const barCanvas = document.getElementById('savingBarChart');
+            if (barCanvas) {
+                if (myBarChart) myBarChart.destroy();
+                const barCtx = barCanvas.getContext('2d');
+                const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+                const dayAmounts = Array(7).fill(0);
+                state.riwayat.forEach(tx => {
+                    if (tx.nominal_masuk > 0) {
+                        dayAmounts[new Date(tx.tanggal).getDay()] += tx.nominal_masuk;
+                    }
+                });
+                const maxDay = Math.max(...dayAmounts, 1);
+                const barColors = dayAmounts.map(v =>
+                    v === maxDay
+                        ? (isDark ? 'rgba(52,211,153,0.90)' : 'rgba(16,185,129,0.85)')
+                        : (isDark ? 'rgba(99,179,237,0.45)' : 'rgba(79,115,239,0.40)')
+                );
+                myBarChart = new Chart(barCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: dayNames,
+                        datasets: [{ label: 'Setoran', data: dayAmounts, backgroundColor: barColors, borderRadius: 8, borderSkipped: false }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: { duration: 700, delay: ctx => ctx.dataIndex * 50 },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: isDark ? '#1e293b' : '#0f172a',
+                                titleColor: '#94a3b8',
+                                bodyColor: '#f1f5f9',
+                                cornerRadius: 10,
+                                callbacks: {
+                                    label: ctx => {
+                                        const v = ctx.parsed.y;
+                                        if (v >= 1e6) return 'Rp '+(v/1e6).toFixed(2)+' jt';
+                                        if (v >= 1e3) return 'Rp '+(v/1e3).toFixed(0)+' rb';
+                                        return 'Rp '+v;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: { display: false },
+                            x: { grid: { display: false }, border: { display: false }, ticks: { color: tickColor, font: { size: 9 } } }
+                        }
+                    }
+                });
+            }
+
+            // ---- Donut Chart: distribusi per target ----
+            const donutCanvas = document.getElementById('savingDonutChart');
+            if (donutCanvas) {
+                if (myDonutChart) myDonutChart.destroy();
+                const donutCtx = donutCanvas.getContext('2d');
+                const palette = ['#4f73ef','#10b981','#8b5cf6','#f59e0b','#ef4444','#06b6d4','#ec4899','#84cc16'];
+
+                const donutLabels = [];
+                const donutData = [];
+                const donutColors = [];
+
+                state.targets.forEach((t, i) => {
+                    const terkumpul = getTerkumpul(t.id_target);
+                    if (terkumpul > 0) {
+                        donutLabels.push(t.nama_target);
+                        donutData.push(terkumpul);
+                        donutColors.push(palette[i % palette.length]);
+                    }
+                });
+
+                if (donutData.length === 0) {
+                    donutLabels.push('Belum ada data');
+                    donutData.push(1);
+                    donutColors.push(isDark ? '#334155' : '#e2e8f0');
+                }
+
+                myDonutChart = new Chart(donutCtx, {
+                    type: 'doughnut',
+                    data: { labels: donutLabels, datasets: [{ data: donutData, backgroundColor: donutColors, borderWidth: 0, hoverOffset: 6 }] },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: { duration: 700, animateRotate: true },
+                        cutout: '70%',
+                        plugins: { legend: { display: false }, tooltip: {
+                            backgroundColor: isDark ? '#1e293b' : '#0f172a',
+                            titleColor: '#94a3b8', bodyColor: '#f1f5f9', cornerRadius: 10,
+                            callbacks: {
+                                label: ctx => {
+                                    const v = ctx.parsed;
+                                    if (v >= 1e6) return 'Rp '+(v/1e6).toFixed(2)+' jt';
+                                    if (v >= 1e3) return 'Rp '+(v/1e3).toFixed(0)+' rb';
+                                    return 'Rp '+v;
+                                }
+                            }
+                        }}
+                    }
+                });
+
+                // Build legend
+                const legendEl = document.getElementById('donutLegend');
+                if (legendEl) {
+                    legendEl.innerHTML = donutLabels.map((lbl, i) => {
+                        const pct = donutData.length > 0 ? Math.round(donutData[i] / donutData.reduce((a,b)=>a+b,0) * 100) : 0;
+                        return `<div class="flex items-center gap-1.5">
+                            <span style="background:${donutColors[i]}" class="w-2 h-2 rounded-full flex-shrink-0"></span>
+                            <span class="text-[10px] text-gray-600 dark:text-slate-400 truncate flex-1">${escapeHtml(lbl)}</span>
+                            <span class="text-[10px] font-bold text-gray-700 dark:text-slate-300">${pct}%</span>
+                        </div>`;
+                    }).join('');
+                }
+            }
+
+            // ---- Bar Chart: perbandingan bulanan ----
+            const compareCanvas = document.getElementById('monthlyComparisonChart');
+            if (compareCanvas) {
+                if (myMonthlyChart) myMonthlyChart.destroy();
+                const compareCtx = compareCanvas.getContext('2d');
+
+                const now = new Date();
+                const curMonth = now.getMonth();
+                const curYear = now.getFullYear();
+
+                const prevMonth = curMonth === 0 ? 11 : curMonth - 1;
+                const prevYear = curMonth === 0 ? curYear - 1 : curYear;
+
+                const curWeeks = Array(4).fill(0);
+                const prevWeeks = Array(4).fill(0);
+
+                state.riwayat.forEach(tx => {
+                    if (tx.nominal_masuk <= 0) return;
+                    const date = new Date(tx.tanggal);
+                    const txMonth = date.getMonth();
+                    const txYear = date.getFullYear();
+                    const txDay = date.getDate();
+
+                    let weekIdx = 0;
+                    if (txDay <= 7) weekIdx = 0;
+                    else if (txDay <= 14) weekIdx = 1;
+                    else if (txDay <= 21) weekIdx = 2;
+                    else weekIdx = 3;
+
+                    if (txMonth === curMonth && txYear === curYear) {
+                        curWeeks[weekIdx] += tx.nominal_masuk;
+                    } else if (txMonth === prevMonth && txYear === prevYear) {
+                        prevWeeks[weekIdx] += tx.nominal_masuk;
+                    }
+                });
+
+                const curTotal = curWeeks.reduce((a, b) => a + b, 0);
+                const prevTotal = prevWeeks.reduce((a, b) => a + b, 0);
+
+                const diffEl = document.getElementById('monthlyComparisonDiff');
+                if (diffEl) {
+                    if (prevTotal > 0) {
+                        const pct = Math.round(((curTotal - prevTotal) / prevTotal) * 100);
+                        if (pct >= 0) {
+                            diffEl.textContent = `+${pct}% vs Bulan Lalu`;
+                            diffEl.className = 'text-[10px] font-extrabold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full';
+                        } else {
+                            diffEl.textContent = `${pct}% vs Bulan Lalu`;
+                            diffEl.className = 'text-[10px] font-extrabold text-red-600 bg-red-50 dark:bg-red-950/40 px-2 py-0.5 rounded-full';
+                        }
+                    } else {
+                        diffEl.textContent = 'Mulai Menabung';
+                        diffEl.className = 'text-[10px] font-extrabold text-brand-600 bg-brand-50 dark:bg-brand-950/40 px-2 py-0.5 rounded-full';
+                    }
+                }
+
+                myMonthlyChart = new Chart(compareCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
+                        datasets: [
+                            {
+                                label: 'Bulan Lalu',
+                                data: prevWeeks,
+                                backgroundColor: isDark ? 'rgba(148, 163, 184, 0.25)' : 'rgba(148, 163, 184, 0.4)',
+                                borderRadius: 6
+                            },
+                            {
+                                label: 'Bulan Ini',
+                                data: curWeeks,
+                                backgroundColor: '#4f73ef',
+                                borderRadius: 6
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: { color: tickColor, font: { size: 9 }, boxWidth: 10, boxHeight: 10 }
+                            },
+                            tooltip: {
+                                backgroundColor: isDark ? '#1e293b' : '#0f172a',
+                                titleColor: '#94a3b8',
+                                bodyColor: '#f1f5f9',
+                                cornerRadius: 10,
+                                callbacks: {
+                                    label: ctx => {
+                                        const v = ctx.parsed.y;
+                                        return `${ctx.dataset.label}: ${formatRupiah(v)}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: { display: false },
+                            x: { grid: { display: false }, border: { display: false }, ticks: { color: tickColor, font: { size: 9 } } }
+                        }
+                    }
+                });
+            }
+        }
+
+        /* ========================= SISTEM REKOMENDASI HARI EFEKTIF MENABUNG ========================= */
+        function calculateEffectiveSavingDay() {
+            const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            
+            if (!state.riwayat || state.riwayat.length === 0) {
+                return {
+                    dayName: 'Jumat',
+                    recommendation: 'Belum ada data transaksi. Kami menyarankan hari <b>Senin</b> (untuk memulai minggu secara konsisten) atau <b>Jumat</b> (menyisihkan sisa anggaran setelah gajian).'
+                };
+            }
+
+            const dayFrequency = Array(7).fill(0);
+            const dayAmounts = Array(7).fill(0);
+
+            state.riwayat.forEach(tx => {
+                if (tx.nominal_masuk > 0) {
+                    const date = new Date(tx.tanggal);
+                    const dayIndex = date.getDay();
+                    dayFrequency[dayIndex]++;
+                    dayAmounts[dayIndex] += tx.nominal_masuk;
+                }
+            });
+
+            let maxFreqIndex = -1;
+            let maxFreq = -1;
+            for (let i = 0; i < 7; i++) {
+                if (dayFrequency[i] > maxFreq) {
+                    maxFreq = dayFrequency[i];
+                    maxFreqIndex = i;
+                }
+            }
+
+            let maxAmountIndex = -1;
+            let maxAmount = -1;
+            for (let i = 0; i < 7; i++) {
+                if (dayAmounts[i] > maxAmount) {
+                    maxAmount = dayAmounts[i];
+                    maxAmountIndex = i;
+                }
+            }
+
+            if (maxFreq <= 0) {
+                return {
+                    dayName: 'Jumat',
+                    recommendation: 'Belum ada setoran tabungan. Kami menyarankan hari <b>Senin</b> atau <b>Jumat</b> sebagai jadwal awal.'
+                };
+            }
+
+            const bestFreqDay = dayNames[maxFreqIndex];
+            const bestAmountDay = dayNames[maxAmountIndex];
+            
+            let recommendation = `Anda paling sering menabung pada hari <b>${bestFreqDay}</b> (${maxFreq} kali).`;
+            
+            if (maxFreqIndex !== maxAmountIndex) {
+                recommendation += ` Selain itu, nominal setoran terbesar Anda terjadi pada hari <b>${bestAmountDay}</b> (Total: ${formatRupiah(dayAmounts[maxAmountIndex])}).`;
+            } else {
+                recommendation += ` Pada hari tersebut, Anda juga menyetor dengan akumulasi tertinggi sebesar ${formatRupiah(dayAmounts[maxAmountIndex])}.`;
+            }
+
+            recommendation += ` Gunakan hari <b>${bestFreqDay}</b> sebagai waktu utama Anda menabung agar kebiasaan menyisihkan uang tetap terjaga optimal.`;
+
+            return {
+                dayName: bestFreqDay,
+                recommendation
+            };
+        }
+
+        function updateSavingRecommendations() {
+            const rec = calculateEffectiveSavingDay();
+            
+            // Home Panel elements
+            const homeBadge = document.getElementById('homeBestDayBadge');
+            const homeText = document.getElementById('homeBestDayText');
+            if (homeBadge) homeBadge.textContent = rec.dayName;
+            if (homeText) homeText.innerHTML = rec.recommendation;
+
+            // Analisis Panel elements
+            const analisisBadge = document.getElementById('analisisBestDayBadge');
+            const analisisText = document.getElementById('analisisBestDayText');
+            if (analisisBadge) analisisBadge.textContent = rec.dayName;
+            if (analisisText) analisisText.innerHTML = rec.recommendation;
+        }
+
+        /* ========================= FAQ SYSTEM HANDLER ========================= */
+        function toggleFaq(faqId) {
+            const body = document.getElementById(faqId);
+            const icon = document.getElementById(faqId + '-icon');
+            if (!body) return;
+
+            const isHidden = body.classList.contains('hidden');
+            body.classList.toggle('hidden', !isHidden);
+            if (icon) {
+                icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0)';
+            }
+        }
+
+        /* ========================= TARGET CALCULATOR SIMULATION ========================= */
+        function calculateEstimation() {
+            const targetAmount = parseFloat(document.getElementById('calcTargetAmount').value);
+            const savingAmount = parseFloat(document.getElementById('calcSavingAmount').value);
+            const frequency = parseInt(document.getElementById('calcFrequency').value);
+
+            if (isNaN(targetAmount) || targetAmount <= 0 || isNaN(savingAmount) || savingAmount <= 0) {
+                showToast('Masukkan target nominal dan setoran yang valid', 'error');
+                return;
+            }
+
+            const savingTimes = Math.ceil(targetAmount / savingAmount);
+            const totalDays = savingTimes * frequency;
+
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + totalDays);
+
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = targetDate.toLocaleDateString('id-ID', options);
+
+            let durationText = '';
+            if (totalDays >= 365) {
+                const years = Math.floor(totalDays / 365);
+                const remainingDays = totalDays % 365;
+                const months = Math.floor(remainingDays / 30);
+                durationText = `${years} Tahun ${months} Bulan`;
+            } else if (totalDays >= 30) {
+                const months = Math.floor(totalDays / 30);
+                const days = totalDays % 30;
+                durationText = days > 0 ? `${months} Bulan ${days} Hari` : `${months} Bulan`;
+            } else {
+                durationText = `${totalDays} Hari`;
+            }
+
+            document.getElementById('calcDaysRequired').textContent = savingTimes;
+            document.getElementById('calcDurationText').textContent = durationText;
+            document.getElementById('calcTargetDateText').textContent = formattedDate;
+
+            document.getElementById('calcResultCard').classList.remove('hidden');
+        }
+
+        /* ========================= SISTEM BADGE & PENCAPAIAN ========================= */
+        function checkAndUpdateBadges() {
+            if (!state.currentUser) return;
+            
+            const badges = {
+                first_saver: {
+                    title: 'First Saver',
+                    desc: 'Melakukan setoran pertama',
+                    icon: '🌟',
+                    unlocked: false
+                },
+                million_club: {
+                    title: 'Jutawan',
+                    desc: 'Total tabungan mencapai Rp 1 Juta',
+                    icon: '💎',
+                    unlocked: false
+                },
+                target_achiever: {
+                    title: 'Target Clear',
+                    desc: 'Berhasil menyelesaikan target pertama',
+                    icon: '🏆',
+                    unlocked: false
+                },
+                multi_target: {
+                    title: 'Kolektor',
+                    desc: 'Memiliki 3+ target aktif',
+                    icon: '🎯',
+                    unlocked: false
+                }
+            };
+
+            const totalSetoran = state.riwayat.filter(r => r.nominal_masuk > 0).reduce((sum, r) => sum + r.nominal_masuk, 0);
+            const totalTx = state.riwayat.filter(r => r.nominal_masuk > 0).length;
+            if (totalTx > 0) {
+                badges.first_saver.unlocked = true;
+            }
+
+            if (totalSetoran >= 1000000) {
+                badges.million_club.unlocked = true;
+            }
+
+            const completedTargets = state.targets.filter(t => getTerkumpul(t.id_target) >= t.nominal_target).length;
+            if (completedTargets > 0) {
+                badges.target_achiever.unlocked = true;
+            }
+
+            const activeTargets = state.targets.filter(t => getTerkumpul(t.id_target) < t.nominal_target).length;
+            if (activeTargets >= 3) {
+                badges.multi_target.unlocked = true;
+            }
+
+            const container = document.getElementById('badgesGrid');
+            if (container) {
+                container.innerHTML = Object.keys(badges).map(key => {
+                    const badge = badges[key];
+                    return `
+                        <div class="flex flex-col items-center text-center ${badge.unlocked ? 'opacity-100' : 'opacity-40'}">
+                            <div class="w-11 h-11 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-2xl relative">
+                                ${badge.icon}
+                                ${badge.unlocked ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white dark:border-slate-900"></span>' : ''}
+                            </div>
+                            <span class="text-[9px] font-bold text-navy-800 dark:text-slate-300 mt-1.5 truncate w-full">${escapeHtml(badge.title)}</span>
+                            <span class="text-[8px] text-gray-400 dark:text-slate-500 leading-tight mt-0.5 truncate w-full" title="${escapeHtml(badge.desc)}">${escapeHtml(badge.desc)}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        /* ========================= JURNAL KEUANGAN CONTROLLER ========================= */
+        function getJournalEntries() {
+            if (!state.currentUser) return [];
+            const allJournals = JSON.parse(localStorage.getItem('tabungin_journals') || '[]');
+            return allJournals.filter(j => j.username === state.currentUser.username);
+        }
+
+        function saveJournalEntry(e) {
+            e.preventDefault();
+            const title = document.getElementById('journalTitle').value.trim();
+            const content = document.getElementById('journalContent').value.trim();
+            const mood = document.querySelector('input[name="journalMood"]:checked').value;
+
+            if (!title || !content) return;
+
+            const allJournals = JSON.parse(localStorage.getItem('tabungin_journals') || '[]');
+            
+            const newEntry = {
+                id: 'j_' + Date.now(),
+                username: state.currentUser.username,
+                title,
+                content,
+                mood,
+                date: new Date().toISOString()
+            };
+
+            allJournals.unshift(newEntry);
+            localStorage.setItem('tabungin_journals', JSON.stringify(allJournals));
+
+            e.target.reset();
+            closeModal('modalTambahJurnal');
+            renderJournal();
+            showToast('Jurnal berhasil disimpan 📝', 'success');
+        }
+
+        function deleteJournalEntry(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus catatan ini?')) return;
+            const allJournals = JSON.parse(localStorage.getItem('tabungin_journals') || '[]');
+            const filtered = allJournals.filter(j => j.id !== id);
+            localStorage.setItem('tabungin_journals', JSON.stringify(filtered));
+            renderJournal();
+            showToast('Catatan jurnal berhasil dihapus', 'success');
+        }
+
+        function renderJournal() {
+            const container = document.getElementById('journalListContainer');
+            if (!container) return;
+
+            const entries = getJournalEntries();
+
+            if (entries.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 text-center border border-gray-100 dark:border-slate-800 shadow-card">
+                        <p class="text-xs text-gray-400 leading-normal">Belum ada catatan jurnal. Tulis evaluasi keuangan atau kiat hemat harian Anda sekarang!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = entries.map(j => {
+                return `
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-gray-100 dark:border-slate-800 shadow-card relative">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl">${j.mood || '😊'}</span>
+                                <div>
+                                    <h4 class="text-xs font-bold text-navy-900 dark:text-white">${escapeHtml(j.title)}</h4>
+                                    <p class="text-[10px] text-gray-400 mt-0.5">${formatTanggal(j.date)}</p>
+                                </div>
+                            </div>
+                            <button onclick="deleteJournalEntry('${j.id}')" class="text-gray-400 hover:text-red-500 transition p-1">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                        <p class="text-[11px] text-gray-600 dark:text-slate-400 mt-2.5 leading-relaxed bg-gray-50 dark:bg-slate-850 p-2.5 rounded-xl border border-gray-100/50 dark:border-slate-800/80">
+                            ${escapeHtml(j.content)}
+                        </p>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
         }
 
         /* ========================= SETTINGS & PERSONALIZATION CONTROLLER ========================= */
         function selectAvatar(seed) {
             state.avatarSeed = seed;
-            document.querySelectorAll('#modalSettings img').forEach(img => {
-                const isSelected = img.src.includes(`seed=${seed}`);
-                img.parentElement.classList.toggle('ring-2', isSelected);
-                img.parentElement.classList.toggle('ring-brand-500', isSelected);
+            document.querySelectorAll('#settingsAvatarPicker button').forEach(btn => {
+                const isSelected = btn.getAttribute('data-seed') === seed;
+                btn.classList.toggle('ring-2', isSelected);
+                btn.classList.toggle('ring-brand-500', isSelected);
+                btn.classList.toggle('scale-105', isSelected);
             });
         }
 
@@ -1917,10 +3512,14 @@
             const isGuest = !state.currentUser;
             const avatarSec = document.getElementById('settingsAvatarSection');
             if (avatarSec) avatarSec.classList.toggle('hidden', isGuest);
-            
+
+            if (!isGuest) {
+                selectAvatar(state.avatarSeed || 'Felix');
+            }
+
             // Set input value
             document.getElementById('settingApiUrl').value = state.apiUrl || '';
-            
+
             openModal('modalSettings');
         }
 
@@ -1942,7 +3541,7 @@
                     users[userIdx].avatar = state.avatarSeed;
                     localStorage.setItem('tabungin_users', JSON.stringify(users));
                 }
-                
+
                 fetchData();
             } else {
                 // If not logged in, update connection badge on login screen
@@ -2061,7 +3660,7 @@
             }
             lucide.createIcons();
         }
-        
+
         document.addEventListener('DOMContentLoaded', () => {
             // Apply Darkmode if saved
             if (localStorage.getItem('tabungin_darkmode') === 'enabled') {
@@ -2071,11 +3670,13 @@
             // Sync API URL to settings input
             document.getElementById('settingApiUrl').value = state.apiUrl;
 
-            // Tampilkan status koneksi cloud di Auth screen jika sudah dikonfigurasi
-            if (state.apiUrl) {
-                const versionEl = document.querySelector('#authScreen p:last-child');
-                if (versionEl) {
+            // Tampilkan status koneksi cloud/offline di Auth screen
+            const versionEl = document.querySelector('#authScreen p:last-child');
+            if (versionEl) {
+                if (state.apiUrl) {
                     versionEl.innerHTML = 'Tabungin v1.1.0 • <span class="text-emerald-400 font-semibold">☁️ Cloud Connected</span>';
+                } else {
+                    versionEl.innerHTML = 'Tabungin v1.1.0 • <span class="text-amber-400 font-semibold">📴 Local Offline Mode</span>';
                 }
             }
 
@@ -2084,8 +3685,12 @@
                 showToast("Data disinkronkan dari cloud ☁️", "success");
             });
 
-            checkSession();
             lucide.createIcons();
+
+            // Show splash for a minimum of 1.4s before proceeding (allows animations to play)
+            setTimeout(() => {
+                checkSession();
+            }, 1400);
         });
     </script>
 </body>
