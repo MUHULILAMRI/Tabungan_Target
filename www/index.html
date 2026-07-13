@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>Tabungin â€¢ Catatan Target Tabungan</title>
+    <title>Tabungin - Catatan Target Tabungan</title>
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json" />
@@ -843,7 +843,7 @@
                 </div>
                 <!-- App Name -->
                 <h1 class="text-white text-2xl font-extrabold tracking-tight">Tabungin</h1>
-                <p class="text-blue-200/70 text-xs mt-1 font-medium">Kelola tabungan, raih impianmu ðŸŽ¯</p>
+                <p class="text-blue-200/70 text-xs mt-1 font-medium">Kelola tabungan, raih impianmu</p>
             </div>
 
             <!-- ====== FLOATING CARD ====== -->
@@ -1047,10 +1047,10 @@
                 </div>
                 <div class="mt-4">
                     <button onclick="openCloudConfigModal()" class="text-blue-300/30 hover:text-blue-200/50 text-xs transition duration-200">
-                        âš™ï¸ Pengaturan Cloud / Offline
+                        Pengaturan Cloud / Offline
                     </button>
                 </div>
-                <p class="text-blue-300/20 text-[10px] mt-1">Tabungin v1.1.0 â€¢ offline fallback ready</p>
+                <p class="text-blue-300/20 text-[10px] mt-1">Tabungin v1.1.0 | offline fallback ready</p>
             </div>
             </div>
         </div>
@@ -1073,7 +1073,7 @@
                                     class="w-full h-full object-cover" alt="Avatar">
                             </button>
                             <div>
-                                <p class="text-white/60 text-xs">Halo, <span id="userDisplayName">User</span> ðŸ‘‹</p>
+                                <p class="text-white/60 text-xs">Halo, <span id="userDisplayName">User</span></p>
                                 <h1 class="text-white font-bold text-base leading-tight">Impianmu, Targetmu</h1>
                             </div>
                         </div>
@@ -1171,7 +1171,7 @@
                             <p id="motivationalQuoteText" class="text-xs font-semibold text-navy-900 dark:text-slate-200 mt-0.5 leading-relaxed italic">
                                 "Mari menabung untuk masa depan yang lebih cerah!"
                             </p>
-                            <p id="motivationalQuoteAuthor" class="text-[10px] text-brand-500 dark:text-brand-400 font-bold mt-0.5">â€” Tips Hari Ini</p>
+                            <p id="motivationalQuoteAuthor" class="text-[10px] text-brand-500 dark:text-brand-400 font-bold mt-0.5">- Tips Hari Ini</p>
                         </div>
                     </div>
                 </section>
@@ -1872,8 +1872,32 @@
                         <button onclick="openModal('modalQris')"
                             class="w-full mt-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-xs py-3 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/10 active:scale-[0.98]">
                             <i data-lucide="coffee" class="w-4 h-4"></i>
-                            Dukung Pengembang â˜•
+                            Dukung Pengembang
                         </button>
+                    </div>
+
+                    <!-- Developer Info Card -->
+                    <div class="border-t border-gray-100 dark:border-slate-800 pt-4">
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Pengembang Aplikasi</label>
+                        <div class="mt-2.5 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="user" class="w-5 h-5"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200">MUH. ULIL AMRI, S.Kom</h4>
+                                <p class="text-[10px] text-slate-400 font-semibold mt-0.5">Developer & Creator</p>
+                                <div class="mt-2 space-y-1">
+                                    <a href="tel:085998006060" class="flex items-center gap-1.5 text-[11px] text-blue-600 dark:text-blue-400 hover:underline">
+                                        <i data-lucide="phone" class="w-3 h-3 flex-shrink-0"></i>
+                                        085998006060
+                                    </a>
+                                    <a href="mailto:muhulila0@gmail.com" class="flex items-center gap-1.5 text-[11px] text-blue-600 dark:text-blue-400 hover:underline">
+                                        <i data-lucide="mail" class="w-3 h-3 flex-shrink-0"></i>
+                                        muhulila0@gmail.com
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Cloud Sync Settings -->
@@ -2274,12 +2298,12 @@
 
             if (state.currentUser && state.currentUser.quote && state.currentUser.quote.trim()) {
                 textEl.innerHTML = `"${escapeHtml(state.currentUser.quote)}"`;
-                authorEl.textContent = `â€” ${escapeHtml(state.currentUser.name)}`;
+                authorEl.textContent = `- ${escapeHtml(state.currentUser.name)}`;
             } else {
                 const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
                 const tipIdx = dayOfYear % TIPS_LIST.length;
                 textEl.innerHTML = `"${escapeHtml(TIPS_LIST[tipIdx])}"`;
-                authorEl.textContent = "â€” Tips Hari Ini";
+                authorEl.textContent = "- Tips Hari Ini";
             }
         }
 
@@ -4620,9 +4644,9 @@
                 const versionEl = document.querySelector('#authScreen p:last-child');
                 if (versionEl) {
                     if (state.apiUrl) {
-                        versionEl.innerHTML = 'Tabungin v1.1.0 â€¢ <span class="text-emerald-400 font-semibold">â˜ï¸ Cloud Connected</span>';
+                        versionEl.innerHTML = 'Tabungin v1.1.0 | <span class="text-emerald-400 font-semibold">Cloud Connected</span>';
                     } else {
-                        versionEl.innerHTML = 'Tabungin v1.1.0 â€¢ <span class="text-amber-400 font-semibold">ðŸ“´ Local Offline Mode</span>';
+                        versionEl.innerHTML = 'Tabungin v1.1.0 | <span class="text-amber-400 font-semibold">Local Offline Mode</span>';
                     }
                 }
             }
