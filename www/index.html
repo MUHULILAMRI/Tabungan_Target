@@ -799,7 +799,7 @@
     <div class="max-w-md mx-auto min-h-screen bg-[#f8fafc] dark:bg-[#030712] relative shadow-2xl overflow-x-hidden flex flex-col">
         <!-- ===================== SCREEN: LOGIN / REGISTER ===================== -->
         <div id="authScreen"
-            class="absolute inset-0 z-50 overflow-y-auto flex flex-col" style="background: linear-gradient(160deg,#020617 0%,#07101f 45%,#0d0a20 100%)">
+            class="absolute inset-0 z-50 overflow-y-auto flex flex-col bg-[#f8fafc] dark:bg-slate-950 transition-colors duration-200">
 
             <!-- Success Overlay (full-screen) -->
             <div id="loginSuccessOverlay" class="hidden absolute inset-0 z-[60] flex flex-col items-center justify-center overflow-hidden">
@@ -813,158 +813,289 @@
                 <p class="text-white/40 text-xs mt-1.5" style="animation: slideUpFade 0.4s ease both 0.75s">Memuat dasbor Anda…</p>
             </div>
 
-            <!-- Aurora background mesh -->
-            <div class="absolute inset-0 pointer-events-none overflow-hidden">
-                <div class="absolute w-[500px] h-[500px] rounded-full opacity-20 animate-blob-1"
-                    style="top:-10%;left:-20%;background:radial-gradient(circle,#4f46e5,transparent 70%);"></div>
-                <div class="absolute w-[450px] h-[450px] rounded-full opacity-15 animate-blob-2"
-                    style="bottom:-15%;right:-15%;background:radial-gradient(circle,#2f5fd6,transparent 70%);"></div>
-                <div class="absolute w-[300px] h-[300px] rounded-full opacity-10 animate-float-slow"
-                    style="top:40%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,#7c3aed,transparent 70%);animation-delay:-3s"></div>
-                <!-- Grid lines -->
-                <svg class="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
-                    <defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
-                    </pattern></defs>
-                    <rect width="100%" height="100%" fill="url(#grid)"/>
-                </svg>
-            </div>
-
-            <!-- Main layout -->
-            <div class="relative z-10 flex flex-col min-h-full px-6 py-8">
-
-                <!-- Top: Brand logo -->
-                <div class="flex-shrink-0 auth-reveal">
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#4f7fe0,#6366f1)">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                        </div>
-                        <span class="text-white font-black text-xl tracking-tight">Tabungin</span>
-                    </div>
+            <!-- Curved Blue Top Header -->
+            <div class="relative w-full h-56 bg-gradient-to-br from-[#2f5fd6] via-[#2563eb] to-[#1e40af] overflow-hidden flex items-center justify-center flex-shrink-0">
+                <!-- Wave SVG at bottom of header -->
+                <div class="absolute bottom-0 left-0 right-0">
+                    <svg viewBox="0 0 1440 320" class="w-full h-12 fill-current text-[#f8fafc] dark:text-slate-950 preserve-3d">
+                        <path d="M0,192L48,197.3C96,203,192,213,288,208C384,203,480,181,576,181.3C672,181,768,203,864,197.3C960,192,1056,160,1152,144C1248,128,1344,128,1392,128L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    </svg>
                 </div>
 
-                <!-- Middle: Headline + Form -->
-                <div class="flex-grow flex flex-col justify-center gap-8">
+                <!-- Clouds Background (opacity 15%) -->
+                <div class="absolute inset-0 opacity-15 pointer-events-none">
+                    <svg class="absolute top-10 left-6 w-16 h-10 text-white fill-current" viewBox="0 0 100 60">
+                        <path d="M20 50 C20 40, 30 35, 40 40 C45 30, 65 30, 70 40 C80 35, 90 45, 85 50 Z" />
+                    </svg>
+                    <svg class="absolute top-16 right-10 w-20 h-12 text-white fill-current" viewBox="0 0 100 60">
+                        <path d="M20 50 C20 40, 30 35, 40 40 C45 30, 65 30, 70 40 C80 35, 90 45, 85 50 Z" />
+                    </svg>
+                    <!-- Small birds silhouettes -->
+                    <svg class="absolute top-8 right-32 w-8 h-4 text-white/50 fill-none stroke-current" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 12">
+                        <path d="M2 10 Q6 2 12 10 Q18 2 22 10" />
+                    </svg>
+                    <svg class="absolute top-14 right-48 w-6 h-3 text-white/40 fill-none stroke-current" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 12">
+                        <path d="M2 10 Q6 2 12 10 Q18 2 22 10" />
+                    </svg>
+                </div>
 
-                    <!-- Headline -->
-                    <div class="auth-child-1">
-                        <h2 class="text-white font-black text-[2rem] leading-tight tracking-tight">Selamat datang<br><span style="background:linear-gradient(90deg,#818cf8,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent">kembali 👋</span></h2>
-                        <p class="text-white/40 text-sm mt-2 font-medium">Kelola target impianmu dengan cerdas.</p>
-                    </div>
+                <!-- Toples (Jar) + Tunas (Sprout) SVG -->
+                <div class="relative z-10 flex items-center justify-center mt-4">
+                    <svg class="w-36 h-36 drop-shadow-2xl animate-float-slow" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Sprout Leaves -->
+                        <!-- Left leaf -->
+                        <path d="M100 45C82 45 72 32 77 15C92 10 100 30 100 45Z" fill="#4ade80" />
+                        <!-- Right leaf -->
+                        <path d="M100 45C118 45 128 32 123 15C108 10 100 30 100 45Z" fill="#22c55e" />
+                        <!-- Stem -->
+                        <path d="M100 42V55" stroke="#22c55e" stroke-width="4.5" stroke-linecap="round" />
 
-                    <!-- Tab switcher -->
-                    <div class="auth-child-2">
-                        <div class="flex border-b" style="border-color:rgba(255,255,255,0.08)">
-                            <button id="tabLogin" onclick="switchAuthTab('login')" class="auth-tab-pill tab-active">Masuk</button>
-                            <button id="tabRegister" onclick="switchAuthTab('register')" class="auth-tab-pill">Daftar Akun</button>
-                        </div>
+                        <!-- Jar Lid/Rim -->
+                        <rect x="75" y="55" width="50" height="10" rx="5" fill="#f8fafc" />
+                        
+                        <!-- Jar Body with light blue inner glass gradient -->
+                        <path d="M80 65C62 82 62 138 80 160C90 172 110 172 120 160C138 138 138 82 120 65H80Z" fill="white" fill-opacity="0.9" stroke="white" stroke-width="6" stroke-linejoin="round" />
+                        <path d="M80 65C62 82 62 138 80 160C90 172 110 172 120 160C138 138 138 82 120 65H80Z" fill="url(#jarInnerGrad)" />
+
+                        <!-- Bar Chart Progress inside Jar -->
+                        <rect x="85" y="118" width="8" height="28" rx="2.5" fill="#60a5fa" />
+                        <rect x="96" y="102" width="8" height="44" rx="2.5" fill="#3b82f6" />
+                        <rect x="107" y="90" width="8" height="56" rx="2.5" fill="#2563eb" />
+                        
+                        <!-- Curved trend line under bars -->
+                        <path d="M81 150C92 144 102 146 119 136" stroke="#93c5fd" stroke-width="3" stroke-linecap="round" />
+
+                        <defs>
+                            <linearGradient id="jarInnerGrad" x1="100" y1="65" x2="100" y2="160" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="white" stop-opacity="0.15"/>
+                                <stop offset="1" stop-color="#93c5fd" stop-opacity="0.45"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Main Layout Container -->
+            <div class="relative z-10 flex flex-col flex-grow px-6 py-6 justify-between">
+                <div>
+                    <!-- Headline Info -->
+                    <div class="text-center mt-2 px-4 auth-reveal">
+                        <h2 id="authTitle" class="text-2xl font-extrabold text-[#0f172a] dark:text-white tracking-tight">Selamat Datang!</h2>
+                        <p id="authSubtitle" class="text-xs text-slate-400 dark:text-slate-400 mt-2 leading-relaxed px-4">Masuk untuk melanjutkan perjalanan menabungmu</p>
                     </div>
 
                     <!-- FORM LOGIN -->
-                    <form id="formLogin" class="flex flex-col gap-4 auth-child-3">
+                    <form id="formLogin" class="flex flex-col gap-4 mt-6 auth-child-2">
                         <div class="auth-field">
-                            <label>Username</label>
-                            <div class="auth-input-wrap">
-                                <i data-lucide="user" class="w-4 h-4"></i>
-                                <input required type="text" id="loginUsername" placeholder="Masukkan username Anda" autocomplete="username" />
+                            <label for="loginUsername" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Username atau Email</label>
+                            <div class="relative flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 dark:focus-within:ring-blue-900/30 transition-all duration-200">
+                                <span class="absolute left-4 text-slate-400">
+                                    <i data-lucide="mail" class="w-5 h-5"></i>
+                                </span>
+                                <input required type="text" id="loginUsername" placeholder="Masukkan email kamu" class="w-full bg-transparent border-none outline-none py-3.5 pl-12 pr-4 text-sm text-slate-800 dark:text-slate-100 font-medium placeholder-slate-300 dark:placeholder-slate-600" autocomplete="username" />
                             </div>
                         </div>
+                        
                         <div class="auth-field">
-                            <label>Password</label>
-                            <div class="auth-input-wrap">
-                                <i data-lucide="lock" class="w-4 h-4"></i>
-                                <input required type="password" id="loginPassword" placeholder="Kata sandi Anda" autocomplete="current-password" />
-                                <button type="button" class="eye-btn" onclick="togglePasswordVisibility('loginPassword', this)">
-                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                            <label for="loginPassword" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Password</label>
+                            <div class="relative flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 dark:focus-within:ring-blue-900/30 transition-all duration-200">
+                                <span class="absolute left-4 text-slate-400">
+                                    <i data-lucide="lock" class="w-5 h-5"></i>
+                                </span>
+                                <input required type="password" id="loginPassword" placeholder="Masukkan password kamu" class="w-full bg-transparent border-none outline-none py-3.5 pl-12 pr-12 text-sm text-slate-800 dark:text-slate-100 font-medium placeholder-slate-300 dark:placeholder-slate-600" autocomplete="current-password" />
+                                <button type="button" class="absolute right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition" onclick="togglePasswordVisibility('loginPassword', this)">
+                                    <i data-lucide="eye" class="w-5 h-5"></i>
                                 </button>
                             </div>
+                            <div class="flex justify-end mt-1">
+                                <a href="javascript:void(0)" onclick="showToast('Fitur reset password belum tersedia secara offline.', 'info')" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">Lupa Password?</a>
+                            </div>
                         </div>
-                        <div class="auth-child-4 pt-1">
-                            <button type="submit" class="auth-btn-primary">Masuk Sekarang →</button>
+
+                        <div class="mt-2">
+                            <button type="submit" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-md shadow-blue-500/20 active:scale-[0.98] transition-all duration-200">Masuk</button>
                         </div>
                     </form>
 
                     <!-- FORM REGISTER -->
-                    <form id="formRegister" class="flex-col gap-4 hidden auth-child-3">
+                    <form id="formRegister" class="flex flex-col gap-4 mt-6 hidden auth-child-2">
                         <div class="auth-field">
-                            <label>Nama Lengkap</label>
-                            <div class="auth-input-wrap">
-                                <i data-lucide="smile" class="w-4 h-4"></i>
-                                <input required type="text" id="regName" placeholder="Nama lengkap Anda" />
+                            <label for="regName" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Nama Lengkap</label>
+                            <div class="relative flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 dark:focus-within:ring-blue-900/30 transition-all duration-200">
+                                <span class="absolute left-4 text-slate-400">
+                                    <i data-lucide="user" class="w-5 h-5"></i>
+                                </span>
+                                <input required type="text" id="regName" placeholder="Nama lengkap Anda" class="w-full bg-transparent border-none outline-none py-3.5 pl-12 pr-4 text-sm text-slate-800 dark:text-slate-100 font-medium placeholder-slate-300 dark:placeholder-slate-600" />
                             </div>
                         </div>
+                        
                         <div class="auth-field">
-                            <label>Username</label>
-                            <div class="auth-input-wrap">
-                                <i data-lucide="at-sign" class="w-4 h-4"></i>
-                                <input required type="text" id="regUsername" placeholder="Buat username unik" autocomplete="username" />
+                            <label for="regUsername" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Username</label>
+                            <div class="relative flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 dark:focus-within:ring-blue-900/30 transition-all duration-200">
+                                <span class="absolute left-4 text-slate-400">
+                                    <i data-lucide="at-sign" class="w-5 h-5"></i>
+                                </span>
+                                <input required type="text" id="regUsername" placeholder="Buat username unik" class="w-full bg-transparent border-none outline-none py-3.5 pl-12 pr-4 text-sm text-slate-800 dark:text-slate-100 font-medium placeholder-slate-300 dark:placeholder-slate-600" autocomplete="username" />
                             </div>
                         </div>
+                        
                         <div class="auth-field">
-                            <label>Password</label>
-                            <div class="auth-input-wrap">
-                                <i data-lucide="lock" class="w-4 h-4"></i>
-                                <input required type="password" id="regPassword" placeholder="Min. 6 karakter" autocomplete="new-password" />
-                                <button type="button" class="eye-btn" onclick="togglePasswordVisibility('regPassword', this)">
-                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                            <label for="regPassword" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Password</label>
+                            <div class="relative flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 dark:focus-within:ring-blue-900/30 transition-all duration-200">
+                                <span class="absolute left-4 text-slate-400">
+                                    <i data-lucide="lock" class="w-5 h-5"></i>
+                                </span>
+                                <input required type="password" id="regPassword" placeholder="Min. 6 karakter" class="w-full bg-transparent border-none outline-none py-3.5 pl-12 pr-12 text-sm text-slate-800 dark:text-slate-100 font-medium placeholder-slate-300 dark:placeholder-slate-600" autocomplete="new-password" />
+                                <button type="button" class="absolute right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition" onclick="togglePasswordVisibility('regPassword', this)">
+                                    <i data-lucide="eye" class="w-5 h-5"></i>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Avatar Picker -->
                         <div class="auth-field">
-                            <label>Pilih Avatar</label>
+                            <label class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Pilih Avatar</label>
                             <div id="regAvatarPicker" class="flex gap-2 overflow-x-auto py-1 scrollbar-thin">
                                 <button type="button" onclick="selectRegAvatar('Felix')" data-seed="Felix"
                                     class="w-11 h-11 rounded-full border-2 ring-2 ring-emerald-400 border-transparent scale-105 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
                                     <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix" class="w-full h-full object-cover">
                                 </button>
                                 <button type="button" onclick="selectRegAvatar('Aria')" data-seed="Aria"
-                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    class="w-11 h-11 rounded-full border-2 border-slate-200 dark:border-slate-800 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
                                     <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Aria" class="w-full h-full object-cover">
                                 </button>
                                 <button type="button" onclick="selectRegAvatar('Jack')" data-seed="Jack"
-                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    class="w-11 h-11 rounded-full border-2 border-slate-200 dark:border-slate-800 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
                                     <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Jack" class="w-full h-full object-cover">
                                 </button>
                                 <button type="button" onclick="selectRegAvatar('Milo')" data-seed="Milo"
-                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    class="w-11 h-11 rounded-full border-2 border-slate-200 dark:border-slate-800 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
                                     <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Milo" class="w-full h-full object-cover">
                                 </button>
                                 <button type="button" onclick="selectRegAvatar('Lulu')" data-seed="Lulu"
-                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    class="w-11 h-11 rounded-full border-2 border-slate-200 dark:border-slate-800 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
                                     <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Lulu" class="w-full h-full object-cover">
                                 </button>
                                 <button type="button" onclick="selectRegAvatar('Zoe')" data-seed="Zoe"
-                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    class="w-11 h-11 rounded-full border-2 border-slate-200 dark:border-slate-800 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
                                     <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe" class="w-full h-full object-cover">
                                 </button>
                                 <button type="button" onclick="selectRegAvatar('Oliver')" data-seed="Oliver"
-                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    class="w-11 h-11 rounded-full border-2 border-slate-200 dark:border-slate-800 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
                                     <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver" class="w-full h-full object-cover">
                                 </button>
                                 <button type="button" onclick="selectRegAvatar('Mia')" data-seed="Mia"
-                                    class="w-11 h-11 rounded-full border-2 border-white/10 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
+                                    class="w-11 h-11 rounded-full border-2 border-slate-200 dark:border-slate-800 overflow-hidden flex-shrink-0 transition-all duration-200 hover:scale-110 active:scale-95">
                                     <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Mia" class="w-full h-full object-cover">
                                 </button>
                             </div>
                         </div>
 
-                        <div class="auth-child-4 pt-1">
-                            <button type="submit" class="auth-btn-secondary">Buat Akun Baru →</button>
+                        <div class="mt-2">
+                            <button type="submit" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md shadow-emerald-500/20 active:scale-[0.98] transition-all duration-200">Daftar Akun Baru</button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Bottom -->
-                <div class="flex-shrink-0 mt-6 text-center auth-child-5">
-                    <button onclick="openCloudConfigModal()"
-                        class="text-white/30 hover:text-white/60 text-xs font-medium transition-colors duration-200">
-                        ⚙️ Pengaturan Cloud / Offline
-                    </button>
-                    <p class="text-white/20 text-[10px] mt-1">Tabungin v1.1.0 • offline fallback ready</p>
+                <!-- Social Logins Section -->
+                <div id="socialLoginSection" class="mt-6 flex flex-col gap-4 auth-child-3">
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-[1px] bg-slate-200 dark:bg-slate-800/80"></div>
+                        <span class="text-xs text-slate-400 dark:text-slate-500 font-medium">atau masuk dengan</span>
+                        <div class="flex-1 h-[1px] bg-slate-200 dark:bg-slate-800/80"></div>
+                    </div>
+                    
+                    <div class="flex justify-center gap-4">
+                        <!-- Google -->
+                        <button type="button" onclick="showToast('Login Google akan hadir pada versi rilis.', 'info')" class="flex items-center justify-center w-16 h-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800/40 active:scale-[0.95] transition-all duration-150">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                            </svg>
+                        </button>
+                        <!-- Facebook -->
+                        <button type="button" onclick="showToast('Login Facebook akan hadir pada versi rilis.', 'info')" class="flex items-center justify-center w-16 h-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800/40 active:scale-[0.95] transition-all duration-150">
+                            <svg class="w-5 h-5 text-[#1877F2] fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </button>
+                        <!-- Apple -->
+                        <button type="button" onclick="showToast('Login Apple akan hadir pada versi rilis.', 'info')" class="flex items-center justify-center w-16 h-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800/40 active:scale-[0.95] transition-all duration-150">
+                            <svg class="w-5 h-5 text-slate-800 dark:text-white fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.21.67-2.93 1.49-.62.69-1.16 1.84-1.01 2.96 1.12.09 2.27-.56 2.95-1.39z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer Switcher Link -->
+                <div class="mt-8 text-center text-xs font-semibold text-slate-400 dark:text-slate-500 pb-8 auth-child-4 z-10">
+                    <div id="footerRegisterLink">
+                        Belum punya akun? <a href="javascript:void(0)" onclick="switchAuthTab('register')" class="text-blue-600 dark:text-blue-400 hover:underline">Daftar sekarang</a>
+                    </div>
+                    <div id="footerLoginLink" class="hidden">
+                        Sudah punya akun? <a href="javascript:void(0)" onclick="switchAuthTab('login')" class="text-blue-600 dark:text-blue-400 hover:underline">Masuk sekarang</a>
+                    </div>
+                    
+                    <!-- Settings button (existing) -->
+                    <div class="mt-5">
+                        <button onclick="openCloudConfigModal()" class="text-slate-300 dark:text-slate-700 hover:text-slate-400 transition duration-200">
+                            ⚙️ Pengaturan Cloud / Offline
+                        </button>
+                    </div>
+                    <p class="text-slate-300/40 dark:text-slate-800 text-[10px] mt-1.5">Tabungin v1.1.0 • offline fallback ready</p>
+                </div>
+
+                <!-- Bottom Skyline and Nature Vector Silhouette -->
+                <div class="absolute bottom-0 left-0 right-0 pointer-events-none opacity-[0.35] dark:opacity-[0.12] flex justify-center items-end h-20 overflow-hidden">
+                    <svg class="w-full h-full text-blue-300 dark:text-blue-900 fill-current" viewBox="0 0 375 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Hills -->
+                        <path d="M-20 80 C 50 62, 100 70, 150 64 C 200 58, 280 74, 400 80 Z" opacity="0.5" />
+                        <path d="M-10 80 C 80 52, 180 76, 250 61 C 300 52, 340 70, 390 80 Z" opacity="0.8" />
+                        
+                        <!-- Buildings silhouette -->
+                        <!-- Windmill / Tower on Left -->
+                        <rect x="25" y="48" width="7" height="22" rx="0.5" />
+                        <polygon points="23,48 28.5,39 34,48" />
+                        <line x1="28.5" y1="43" x2="20" y2="43" stroke="currentColor" stroke-width="0.8" />
+                        <line x1="28.5" y1="43" x2="37" y2="43" stroke="currentColor" stroke-width="0.8" />
+                        
+                        <!-- Small houses -->
+                        <rect x="48" y="56" width="10" height="14" />
+                        <polygon points="46,56 53,50 60,56" />
+                        
+                        <rect x="68" y="59" width="9" height="11" />
+                        <polygon points="66,59 72.5,53 79,59" />
+                        
+                        <!-- Middle City High-rises -->
+                        <rect x="95" y="32" width="13" height="43" rx="0.5" />
+                        <rect x="98" y="36" width="2" height="2" fill="white" opacity="0.4" />
+                        <rect x="103" y="36" width="2" height="2" fill="white" opacity="0.4" />
+                        <rect x="98" y="40" width="2" height="2" fill="white" opacity="0.4" />
+                        <rect x="103" y="40" width="2" height="2" fill="white" opacity="0.4" />
+                        <rect x="98" y="44" width="2" height="2" fill="white" opacity="0.4" />
+                        <rect x="103" y="44" width="2" height="2" fill="white" opacity="0.4" />
+                        
+                        <rect x="113" y="39" width="15" height="36" rx="0.5" />
+                        <rect x="116" y="43" width="2" height="2" fill="white" opacity="0.4" />
+                        <rect x="122" y="43" width="2" height="2" fill="white" opacity="0.4" />
+                        <rect x="116" y="47" width="2" height="2" fill="white" opacity="0.4" />
+                        <rect x="122" y="47" width="2" height="2" fill="white" opacity="0.4" />
+                        
+                        <rect x="134" y="46" width="11" height="29" rx="0.5" />
+                        
+                        <!-- Small trees on Right -->
+                        <path d="M210 70 C205 60, 215 50, 215 70 Z" />
+                        <path d="M222 75 C215 65, 230 55, 222 75 Z" />
+                        
+                        <circle cx="250" cy="56" r="7" />
+                        <line x1="250" y1="56" x2="250" y2="75" stroke="currentColor" stroke-width="1.5" />
+                        
+                        <circle cx="270" cy="61" r="5" />
+                        <line x1="270" y1="61" x2="270" y2="75" stroke="currentColor" stroke-width="1.2" />
+                    </svg>
                 </div>
             </div>
         </div>
@@ -2828,19 +2959,42 @@
         function switchAuthTab(type) {
             const isLogin = type === 'login';
 
+            const authTitle = document.getElementById('authTitle');
+            const authSubtitle = document.getElementById('authSubtitle');
+            
+            if (isLogin) {
+                if (authTitle) authTitle.textContent = 'Selamat Datang!';
+                if (authSubtitle) authSubtitle.textContent = 'Masuk untuk melanjutkan perjalanan menabungmu';
+            } else {
+                if (authTitle) authTitle.textContent = 'Daftar Akun!';
+                if (authSubtitle) authSubtitle.textContent = 'Mulai catat target tabungan impianmu sekarang';
+            }
+
             const btnLogin = document.getElementById('tabLogin');
             const btnRegister = document.getElementById('tabRegister');
 
-            if (isLogin) {
-                btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-extrabold rounded-xl bg-gradient-to-r from-brand-500 to-indigo-600 text-white shadow-md shadow-brand-500/20 transition-all duration-300';
-                btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-300';
-            } else {
-                btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-300';
-                btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-extrabold rounded-xl bg-gradient-to-r from-brand-500 to-indigo-600 text-white shadow-md shadow-brand-500/20 transition-all duration-300';
+            if (btnLogin && btnRegister) {
+                if (isLogin) {
+                    btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-extrabold rounded-xl bg-gradient-to-r from-brand-500 to-indigo-600 text-white shadow-md shadow-brand-500/20 transition-all duration-300';
+                    btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-300';
+                } else {
+                    btnLogin.className = 'flex-1 py-2.5 text-center text-xs font-semibold rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-300';
+                    btnRegister.className = 'flex-1 py-2.5 text-center text-xs font-extrabold rounded-xl bg-gradient-to-r from-brand-500 to-indigo-600 text-white shadow-md shadow-brand-500/20 transition-all duration-300';
+                }
             }
 
-            document.getElementById('formLogin').classList.toggle('hidden', !isLogin);
-            document.getElementById('formRegister').classList.toggle('hidden', isLogin);
+            const formLogin = document.getElementById('formLogin');
+            const formRegister = document.getElementById('formRegister');
+            if (formLogin) formLogin.classList.toggle('hidden', !isLogin);
+            if (formRegister) formRegister.classList.toggle('hidden', isLogin);
+
+            const footerRegisterLink = document.getElementById('footerRegisterLink');
+            const footerLoginLink = document.getElementById('footerLoginLink');
+            if (footerRegisterLink) footerRegisterLink.classList.toggle('hidden', !isLogin);
+            if (footerLoginLink) footerLoginLink.classList.toggle('hidden', isLogin);
+
+            const socialLoginSection = document.getElementById('socialLoginSection');
+            if (socialLoginSection) socialLoginSection.classList.toggle('hidden', !isLogin);
         }
 
         function togglePasswordVisibility(inputId, buttonEl) {
