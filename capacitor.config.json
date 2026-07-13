@@ -2,5 +2,10 @@
   "appId": "com.tabungin.app",
   "appName": "Tabungin",
   "webDir": "www",
-  "bundledWebRuntime": false
+  "bundledWebRuntime": false,
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  }
 }

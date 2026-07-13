@@ -211,7 +211,6 @@
         /* ========================= BOTTOM NAV ========================= */
         .nav-tab {
             color: #94a3b8;
-            min-width: 56px;
         }
 
         .nav-tab:active {
@@ -981,7 +980,7 @@
                     <div class="absolute -bottom-24 -left-10 w-48 h-48 bg-brand-400/20 rounded-full blur-3xl"></div>
                     <div class="relative flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <button onclick="openModal('modalSettings')"
+                            <button onclick="openCloudConfigModal()"
                                 class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white overflow-hidden active:scale-95 transition">
                                 <img id="headerAvatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix"
                                     class="w-full h-full object-cover" alt="Avatar">
@@ -1075,6 +1074,21 @@
                     </div>
                 </section>
 
+                <section class="px-5 mt-6 animate-stagger-2">
+                    <div id="motivationalQuoteCard" class="bg-gradient-to-r from-brand-500/10 via-indigo-500/10 to-purple-500/10 dark:from-brand-950/40 dark:to-purple-950/40 rounded-2xl p-4 border border-brand-100/50 dark:border-slate-800/80 shadow-sm flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-400 to-indigo-500 text-white flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <span class="text-[9px] font-extrabold text-brand-600 dark:text-brand-400 uppercase tracking-widest">Motivasi Hari Ini</span>
+                            <p id="motivationalQuoteText" class="text-xs font-semibold text-navy-900 dark:text-slate-200 mt-0.5 leading-relaxed italic">
+                                "Mari menabung untuk masa depan yang lebih cerah!"
+                            </p>
+                            <p id="motivationalQuoteAuthor" class="text-[10px] text-brand-500 dark:text-brand-400 font-bold mt-0.5">— Tips Hari Ini</p>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- RECENT ACTIVITY (Home Preview) -->
                 <section class="px-5 mt-6">
                     <div class="flex items-center justify-between mb-3">
@@ -1150,13 +1164,17 @@
             <div id="panel-targets" class="tab-panel hidden flex-1 flex flex-col pb-32 px-5 pt-6">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-extrabold text-navy-900 dark:text-white">Target Tabungan</h2>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="openModal('modalChallenges')"
+                            class="bg-violet-100 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-900/60 text-[11px] font-bold px-2.5 py-2 rounded-full flex items-center gap-1 transition">
+                            <i data-lucide="trophy" class="w-3.5 h-3.5"></i> Tantangan
+                        </button>
                         <button onclick="openModal('modalKalkulator')"
-                            class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold px-3.5 py-2 rounded-full flex items-center gap-1 transition">
+                            class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-[11px] font-bold px-2.5 py-2 rounded-full flex items-center gap-1 transition">
                             <i data-lucide="calculator" class="w-3.5 h-3.5"></i> Kalkulator
                         </button>
                         <button onclick="openModal('modalTambahTarget')"
-                            class="bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold px-4 py-2 rounded-full flex items-center gap-1 transition">
+                            class="bg-brand-500 hover:bg-brand-600 text-white text-[11px] font-bold px-3 py-2 rounded-full flex items-center gap-1 transition">
                             <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
                         </button>
                     </div>
@@ -1385,34 +1403,34 @@
 
                     <!-- Beranda -->
                     <button onclick="switchTab('home')" id="tab-home"
-                        class="nav-tab active-tab flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all duration-200">
+                        class="nav-tab active-tab flex-1 min-w-0 max-w-[72px] flex flex-col items-center justify-center gap-0.5 px-1 py-1.5 rounded-xl transition-all duration-200">
                         <i data-lucide="home" class="w-5 h-5"></i>
                         <span class="text-[10px] font-semibold">Beranda</span>
                     </button>
 
                     <!-- Target -->
                     <button onclick="switchTab('targets')" id="tab-targets"
-                        class="nav-tab flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all duration-200">
+                        class="nav-tab flex-1 min-w-0 max-w-[72px] flex flex-col items-center justify-center gap-0.5 px-1 py-1.5 rounded-xl transition-all duration-200">
                         <i data-lucide="target" class="w-5 h-5"></i>
                         <span class="text-[10px] font-semibold">Target</span>
                     </button>
 
                     <!-- Tombol Tambah (tengah) -->
                     <button onclick="openModal('modalTambahTarget')"
-                        class="quick-btn -mt-6 w-14 h-14 rounded-full bg-brand-500 text-white shadow-lg shadow-brand-500/40 flex items-center justify-center transition-all duration-200 active:scale-90 hover:bg-brand-600">
+                        class="quick-btn -mt-6 w-14 h-14 rounded-full bg-brand-500 text-white shadow-lg shadow-brand-500/40 flex items-center justify-center transition-all duration-200 active:scale-90 hover:bg-brand-600 flex-shrink-0">
                         <i data-lucide="plus" class="w-6 h-6"></i>
                     </button>
 
                     <!-- Transaksi -->
                     <button onclick="switchTab('transaksi')" id="tab-transaksi"
-                        class="nav-tab flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all duration-200">
+                        class="nav-tab flex-1 min-w-0 max-w-[72px] flex flex-col items-center justify-center gap-0.5 px-1 py-1.5 rounded-xl transition-all duration-200">
                         <i data-lucide="history" class="w-5 h-5"></i>
                         <span class="text-[10px] font-semibold">Transaksi</span>
                     </button>
 
                     <!-- Analisis -->
                     <button onclick="switchTab('analisis')" id="tab-analisis"
-                        class="nav-tab flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all duration-200">
+                        class="nav-tab flex-1 min-w-0 max-w-[72px] flex flex-col items-center justify-center gap-0.5 px-1 py-1.5 rounded-xl transition-all duration-200">
                         <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
                         <span class="text-[10px] font-semibold">Analisis</span>
                     </button>
@@ -1539,7 +1557,7 @@
                     </div>
 
                     <!-- Detail Actions -->
-                    <div class="grid grid-cols-2 gap-3 shrink-0">
+                    <div id="detailActionButtons" class="grid grid-cols-2 gap-3 shrink-0">
                         <button onclick="setoranBaruAction()"
                             class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i> Setor Tabungan
@@ -1719,6 +1737,58 @@
                         </div>
                     </div>
 
+                    <!-- Profile Personalization (Logged-in only) -->
+                    <div id="settingsProfileSection" class="border-t border-gray-100 dark:border-slate-800 pt-4 space-y-4">
+                        <div>
+                            <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Nama Lengkap</label>
+                            <input type="text" id="settingDisplayName" placeholder="Nama Lengkap Anda"
+                                class="w-full mt-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white" />
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Kata Motivasi Menabung</label>
+                            <textarea id="settingMotivationalQuote" rows="2" placeholder="Tulis kata motivasimu sendiri..."
+                                class="w-full mt-2 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400/40 text-gray-900 dark:text-white"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Notifikasi Pengingat (Reminders) -->
+                    <div id="settingsReminderSection" class="border-t border-gray-100 dark:border-slate-800 pt-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Pengingat Menabung</label>
+                                <p class="text-[10px] text-gray-400">Dapatkan notifikasi penyemangat</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="settingReminderToggle" class="sr-only peer" onchange="toggleReminderSetting()" />
+                                <div class="w-11 h-6 bg-gray-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                            </label>
+                        </div>
+                        <div id="reminderTimeOptions" class="hidden grid grid-cols-2 gap-3 mt-2">
+                            <div>
+                                <label class="text-[10px] text-gray-400 font-semibold">Frekuensi</label>
+                                <select id="settingReminderFreq" class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-xs text-gray-900 dark:text-white">
+                                    <option value="daily">Setiap Hari</option>
+                                    <option value="monthly">Setiap Bulan (Tgl 1)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-400 font-semibold">Waktu Pengingat</label>
+                                <input type="time" id="settingReminderTime" value="20:00" class="w-full mt-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-gray-900 dark:text-white focus:outline-none" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Support Developer Section -->
+                    <div class="border-t border-gray-100 dark:border-slate-800 pt-4">
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Dukung Pengembang</label>
+                        <p class="text-[11px] text-gray-400 mt-0.5">Bantu pengembang agar terus bersemangat merilis fitur keren!</p>
+                        <button onclick="openModal('modalQris')"
+                            class="w-full mt-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-xs py-3 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/10 active:scale-[0.98]">
+                            <i data-lucide="coffee" class="w-4 h-4"></i>
+                            Dukung Pengembang ☕
+                        </button>
+                    </div>
+
                     <!-- Cloud Sync Settings -->
                     <div class="border-t border-gray-100 dark:border-slate-800 pt-4">
                         <label class="text-xs font-bold text-gray-400 uppercase tracking-wide">Integrasi Google Apps
@@ -1814,6 +1884,96 @@
                         <div id="faq5" class="hidden mt-2 text-[11px] text-gray-500 dark:text-slate-400 leading-relaxed">
                             Kami sangat menyarankan untuk menggunakan sinkronisasi cloud Google Sheets sebagai metode pencadangan. Dengan begitu, data tabungan Anda tidak akan terhapus meskipun cache browser dibersihkan atau aplikasi dipasang ulang.
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== MODAL: QRIS DONASI (SUPPORT DEVELOPER) ===================== -->
+        <div id="modalQris" class="hidden fixed inset-0 z-50 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[90vh] overflow-y-auto">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-navy-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="coffee" class="text-emerald-500 w-5 h-5"></i>
+                        Dukung Pengembang
+                    </h3>
+                    <button onclick="closeModal('modalQris')"
+                        class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4 text-center mt-2">
+                    <p class="text-xs text-gray-600 dark:text-slate-350 leading-relaxed text-left bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-900/30 p-3.5 rounded-xl">
+                        Hai! Terima kasih telah menggunakan <b>Tabungin</b>. Jika aplikasi ini membantu Anda mengelola dan mencapai target impian, pertimbangkan untuk mendukung pengembang dengan mentraktir kopi. Dukungan Anda sangat berarti untuk terus menyempurnakan aplikasi ini! ☕✨
+                    </p>
+
+                    <!-- QRIS Image -->
+                    <div class="bg-white p-4 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm max-w-[260px] mx-auto">
+                        <img src="assets/qris.png" class="w-full h-auto object-contain rounded-lg" alt="QRIS Donasi" />
+                    </div>
+
+                    <div class="space-y-1">
+                        <h4 class="text-xs font-bold text-gray-800 dark:text-gray-200">DONEFAST - SPORTING GOODS</h4>
+                        <p class="text-[10px] text-gray-400">NMID: ID1026548182785</p>
+                    </div>
+
+                    <p class="text-[9px] text-gray-400 italic">
+                        Pindai QRIS di atas menggunakan aplikasi e-wallet (GoPay, OVO, Dana, LinkAja) atau mobile banking Anda. Terima kasih atas kebaikan Anda! ❤️
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== MODAL: TANTANGAN MENABUNG ===================== -->
+        <div id="modalChallenges" class="hidden fixed inset-0 z-50 modal-backdrop flex items-end justify-center">
+            <div class="sheet-enter bg-white dark:bg-slate-900 w-full max-w-md rounded-t-3xl p-5 pb-7 max-h-[85vh] overflow-y-auto">
+                <div class="w-10 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4"></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-navy-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="trophy" class="text-violet-500 w-5 h-5"></i>
+                        Pilih Tantangan Menabung
+                    </h3>
+                    <button onclick="closeModal('modalChallenges')"
+                        class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4 mt-2">
+                    <p class="text-xs text-gray-500 dark:text-slate-400">
+                        Pilih salah satu template tantangan menabung di bawah ini untuk memulai kebiasaan menabung yang teratur.
+                    </p>
+
+                    <!-- Challenge 1: Celengan 20k -->
+                    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 p-4 rounded-2xl border border-emerald-100/50 dark:border-emerald-900/30 flex items-start justify-between gap-3 shadow-sm hover:scale-[1.01] transition-transform duration-250 cursor-pointer"
+                        onclick="joinChallenge('20k')">
+                        <div class="flex items-start gap-3">
+                            <span class="text-3xl mt-0.5">🐷</span>
+                            <div>
+                                <h4 class="text-xs font-extrabold text-emerald-800 dark:text-emerald-350">Celengan Rp 20.000 (50 Slot)</h4>
+                                <p class="text-[10px] text-emerald-700/80 dark:text-emerald-400/80 mt-1 leading-relaxed">
+                                    Selesaikan 50 slot menabung dengan nominal flat Rp 20.000. Sangat cocok untuk pemula!
+                                </p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold text-white bg-emerald-600 px-2.5 py-1 rounded-full shadow-sm flex-shrink-0">Target: 1Jt</span>
+                    </div>
+
+                    <!-- Challenge 2: 365 Days Challenge -->
+                    <div class="bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-950/20 dark:to-indigo-950/20 p-4 rounded-2xl border border-violet-100/50 dark:border-violet-900/30 flex items-start justify-between gap-3 shadow-sm hover:scale-[1.01] transition-transform duration-250 cursor-pointer"
+                        onclick="joinChallenge('365days')">
+                        <div class="flex items-start gap-3">
+                            <span class="text-3xl mt-0.5">📅</span>
+                            <div>
+                                <h4 class="text-xs font-extrabold text-violet-800 dark:text-violet-300">Tantangan 365 Hari (Kelipatan Rp 100)</h4>
+                                <p class="text-[10px] text-violet-700/80 dark:text-violet-400/80 mt-1 leading-relaxed">
+                                    Menabung meningkat setiap hari: Hari ke-1 Rp 100, Hari ke-2 Rp 200, ..., Hari ke-365 Rp 36.500.
+                                </p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold text-white bg-violet-600 px-2.5 py-1 rounded-full shadow-sm flex-shrink-0">Target: 6.6M+</span>
                     </div>
                 </div>
             </div>
@@ -1940,6 +2100,33 @@
             </div>
         </div>
 
+        <!-- ===================== CELEBRATION OVERLAY (100% TARGET COMPLETED) ===================== -->
+        <div id="celebrationOverlay" class="hidden fixed inset-0 z-[100] flex flex-col items-center justify-center bg-navy-950/90 backdrop-blur-sm overflow-hidden select-none">
+            <!-- Falling particles canvas -->
+            <canvas id="celebrationCanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+
+            <div class="relative z-10 text-center px-6 max-w-sm flex flex-col items-center gap-4">
+                <!-- Tropy with glow pulse -->
+                <div class="w-24 h-24 rounded-full bg-amber-500/10 border-2 border-amber-400 flex items-center justify-center check-glow shadow-lg shadow-amber-500/30 animate-bounce-slow flex-shrink-0">
+                    <span class="text-5xl">🏆</span>
+                </div>
+
+                <div class="space-y-1">
+                    <h2 class="text-white font-extrabold text-2xl tracking-tight">Selamat! Target Tercapai! 🎉</h2>
+                    <p id="celebrationTargetName" class="text-amber-300 font-bold text-sm tracking-wide">"Nama Target Anda"</p>
+                </div>
+
+                <p id="celebrationText" class="text-white/70 text-xs leading-relaxed">
+                    Kerja bagus! Anda telah berhasil mengumpulkan seluruh dana untuk target ini. Kebiasaan baik Anda membuahkan hasil yang manis! 🌟💰
+                </p>
+
+                <button onclick="closeCelebration()"
+                    class="w-full mt-4 bg-gradient-to-r from-brand-500 to-indigo-600 hover:from-brand-600 hover:to-indigo-700 text-white font-bold text-sm py-3.5 rounded-xl transition duration-200 active:scale-95 shadow-lg shadow-brand-500/35">
+                    Luar Saya, Lanjutkan!
+                </button>
+            </div>
+        </div>
+
         <!-- Toast Notification -->
         <div id="toast"
             class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[999] px-4 py-3 rounded-xl text-white text-sm font-medium shadow-lg max-w-[85%] text-center">
@@ -1992,6 +2179,650 @@
             "Jual barang yang sudah tidak terpakai dan masukkan uangnya ke celengan tabungan impian.",
             "Konsistensi lebih baik dibanding nominal besar. Setor rutin Rp 10.000 setiap hari!"
         ];
+
+        function renderMotivationalQuote() {
+            const textEl = document.getElementById('motivationalQuoteText');
+            const authorEl = document.getElementById('motivationalQuoteAuthor');
+            if (!textEl || !authorEl) return;
+
+            if (state.currentUser && state.currentUser.quote && state.currentUser.quote.trim()) {
+                textEl.innerHTML = `"${escapeHtml(state.currentUser.quote)}"`;
+                authorEl.textContent = `— ${escapeHtml(state.currentUser.name)}`;
+            } else {
+                const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+                const tipIdx = dayOfYear % TIPS_LIST.length;
+                textEl.innerHTML = `"${escapeHtml(TIPS_LIST[tipIdx])}"`;
+                authorEl.textContent = "— Tips Hari Ini";
+            }
+        }
+
+        /* ========================= SOUND EFFECTS (WEB AUDIO API) ========================= */
+        const SoundFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playCoin() {
+                try {
+                    this.init();
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                    
+                    const now = this.ctx.currentTime;
+                    // First high beep
+                    let osc1 = this.ctx.createOscillator();
+                    let gain1 = this.ctx.createGain();
+                    osc1.type = 'sine';
+                    osc1.frequency.setValueAtTime(950, now);
+                    osc1.frequency.exponentialRampToValueAtTime(1400, now + 0.08);
+                    
+                    gain1.gain.setValueAtTime(0.12, now);
+                    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    
+                    osc1.connect(gain1);
+                    gain1.connect(this.ctx.destination);
+                    osc1.start(now);
+                    osc1.stop(now + 0.12);
+
+                    // Second higher beep (metallic ring)
+                    setTimeout(() => {
+                        const now2 = this.ctx.currentTime;
+                        let osc2 = this.ctx.createOscillator();
+                        let gain2 = this.ctx.createGain();
+                        osc2.type = 'sine';
+                        osc2.frequency.setValueAtTime(1200, now2);
+                        osc2.frequency.exponentialRampToValueAtTime(1700, now2 + 0.12);
+                        
+                        gain2.gain.setValueAtTime(0.12, now2);
+                        gain2.gain.exponentialRampToValueAtTime(0.001, now2 + 0.22);
+                        
+                        osc2.connect(gain2);
+                        gain2.connect(this.ctx.destination);
+                        osc2.start(now2);
+                        osc2.stop(now2 + 0.22);
+                    }, 60);
+                } catch (e) {
+                    console.warn("Gagal memainkan suara koin:", e);
+                }
+            },
+            playShatter() {
+                try {
+                    this.init();
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+
+                    const now = this.ctx.currentTime;
+                    // Synthesize cash withdrawal woosh and shatter
+                    let osc = this.ctx.createOscillator();
+                    let gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(450, now);
+                    osc.frequency.exponentialRampToValueAtTime(80, now + 0.25);
+
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+
+                    // Add white noise burst for shatter
+                    const bufferSize = this.ctx.sampleRate * 0.15; // 0.15 seconds
+                    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    let noise = this.ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    let noiseFilter = this.ctx.createBiquadFilter();
+                    noiseFilter.type = 'bandpass';
+                    noiseFilter.frequency.value = 1000;
+                    let noiseGain = this.ctx.createGain();
+                    noiseGain.gain.setValueAtTime(0.05, now);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+                    noise.connect(noiseFilter);
+                    noiseFilter.connect(noiseGain);
+                    noiseGain.connect(this.ctx.destination);
+                    noise.start(now);
+                    noise.stop(now + 0.15);
+                } catch (e) {
+                    console.warn("Gagal memainkan suara pecah:", e);
+                }
+            },
+            playFanfare() {
+                try {
+                    this.init();
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+
+                    const now = this.ctx.currentTime;
+                    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50]; // C4, E4, G4, C5, E5, G5, C6
+                    notes.forEach((freq, idx) => {
+                        const startTime = now + idx * 0.09;
+                        let osc = this.ctx.createOscillator();
+                        let gain = this.ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, startTime);
+                        osc.frequency.exponentialRampToValueAtTime(freq * 1.05, startTime + 0.25);
+                        
+                        gain.gain.setValueAtTime(0.12, startTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.28);
+                        
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(startTime);
+                        osc.stop(startTime + 0.28);
+                    });
+                } catch (e) {
+                    console.warn("Gagal memainkan suara kemenangan:", e);
+                }
+            }
+        };
+
+        /* ========================= CELEBRATION ENGINE ========================= */
+        const Celebration = {
+            canvas: null,
+            ctx: null,
+            particles: [],
+            animationFrame: null,
+            active: false,
+            init() {
+                this.canvas = document.getElementById('celebrationCanvas');
+                if (this.canvas) {
+                    this.ctx = this.canvas.getContext('2d');
+                    this.resize();
+                    window.addEventListener('resize', () => this.resize());
+                }
+            },
+            resize() {
+                if (this.canvas) {
+                    this.canvas.width = window.innerWidth;
+                    this.canvas.height = window.innerHeight;
+                }
+            },
+            start(targetName) {
+                this.init();
+                const targetNameEl = document.getElementById('celebrationTargetName');
+                if (targetNameEl) targetNameEl.textContent = `"${targetName}"`;
+                
+                const overlay = document.getElementById('celebrationOverlay');
+                if (overlay) overlay.classList.remove('hidden');
+                
+                SoundFX.playFanfare();
+                this.active = true;
+                this.particles = [];
+                
+                // Spawn coins
+                for (let i = 0; i < 35; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * -this.canvas.height - 20,
+                        type: 'coin',
+                        radius: Math.random() * 5 + 7,
+                        speed: Math.random() * 3 + 4,
+                        angle: Math.random() * Math.PI * 2,
+                        spinSpeed: Math.random() * 0.1 + 0.05,
+                        color: '#f59e0b'
+                    });
+                }
+                
+                // Spawn colored confetti
+                const colors = ['#f43f5e', '#3b82f6', '#10b981', '#8b5cf6', '#ec4899', '#06b6d4'];
+                for (let i = 0; i < 50; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * -this.canvas.height - 20,
+                        type: 'confetti',
+                        w: Math.random() * 5 + 6,
+                        h: Math.random() * 8 + 6,
+                        speed: Math.random() * 2 + 3,
+                        rotation: Math.random() * 360,
+                        rotationSpeed: Math.random() * 4 - 2,
+                        color: colors[Math.floor(Math.random() * colors.length)]
+                    });
+                }
+                
+                this.loop();
+            },
+            loop() {
+                if (!this.active || !this.ctx) return;
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                let particlesActive = false;
+                this.particles.forEach(p => {
+                    if (p.y < this.canvas.height + 30) {
+                        particlesActive = true;
+                        
+                        if (p.type === 'coin') {
+                            p.y += p.speed;
+                            p.angle += p.spinSpeed;
+                            this.ctx.save();
+                            this.ctx.translate(p.x, p.y);
+                            this.ctx.scale(Math.cos(p.angle), 1);
+                            this.ctx.beginPath();
+                            this.ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
+                            this.ctx.fillStyle = '#fbbf24';
+                            this.ctx.fill();
+                            this.ctx.lineWidth = 1.5;
+                            this.ctx.strokeStyle = '#d97706';
+                            this.ctx.stroke();
+                            // Inner coin detailing
+                            this.ctx.beginPath();
+                            this.ctx.arc(0, 0, p.radius * 0.5, 0, Math.PI * 2);
+                            this.ctx.strokeStyle = '#d97706';
+                            this.ctx.stroke();
+                            this.ctx.restore();
+                        } else {
+                            p.y += p.speed;
+                            p.rotation += p.rotationSpeed;
+                            this.ctx.save();
+                            this.ctx.translate(p.x, p.y);
+                            this.ctx.rotate(p.rotation * Math.PI / 180);
+                            this.ctx.fillStyle = p.color;
+                            this.ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+                            this.ctx.restore();
+                        }
+                    }
+                });
+                
+                if (particlesActive) {
+                    this.animationFrame = requestAnimationFrame(() => this.loop());
+                } else {
+                    this.stop();
+                }
+            },
+            stop() {
+                this.active = false;
+                if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+                const overlay = document.getElementById('celebrationOverlay');
+                if (overlay) overlay.classList.add('hidden');
+            }
+        };
+
+        function closeCelebration() {
+            Celebration.stop();
+        }
+
+        /* ========================= NOTIFICATION MANAGER ========================= */
+        const NotificationManager = {
+            async requestPermission() {
+                try {
+                    if ('Notification' in window) {
+                        const permission = await Notification.requestPermission();
+                        return permission === 'granted';
+                    }
+                    return false;
+                } catch (e) {
+                    console.warn("Browser tidak mendukung notifikasi standard:", e);
+                    return false;
+                }
+            },
+            
+            async scheduleReminder(enabled, freq, timeStr) {
+                localStorage.setItem('tabungin_reminder_enabled', enabled ? 'true' : 'false');
+                localStorage.setItem('tabungin_reminder_freq', freq);
+                localStorage.setItem('tabungin_reminder_time', timeStr);
+
+                if (!enabled) {
+                    this.cancelAllReminders();
+                    return;
+                }
+
+                // Request browser permission
+                const granted = await this.requestPermission();
+                if (!granted) {
+                    console.warn("Izin notifikasi ditolak oleh pengguna.");
+                }
+
+                // If running in Capacitor PWA or Native App
+                if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+                    try {
+                        const localNotifications = window.Capacitor.Plugins.LocalNotifications;
+                        await localNotifications.requestPermissions();
+                        await localNotifications.cancel({ notifications: [{ id: 101 }] });
+                        
+                        const [hours, minutes] = timeStr.split(':').map(Number);
+                        const schedule = {
+                            id: 101,
+                            title: 'Tabungin • Catatan Target',
+                            body: 'Yuk, sisihkan uang hari ini untuk mewujudkan target impianmu! 🪙🚀',
+                            schedule: {
+                                on: {
+                                    hour: hours,
+                                    minute: minutes
+                                },
+                                repeats: true
+                            }
+                        };
+                        
+                        if (freq === 'monthly') {
+                            schedule.schedule.on.day = 1; // 1st of month
+                        }
+                        
+                        await localNotifications.schedule({ notifications: [schedule] });
+                        console.log("Capacitor Local Notifications berhasil dijadwalkan!");
+                    } catch (err) {
+                        console.warn("Gagal menyetel Capacitor notifications:", err);
+                    }
+                } else {
+                    // Fallback to browser notification trigger using ServiceWorker if registered
+                    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                        console.log("Pengingat disimpan. Notifikasi browser fallback siap digunakan.");
+                    }
+                }
+            },
+            
+            cancelAllReminders() {
+                if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+                    try {
+                        window.Capacitor.Plugins.LocalNotifications.cancel({ notifications: [{ id: 101 }] });
+                    } catch (e) {
+                        console.warn("Gagal membatalkan Capacitor notifications:", e);
+                    }
+                }
+            },
+            
+            checkDailyReminderFallback() {
+                // In-App Reminder Dialog Fallback
+                const enabled = localStorage.getItem('tabungin_reminder_enabled') === 'true';
+                if (!enabled || !state.currentUser) return;
+
+                const lastSavingStr = localStorage.getItem('tabungin_last_saving_date_' + state.currentUser.username);
+                const now = new Date();
+                
+                let showFallback = false;
+                if (!lastSavingStr) {
+                    showFallback = true;
+                } else {
+                    const lastSaving = new Date(lastSavingStr);
+                    const freq = localStorage.getItem('tabungin_reminder_freq') || 'daily';
+                    
+                    if (freq === 'daily') {
+                        // Check if saved today
+                        const oneDayMs = 24 * 60 * 60 * 1000;
+                        if (now.getTime() - lastSaving.getTime() > oneDayMs) {
+                            showFallback = true;
+                        }
+                    } else if (freq === 'monthly') {
+                        // Check if saved this month
+                        if (now.getMonth() !== lastSaving.getMonth() || now.getFullYear() !== lastSaving.getFullYear()) {
+                            showFallback = true;
+                        }
+                    }
+                }
+
+                if (showFallback) {
+                    // Show the reminder toast popup
+                    setTimeout(() => {
+                        const name = state.currentUser ? state.currentUser.name || 'Penabung' : 'Penabung';
+                        this._showReminderToast(`Semangat, ${escapeHtml(name)}! Sudahkah kamu menabung hari ini? Konsistensi adalah kunci sukses! 💰`);
+                    }, 2200);
+                }
+            },
+
+            _toastTimer: null,
+
+            _showReminderToast(msg) {
+                const toast = document.getElementById('reminderToast');
+                const msgEl = document.getElementById('reminderToastMsg');
+                if (!toast) {
+                    // Fallback to old modal if toast not available
+                    this.checkDailyReminderFallback();
+                    return;
+                }
+                if (msgEl) msgEl.textContent = msg;
+                toast.classList.remove('hidden');
+                clearTimeout(this._toastTimer);
+                this._toastTimer = setTimeout(() => this.dismissReminder(), 12000);
+            },
+
+            dismissReminder() {
+                const toast = document.getElementById('reminderToast');
+                if (toast) toast.classList.add('hidden');
+                clearTimeout(this._toastTimer);
+            }
+        };
+
+        function toggleReminderSetting() {
+            const toggle = document.getElementById('settingReminderToggle');
+            const options = document.getElementById('reminderTimeOptions');
+            if (toggle && options) {
+                options.classList.toggle('hidden', !toggle.checked);
+            }
+        }
+
+        function closeReminderFallback() {
+            const el = document.getElementById('reminderFallbackWrapper');
+            if (el) el.remove();
+        }
+
+        /* ========================= SAVING CHALLENGES SYSTEM ========================= */
+        async function joinChallenge(type) {
+            if (!state.currentUser) {
+                showToast("Silakan masuk akun terlebih dahulu", "error");
+                return;
+            }
+
+            let name = "";
+            let nominal = 0;
+            let detail = "";
+            
+            // Calculate deadline (e.g. 1 year from now)
+            const deadline = new Date();
+            deadline.setFullYear(deadline.getFullYear() + 1);
+            const deadlineStr = deadline.toISOString().split('T')[0];
+
+            if (type === '20k') {
+                name = "Tantangan Celengan Rp 20.000";
+                nominal = 20000 * 50; // Rp 1.000.000
+                detail = "celengan_20k";
+            } else if (type === '365days') {
+                name = "Tantangan 365 Hari Kelipatan 100";
+                // Sum of 1 to 365 * 100 = (365 * 366) / 2 * 100 = 6,679,500
+                nominal = 6679500;
+                detail = "365days";
+            }
+
+            // Create new target challenge
+            state.isLoading = true;
+            let success = false;
+
+            const newTarget = {
+                nama_target: name,
+                nominal_target: nominal,
+                kategori_target: 'lainnya',
+                prioritas_target: 'sedang',
+                tenggat_target: deadlineStr,
+                username: state.currentUser.username,
+                catatan: `CHALLENGE:${detail}`
+            };
+
+            if (state.apiUrl && navigator.onLine) {
+                try {
+                    const res = await apiPost({ action: 'createTarget', ...newTarget });
+                    if (res && res.status === 'success') {
+                        success = true;
+                    }
+                } catch (e) {
+                    console.warn("Gagal menyimpan tantangan ke cloud:", e);
+                }
+            }
+
+            if (!success) {
+                // Local offline save
+                let targets = JSON.parse(localStorage.getItem('tabungin_targets') || '[]');
+                newTarget.id_target = 't_' + Date.now();
+                targets.push(newTarget);
+                localStorage.setItem('tabungin_targets', JSON.stringify(targets));
+            }
+
+            showToast("Tantangan menabung berhasil diikuti! 🎉", "success");
+            closeModal('modalChallenges');
+            
+            // Sync & refresh Targets
+            fetchData();
+            switchTab('targets');
+        }
+
+        // Check if target is a challenge
+        function getChallengeType(target) {
+            if (target && target.catatan && target.catatan.startsWith('CHALLENGE:')) {
+                return target.catatan.split(':')[1];
+            }
+            return null;
+        }
+
+        // Render check-off grid inside detail target modal
+        function renderChallengeGrid(targetId, type) {
+            const container = document.getElementById('detailRiwayatList');
+            if (!container) return;
+
+            // Get transactions for this target
+            const targetTx = state.riwayat.filter(tx => tx.id_target == targetId && tx.nominal_masuk > 0);
+            
+            let gridHtml = '';
+            
+            if (type === '20k') {
+                const totalSlots = 50;
+                const filledSlots = targetTx.length;
+                
+                gridHtml = `
+                    <div class="bg-emerald-50/50 dark:bg-emerald-950/20 rounded-2xl p-4 border border-emerald-100/50 dark:border-emerald-900/30 mb-4 text-left">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-xs font-bold text-emerald-800 dark:text-emerald-300">Papan Celengan Rp 20.000</span>
+                            <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full">${filledSlots} / ${totalSlots} Slot Selesai</span>
+                        </div>
+                        <div class="grid grid-cols-6 gap-2 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin">
+                `;
+                
+                for (let i = 1; i <= totalSlots; i++) {
+                    const isChecked = i <= filledSlots;
+                    gridHtml += `
+                        <button onclick="${isChecked ? '' : `payChallengeSlot('${targetId}', 20000, ${i})`}"
+                            class="w-10 h-10 rounded-xl flex flex-col items-center justify-center text-xs font-bold transition duration-200 border-2 
+                            ${isChecked 
+                                ? 'bg-emerald-500 border-emerald-600 text-white shadow-sm shadow-emerald-500/20' 
+                                : 'bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 text-gray-500 hover:border-emerald-400 dark:hover:border-emerald-500 hover:scale-105 active:scale-95'}"
+                            title="Slot ${i}: Rp 20.000">
+                            ${isChecked ? '✓' : i}
+                        </button>
+                    `;
+                }
+                
+                gridHtml += `
+                        </div>
+                        <p class="text-[9px] text-gray-400 dark:text-slate-500 mt-2.5 italic leading-normal">
+                            *Setiap ketukan pada nomor di atas akan menabung Rp 20.000 langsung ke target celengan ini.
+                        </p>
+                    </div>
+                `;
+            } else if (type === '365days') {
+                const totalSlots = 365;
+                const filledSlots = targetTx.length;
+                
+                gridHtml = `
+                    <div class="bg-violet-50/50 dark:bg-violet-950/20 rounded-2xl p-4 border border-violet-100/50 dark:border-violet-900/30 mb-4 text-left">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-xs font-bold text-violet-800 dark:text-violet-300">Papan Tantangan 365 Hari</span>
+                            <span class="text-[10px] font-bold text-violet-600 dark:text-violet-400 bg-violet-100 dark:bg-violet-950/40 px-2 py-0.5 rounded-full">${filledSlots} / ${totalSlots} Hari</span>
+                        </div>
+                        <div class="grid grid-cols-8 gap-1.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin">
+                `;
+                
+                for (let i = 1; i <= totalSlots; i++) {
+                    const isChecked = i <= filledSlots;
+                    const amount = i * 100;
+                    gridHtml += `
+                        <button onclick="${isChecked ? '' : `payChallengeSlot('${targetId}', ${amount}, ${i})`}"
+                            class="w-8 h-8 rounded-lg flex items-center justify-center text-[9px] font-extrabold transition duration-200 border 
+                            ${isChecked 
+                                ? 'bg-violet-500 border-violet-600 text-white shadow-sm shadow-violet-500/20' 
+                                : 'bg-white dark:bg-slate-800 border-gray-200 dark:border-slate-700 text-gray-400 hover:border-violet-400 dark:hover:border-violet-500 hover:scale-105 active:scale-95'}"
+                            title="Hari ${i}: Rp ${amount.toLocaleString('id-ID')}">
+                            ${isChecked ? '✓' : i}
+                        </button>
+                    `;
+                }
+                
+                gridHtml += `
+                        </div>
+                        <p class="text-[9px] text-gray-400 dark:text-slate-500 mt-2.5 italic leading-normal">
+                            *Menabung kelipatan Rp 100 sesuai hari. Hari ke-100 = Rp 10.000, Hari ke-365 = Rp 36.500. Ketuk kotak kosong untuk menyetor.
+                        </p>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = gridHtml;
+        }
+
+        async function payChallengeSlot(targetId, amount, slotNum) {
+            if (!confirm(`Setor tabungan sebesar ${formatRupiah(amount)} untuk menyelesaikan slot ini?`)) return;
+
+            // Submit transaction directly
+            const note = `Menabung Slot #${slotNum}`;
+            const target = state.targets.find(t => t.id_target == targetId);
+            if (!target) return;
+
+            // Trigger submit transaction logic
+            state.isLoading = true;
+            let success = false;
+
+            const newTx = {
+                id_target: targetId,
+                nominal_masuk: amount,
+                nominal_keluar: 0,
+                catatan: note,
+                tanggal: new Date().toISOString(),
+                username: state.currentUser.username
+            };
+
+            if (state.apiUrl && navigator.onLine) {
+                try {
+                    const res = await apiPost({ action: 'createTransaction', ...newTx });
+                    if (res && res.status === 'success') {
+                        success = true;
+                    }
+                } catch (e) {
+                    console.warn("Gagal menyimpan transaksi tantangan ke cloud:", e);
+                }
+            }
+
+            if (!success) {
+                // Save offline
+                let riwayat = JSON.parse(localStorage.getItem('tabungin_riwayat') || '[]');
+                newTx.id_transaksi = 'tx_' + Date.now();
+                riwayat.push(newTx);
+                localStorage.setItem('tabungin_riwayat', JSON.stringify(riwayat));
+            }
+
+            // Save last saving date
+            localStorage.setItem('tabungin_last_saving_date_' + state.currentUser.username, new Date().toISOString());
+
+            // Play Coin sound
+            SoundFX.playCoin();
+            
+            showToast(`Berhasil menyetor ${formatRupiah(amount)} ke tantangan! 🪙`, 'success');
+
+            // Refetch data & wait
+            await fetchData();
+
+            // Check if completing the challenge (target complete)
+            const terkumpulNow = getTerkumpul(targetId);
+            if (terkumpulNow >= target.nominal_target) {
+                // Trigger full celebration overlay
+                setTimeout(() => {
+                    closeModal('modalDetailTarget');
+                    Celebration.start(target.nama_target);
+                }, 400);
+            } else {
+                // Re-open/refresh details
+                const updatedTarget = state.targets.find(t => t.id_target == targetId);
+                openDetailTarget(updatedTarget);
+            }
+        }
 
         /* ========================= AUTHENTICATION FLOW ========================= */
         function switchAuthTab(type) {
@@ -2072,31 +2903,46 @@
             btnReg.disabled = true;
             btnReg.textContent = 'Mendaftarkan...';
 
-            if (state.apiUrl) {
+            let registered = false;
+
+            if (state.apiUrl && navigator.onLine) {
                 // MODE CLOUD — Register ke Google Sheets
                 try {
                     const res = await apiPost({ action: 'register', name, username, password, avatar: regAvatarSeed });
                     if (res && res.status === 'success') {
-                        showToast('Pendaftaran berhasil! Silakan masuk.', 'success');
+                        // Cache secara lokal agar bisa login saat offline kelak
+                        let users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
+                        if (!users.find(u => u.username === username)) {
+                            users.push({ name, username, password, avatar: regAvatarSeed });
+                            localStorage.setItem('tabungin_users', JSON.stringify(users));
+                        }
+                        
+                        showToast('Pendaftaran berhasil (Cloud Sync)! Silakan masuk.', 'success');
                         e.target.reset();
-                        // Reset avatar picker to default
                         selectRegAvatar('Felix');
                         switchAuthTab('login');
+                        registered = true;
                     } else {
-                        showToast((res && res.message) || 'Gagal mendaftar', 'error');
+                        showToast((res && res.message) || 'Gagal mendaftar di server cloud', 'error');
+                        btnReg.disabled = false;
+                        btnReg.textContent = 'Daftar Akun Baru';
+                        return; // Jangan fallback jika server menolak (misal: username sudah ada)
                     }
                 } catch (err) {
-                    showToast('Gagal terhubung ke server: ' + err.message, 'error');
+                    console.warn('Gagal registrasi cloud, mencoba registrasi lokal:', err);
+                    showToast('Gagal terhubung ke cloud. Mencoba pendaftaran lokal...', 'info');
                 }
-            } else {
+            }
+
+            if (!registered) {
                 // MODE OFFLINE — Simpan ke localStorage
                 let users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
                 if (users.find(u => u.username === username)) {
-                    showToast('Username sudah terdaftar', 'error');
+                    showToast('Username sudah terdaftar di perangkat ini', 'error');
                 } else {
                     users.push({ name, username, password, avatar: regAvatarSeed });
                     localStorage.setItem('tabungin_users', JSON.stringify(users));
-                    showToast('Pendaftaran berhasil! Silakan masuk.', 'success');
+                    showToast('Pendaftaran offline berhasil! Silakan masuk.', 'success');
                     e.target.reset();
                     // Reset avatar picker to default
                     selectRegAvatar('Felix');
@@ -2120,11 +2966,21 @@
 
             let loginSuccess = false;
 
-            if (state.apiUrl) {
+            if (state.apiUrl && navigator.onLine) {
                 // MODE CLOUD — Login via Google Sheets
                 try {
                     const res = await apiGet({ action: 'login', username, password });
                     if (res && res.status === 'success') {
+                        // Simpan/update kredensial lokal untuk offline login nanti
+                        let users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
+                        const idx = users.findIndex(u => u.username === username);
+                        if (idx !== -1) {
+                            users[idx] = { ...users[idx], name: res.user.name, password, avatar: res.user.avatar };
+                        } else {
+                            users.push({ name: res.user.name, username, password, avatar: res.user.avatar });
+                        }
+                        localStorage.setItem('tabungin_users', JSON.stringify(users));
+
                         setCurrentSession(res.user);
                         loginSuccess = true;
                     } else {
@@ -2134,6 +2990,8 @@
                     console.warn('Cloud login failed, checking local database:', err);
                     showToast('Gagal terhubung ke cloud. Mencoba login lokal...', 'info');
                 }
+            } else if (state.apiUrl && !navigator.onLine) {
+                showToast('Offline mode — masuk menggunakan akun lokal...', 'info');
             }
 
             if (!loginSuccess) {
@@ -2218,6 +3076,7 @@
                         // Muat database & render
                         fetchData();
                         showToast(`Selamat datang kembali, ${user.name}!`, 'success');
+                        NotificationManager.checkDailyReminderFallback();
                     }, 650);
                 }, 1500);
             } else {
@@ -2231,6 +3090,7 @@
 
                 fetchData();
                 showToast(`Selamat datang kembali, ${user.name}!`, 'success');
+                NotificationManager.checkDailyReminderFallback();
             }
         }
 
@@ -2260,6 +3120,7 @@
                     const nav = document.getElementById('bottomNav');
                     if (nav) nav.classList.remove('hidden');
                     fetchData();
+                    NotificationManager.checkDailyReminderFallback();
                 });
             } else {
                 // Fade out splash, then show login
@@ -2296,7 +3157,7 @@
             let targets = JSON.parse(localStorage.getItem(localTargetsKey) || '[]');
             let riwayat = JSON.parse(localStorage.getItem(localRiwayatKey) || '[]');
 
-            if (state.apiUrl) {
+            if (state.apiUrl && navigator.onLine) {
                 // MODE CLOUD — Ambil data dari Google Sheets
                 try {
                     const json = await apiGet({
@@ -2316,6 +3177,8 @@
                     console.warn('Cloud fetch gagal, pakai data offline:', err);
                     showToast('Offline mode — data diambil dari perangkat', 'info');
                 }
+            } else if (state.apiUrl && !navigator.onLine) {
+                console.info('Perangkat offline, menggunakan data cache lokal.');
             }
             // MODE OFFLINE — gunakan localStorage saja (data di-cache dari sesi cloud sebelumnya)
 
@@ -2333,66 +3196,72 @@
             // Tambahkan username ke setiap payload
             payload.username = state.currentUser.username;
 
-            if (state.apiUrl) {
+            let syncSuccess = false;
+
+            if (state.apiUrl && navigator.onLine) {
                 // MODE CLOUD — POST ke Google Sheets (sumber kebenaran utama)
                 try {
                     const res = await apiPost(payload);
-                    if (!res || res.status !== 'success') {
+                    if (res && res.status === 'success') {
+                        syncSuccess = true;
+                        // Setelah berhasil, refresh data dari cloud
+                        await fetchData();
+                        return;
+                    } else {
                         throw new Error((res && res.message) || 'Respons server tidak valid');
                     }
-                    // Setelah berhasil, refresh data dari cloud
-                    await fetchData();
-                    return;
                 } catch (err) {
                     showToast('Gagal sinkronisasi cloud: ' + err.message + '. Data disimpan lokal.', 'error');
-                    // Jangan return — lanjut simpan ke localStorage sebagai fallback
+                    // Lanjut simpan ke localStorage
                 }
             }
 
-            // MODE OFFLINE — simpan ke localStorage
-            if (payload.action === 'addTarget') {
-                const newTarget = {
-                    id_target: String(Date.now()),
-                    nama_target: payload.nama_target,
-                    nominal_target: payload.nominal_target,
-                    tenggat_waktu: payload.tenggat_waktu,
-                    kategori: payload.kategori || 'lainnya',
-                    prioritas: payload.prioritas || 'sedang',
-                    status: 'Aktif'
-                };
-                state.targets.push(newTarget);
-                localStorage.setItem(localTargetsKey, JSON.stringify(state.targets));
-            } else if (payload.action === 'editTarget') {
-                const idx = state.targets.findIndex(t => t.id_target === payload.id_target);
-                if (idx !== -1) {
-                    state.targets[idx] = {
-                        ...state.targets[idx],
+            if (!syncSuccess) {
+                // MODE OFFLINE — simpan ke localStorage
+                if (payload.action === 'addTarget') {
+                    const newTarget = {
+                        id_target: String(Date.now()),
                         nama_target: payload.nama_target,
                         nominal_target: payload.nominal_target,
                         tenggat_waktu: payload.tenggat_waktu,
-                        kategori: payload.kategori,
-                        prioritas: payload.prioritas
+                        kategori: payload.kategori || 'lainnya',
+                        prioritas: payload.prioritas || 'sedang',
+                        status: 'Aktif'
                     };
+                    state.targets.push(newTarget);
                     localStorage.setItem(localTargetsKey, JSON.stringify(state.targets));
+                } else if (payload.action === 'editTarget') {
+                    const idx = state.targets.findIndex(t => t.id_target === payload.id_target);
+                    if (idx !== -1) {
+                        state.targets[idx] = {
+                            ...state.targets[idx],
+                            nama_target: payload.nama_target,
+                            nominal_target: payload.nominal_target,
+                            tenggat_waktu: payload.tenggat_waktu,
+                            kategori: payload.kategori,
+                            prioritas: payload.prioritas
+                        };
+                        localStorage.setItem(localTargetsKey, JSON.stringify(state.targets));
+                    }
+                } else if (payload.action === 'deleteTarget') {
+                    state.targets = state.targets.filter(t => t.id_target !== payload.id_target);
+                    state.riwayat = state.riwayat.filter(r => r.id_target !== payload.id_target);
+                    localStorage.setItem(localTargetsKey, JSON.stringify(state.targets));
+                    localStorage.setItem(localRiwayatKey, JSON.stringify(state.riwayat));
+                } else if (payload.action === 'addTransaksi') {
+                    state.riwayat.push({
+                        id_transaksi: String(Date.now()),
+                        id_target: payload.id_target,
+                        nominal_masuk: payload.nominal_masuk,
+                        catatan: payload.catatan || '',
+                        tanggal: payload.tanggal,
+                        tipe: payload.tipe || 'setoran'
+                    });
+                    localStorage.setItem(localRiwayatKey, JSON.stringify(state.riwayat));
                 }
-            } else if (payload.action === 'deleteTarget') {
-                state.targets = state.targets.filter(t => t.id_target !== payload.id_target);
-                state.riwayat = state.riwayat.filter(r => r.id_target !== payload.id_target);
-                localStorage.setItem(localTargetsKey, JSON.stringify(state.targets));
-                localStorage.setItem(localRiwayatKey, JSON.stringify(state.riwayat));
-            } else if (payload.action === 'addTransaksi') {
-                state.riwayat.push({
-                    id_transaksi: String(Date.now()),
-                    id_target: payload.id_target,
-                    nominal_masuk: payload.nominal_masuk,
-                    catatan: payload.catatan || '',
-                    tanggal: payload.tanggal,
-                    tipe: payload.tipe || 'setoran'
-                });
-                localStorage.setItem(localRiwayatKey, JSON.stringify(state.riwayat));
-            }
 
-            await fetchData();
+                await fetchData();
+            }
         }
 
         /* ========================= PERHITUNGAN DATA ========================= */
@@ -2440,6 +3309,7 @@
             toggleSkeleton(false);
             hideStates();
             renderHeader();
+            renderMotivationalQuote();
             renderRecentActivity();
             filterTargets();
             renderRiwayatPanel();
@@ -2598,30 +3468,43 @@
             document.getElementById('detailProgressBar').style.width = `${persen}%`;
             document.getElementById('detailProgressBar').className = `progress-fill h-full ${persen >= 100 ? 'bg-emerald-500' : 'bg-brand-500'}`;
 
-            // Render specific transaction history
-            const filterRiwayat = state.riwayat.filter(r => r.id_target === id);
+            // Show/hide standard transaction buttons for challenges
+            const challengeType = getChallengeType(t);
+            const actionBtns = document.getElementById('detailActionButtons');
+            if (actionBtns) {
+                actionBtns.classList.toggle('hidden', !!challengeType);
+            }
+
             const container = document.getElementById('detailRiwayatList');
 
-            if (!filterRiwayat.length) {
-                container.innerHTML = `<p class="text-center text-xs text-gray-400 py-6">Belum ada aktivitas setoran.</p>`;
+            if (challengeType) {
+                // Render special interactive Grid board
+                renderChallengeGrid(id, challengeType);
             } else {
-                container.innerHTML = filterRiwayat.map(r => {
-                    const isPenarikan = r.nominal_masuk < 0;
-                    return `
-                        <div class="flex items-center justify-between bg-gray-50 dark:bg-slate-800 rounded-xl p-3">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-8 h-8 rounded-full ${isPenarikan ? 'bg-amber-50 dark:bg-amber-950 text-amber-600' : 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600'} flex items-center justify-center shrink-0">
-                                    <i data-lucide="${isPenarikan ? 'arrow-up-right' : 'arrow-down-left'}" class="w-3.5 h-3.5"></i>
+                // Render specific transaction history
+                const filterRiwayat = state.riwayat.filter(r => r.id_target === id);
+
+                if (!filterRiwayat.length) {
+                    container.innerHTML = `<p class="text-center text-xs text-gray-400 py-6">Belum ada aktivitas setoran.</p>`;
+                } else {
+                    container.innerHTML = filterRiwayat.map(r => {
+                        const isPenarikan = r.nominal_masuk < 0;
+                        return `
+                            <div class="flex items-center justify-between bg-gray-50 dark:bg-slate-800 rounded-xl p-3">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-full ${isPenarikan ? 'bg-amber-50 dark:bg-amber-950 text-amber-600' : 'bg-emerald-50 dark:bg-emerald-950 text-emerald-600'} flex items-center justify-center shrink-0">
+                                        <i data-lucide="${isPenarikan ? 'arrow-up-right' : 'arrow-down-left'}" class="w-3.5 h-3.5"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold text-navy-900 dark:text-white">${isPenarikan ? 'Tarik Dana' : 'Setor Dana'}</p>
+                                        <p class="text-[10px] text-gray-400">${formatTanggal(r.tanggal)}${r.catatan ? ' • ' + escapeHtml(r.catatan) : ''}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="text-xs font-bold text-navy-900 dark:text-white">${isPenarikan ? 'Tarik Dana' : 'Setor Dana'}</p>
-                                    <p class="text-[10px] text-gray-400">${formatTanggal(r.tanggal)}${r.catatan ? ' • ' + escapeHtml(r.catatan) : ''}</p>
-                                </div>
+                                <span class="text-xs font-extrabold ${isPenarikan ? 'text-amber-600' : 'text-emerald-600'}">${isPenarikan ? '' : '+'}${formatRupiah(r.nominal_masuk)}</span>
                             </div>
-                            <span class="text-xs font-extrabold ${isPenarikan ? 'text-amber-600' : 'text-emerald-600'}">${isPenarikan ? '' : '+'}${formatRupiah(r.nominal_masuk)}</span>
-                        </div>
-                    `;
-                }).join('');
+                        `;
+                    }).join('');
+                }
             }
 
             openModal('modalDetailTarget');
@@ -2773,9 +3656,29 @@
                     tanggal: new Date().toISOString().slice(0, 10),
                     tipe: tipe
                 });
+
+                // Play audio sound FX & save last saving date
+                if (tipe === 'penarikan') {
+                    SoundFX.playShatter();
+                } else {
+                    SoundFX.playCoin();
+                    localStorage.setItem('tabungin_last_saving_date_' + state.currentUser.username, new Date().toISOString());
+                }
+
                 showToast(tipe === 'penarikan' ? 'Dana berhasil ditarik 💸' : 'Setoran berhasil disimpan 💰', 'success');
                 e.target.reset();
                 closeModal('modalTransaksiForm');
+
+                // Check if target is completed just now
+                const t = state.targets.find(target => target.id_target == idTarget);
+                if (t && tipe !== 'penarikan') {
+                    const terkumpulNow = getTerkumpul(idTarget);
+                    if (terkumpulNow >= t.nominal_target && (terkumpulNow - nominal < t.nominal_target)) {
+                        setTimeout(() => {
+                            Celebration.start(t.nama_target);
+                        }, 500);
+                    }
+                }
             } catch (err) {
                 showToast('Gagal menyimpan transaksi', 'error');
             } finally {
@@ -3508,13 +4411,36 @@
         }
 
         function openCloudConfigModal() {
-            // Hide avatar section if not logged in
+            // Hide avatar, profile, and reminder section if not logged in
             const isGuest = !state.currentUser;
             const avatarSec = document.getElementById('settingsAvatarSection');
             if (avatarSec) avatarSec.classList.toggle('hidden', isGuest);
 
+            const profileSec = document.getElementById('settingsProfileSection');
+            if (profileSec) profileSec.classList.toggle('hidden', isGuest);
+
+            const reminderSec = document.getElementById('settingsReminderSection');
+            if (reminderSec) reminderSec.classList.toggle('hidden', isGuest);
+
             if (!isGuest) {
                 selectAvatar(state.avatarSeed || 'Felix');
+                document.getElementById('settingDisplayName').value = state.currentUser.name || '';
+                document.getElementById('settingMotivationalQuote').value = state.currentUser.quote || '';
+
+                // Populate reminders options
+                const reminderEnabled = localStorage.getItem('tabungin_reminder_enabled') === 'true';
+                const reminderFreq = localStorage.getItem('tabungin_reminder_freq') || 'daily';
+                const reminderTime = localStorage.getItem('tabungin_reminder_time') || '20:00';
+
+                const toggle = document.getElementById('settingReminderToggle');
+                const freq = document.getElementById('settingReminderFreq');
+                const time = document.getElementById('settingReminderTime');
+                const options = document.getElementById('reminderTimeOptions');
+
+                if (toggle) toggle.checked = reminderEnabled;
+                if (freq) freq.value = reminderFreq;
+                if (time) time.value = reminderTime;
+                if (options) options.classList.toggle('hidden', !reminderEnabled);
             }
 
             // Set input value
@@ -3529,16 +4455,41 @@
             localStorage.setItem('tabungin_api_url', inputUrl);
 
             if (state.currentUser) {
-                // Update user avatar in db session
+                // Get display name & quote inputs
+                const updatedName = document.getElementById('settingDisplayName').value.trim() || state.currentUser.name;
+                const updatedQuote = document.getElementById('settingMotivationalQuote').value.trim();
+
+                // Save state
+                state.currentUser.name = updatedName;
                 state.currentUser.avatar = state.avatarSeed;
+                state.currentUser.quote = updatedQuote;
+
                 localStorage.setItem('tabungin_session', JSON.stringify(state.currentUser));
+                document.getElementById('userDisplayName').textContent = updatedName;
                 document.getElementById('headerAvatar').src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${state.avatarSeed}`;
+
+                // Render quote on dashboard
+                renderMotivationalQuote();
+
+                // Update reminders settings
+                const reminderToggle = document.getElementById('settingReminderToggle');
+                const reminderFreq = document.getElementById('settingReminderFreq');
+                const reminderTime = document.getElementById('settingReminderTime');
+                if (reminderToggle) {
+                    NotificationManager.scheduleReminder(
+                        reminderToggle.checked,
+                        reminderFreq ? reminderFreq.value : 'daily',
+                        reminderTime ? reminderTime.value : '20:00'
+                    );
+                }
 
                 // Update saved users list
                 let users = JSON.parse(localStorage.getItem('tabungin_users') || '[]');
                 const userIdx = users.findIndex(u => u.username === state.currentUser.username);
                 if (userIdx !== -1) {
+                    users[userIdx].name = updatedName;
                     users[userIdx].avatar = state.avatarSeed;
+                    users[userIdx].quote = updatedQuote;
                     localStorage.setItem('tabungin_users', JSON.stringify(users));
                 }
 
@@ -3693,6 +4644,20 @@
             }, 1400);
         });
     </script>
-</body>
 
+        <!-- ===================== REMINDER TOAST POPUP ===================== -->
+        <div id="reminderToast" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-[90] w-[90%] max-w-sm bg-gradient-to-r from-brand-600 to-indigo-600 text-white rounded-2xl p-4 shadow-2xl border border-brand-400/20">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0 text-xl">🐷</div>
+                <div class="flex-1">
+                    <p class="font-extrabold text-sm">Halo! Sudah menabung hari ini?</p>
+                    <p id="reminderToastMsg" class="text-white/80 text-xs mt-0.5 leading-relaxed">Yuk, sisihkan sedikit rezekimu sekarang!</p>
+                </div>
+                <button onclick="NotificationManager.dismissReminder()" class="text-white/60 hover:text-white p-1 transition flex-shrink-0">&#x2715;</button>
+            </div>
+            <button onclick="NotificationManager.dismissReminder(); openIsiTabunganModal();" class="mt-3 w-full bg-white/20 hover:bg-white/30 text-white font-bold text-xs py-2.5 rounded-xl transition">
+                Setor Sekarang &#x1F4B0;
+            </button>
+        </div>
+</body>
 </html>
